@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useAuth } from "@/lib/auth-context";
 
 export default function Navigation() {
@@ -10,8 +11,9 @@ export default function Navigation() {
     <nav className="bg-zinc-900 border-b border-zinc-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <Link href="/" className="text-2xl font-bold text-[#00CED1] font-[family-name:var(--font-orbitron)]">
-            SHIROA
+          <Link href="/" className="flex items-center gap-3">
+            <Image src="/logo.jpg" alt="SHIROA" width={40} height={40} className="rounded-lg" />
+            <span className="text-2xl font-bold text-[#00CED1] font-[family-name:var(--font-orbitron)]">SHIROA</span>
           </Link>
 
           <div className="flex items-center gap-6">
