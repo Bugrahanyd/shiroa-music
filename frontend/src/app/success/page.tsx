@@ -1,7 +1,6 @@
-import Link from "next/link";
-
 "use client";
 
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
 export default function SuccessPage() {
