@@ -3,27 +3,75 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { api } from "@/lib/api";
+import SearchBar from "@/components/SearchBar";
+import FilterPanel from "@/components/FilterPanel";
 
 export default function TracksPage() {
   const [tracks, setTracks] = useState<any[]>([]);
+  const [filteredTracks, setFilteredTracks] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
   const [selectedGenre, setSelectedGenre] = useState("All");
-  const genres = ["All", "Electronic", "Ambient", "Hip Hop", "Rock", "Jazz"];
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
+  const [sortBy, setSortBy] = useState("newest");
 
   useEffect(() => {
     loadTracks();
-  }, [selectedGenre]);
+  }, []);
+
+  useEffect(() => {
+    filterAndSortTracks();
+  }, [tracks, searchQuery, selectedGenre, minPrice, maxPrice, sortBy]);
 
   const loadTracks = async () => {
     setLoading(true);
     try {
-      const data = await api.getTracks(selectedGenre === "All" ? undefined : selectedGenre);
+      const data = await api.getTracks();
       setTracks(data);
     } catch (error) {
       console.error("Failed to load tracks:", error);
     } finally {
       setLoading(false);
     }
+  };
+
+  const filterAndSortTracks = () => {
+    let filtered = [...tracks];
+
+    if (searchQuery) {
+      filtered = filtered.filter(
+        (t) =>
+          t.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          t.artist.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    if (selectedGenre !== "All") {
+      filtered = filtered.filter((t) => t.genre === selectedGenre);
+    }
+
+    if (minPrice) {
+      filtered = filtered.filter((t) => t.price >= parseFloat(minPrice));
+    }
+
+    if (maxPrice) {
+      filtered = filtered.filter((t) => t.price <= parseFloat(maxPrice));
+    }
+
+    filtered.sort((a, b) => {
+      switch (sortBy) {
+        case "price-low":
+          return a.price - b.price;
+        case "price-high":
+          return b.price - a.price;
+        case "newest":
+        default:
+          return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      }
+    });
+
+    setFilteredTracks(filtered);
   };
 
   return (
@@ -60,21 +108,25 @@ export default function TracksPage() {
           <p className="text-gray-400">Discover exclusive music for your projects</p>
         </div>
 
-        {/* Filters */}
-        <div className="mb-8 flex items-center gap-3 overflow-x-auto pb-2">
-          {genres.map((genre) => (
-            <button
-              key={genre}
-              onClick={() => setSelectedGenre(genre)}
-              className={`px-6 py-2 rounded-full font-medium whitespace-nowrap transition-colors ${
-                selectedGenre === genre
-                  ? "bg-turquoise text-brand-black"
-                  : "bg-brand-blue/20 text-brand-white hover:bg-brand-blue/40"
-              }`}
-            >
-              {genre}
-            </button>
-          ))}
+        {/* Search & Filters */}
+        <div className="grid lg:grid-cols-4 gap-6 mb-8">
+          <div className="lg:col-span-3">
+            <SearchBar value={searchQuery} onChange={setSearchQuery} />
+          </div>
+          <div>
+            <FilterPanel
+              genre={selectedGenre}
+              onGenreChange={setSelectedGenre}
+              minPrice={minPrice}
+              maxPrice={maxPrice}
+              onPriceChange={(min, max) => {
+                setMinPrice(min);
+                setMaxPrice(max);
+              }}
+              sortBy={sortBy}
+              onSortChange={setSortBy}
+            />
+          </div>
         </div>
 
         {/* Loading */}
@@ -85,9 +137,9 @@ export default function TracksPage() {
         )}
 
         {/* Tracks Grid */}
-        {!loading && tracks.length > 0 && (
+        {!loading && filteredTracks.length > 0 && (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {tracks.map((track) => (
+            {filteredTracks.map((track) => (
               <Link
                 key={track._id}
                 href={`/tracks/${track._id}`}
@@ -146,9 +198,9 @@ export default function TracksPage() {
         )}
 
         {/* Empty State */}
-        {!loading && tracks.length === 0 && (
+        {!loading && filteredTracks.length === 0 && (
           <div className="text-center py-20">
-            <p className="text-gray-400 text-lg">No tracks found in this genre</p>
+            <p className="text-gray-400 text-lg">No tracks found matching your criteria</p>
           </div>
         )}
       </div>

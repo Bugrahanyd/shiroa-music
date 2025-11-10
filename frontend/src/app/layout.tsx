@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import { Orbitron } from "next/font/google";
 import { AuthProvider } from "@/lib/auth-context";
+import Navigation from "@/components/Navigation";
 import "./globals.css";
 
 const poppins = Poppins({
@@ -30,6 +31,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${poppins.variable} ${orbitron.variable} font-sans antialiased`}>
         <AuthProvider>
+          <Navigation />
           {children}
         </AuthProvider>
       </body>

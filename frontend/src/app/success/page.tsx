@@ -1,17 +1,24 @@
 import Link from "next/link";
 
+"use client";
+
+import { useSearchParams } from "next/navigation";
+
 export default function SuccessPage() {
+  const searchParams = useSearchParams();
+  const sessionId = searchParams.get("session_id");
+
   return (
-    <div className="min-h-screen bg-brand-black flex items-center justify-center px-6">
+    <div className="min-h-screen bg-[#0C0C0C] flex items-center justify-center px-6">
       <div className="text-center max-w-md">
         {/* Success Icon */}
-        <div className="w-24 h-24 bg-turquoise rounded-full flex items-center justify-center mx-auto mb-8">
-          <svg className="w-12 h-12 text-brand-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="w-24 h-24 bg-[#00CED1] rounded-full flex items-center justify-center mx-auto mb-8">
+          <svg className="w-12 h-12 text-[#0C0C0C]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
           </svg>
         </div>
 
-        <h1 className="text-4xl font-display font-black text-brand-white mb-4">
+        <h1 className="text-4xl font-[family-name:var(--font-orbitron)] font-black text-white mb-4">
           Purchase Successful!
         </h1>
         <p className="text-gray-400 mb-8">
@@ -21,13 +28,13 @@ export default function SuccessPage() {
         <div className="flex flex-col gap-4">
           <Link
             href="/dashboard"
-            className="bg-turquoise text-brand-black px-8 py-4 rounded-full font-bold text-lg hover:bg-turquoise-soft transition-colors"
+            className="bg-[#00CED1] text-[#0C0C0C] px-8 py-4 rounded-full font-bold text-lg hover:bg-[#5FE0E5] transition-colors"
           >
             Go to Dashboard
           </Link>
           <Link
             href="/tracks"
-            className="border-2 border-turquoise text-turquoise px-8 py-4 rounded-full font-bold text-lg hover:bg-turquoise/10 transition-colors"
+            className="border-2 border-[#00CED1] text-[#00CED1] px-8 py-4 rounded-full font-bold text-lg hover:bg-[#00CED1]/10 transition-colors"
           >
             Browse More Tracks
           </Link>

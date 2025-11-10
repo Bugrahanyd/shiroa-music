@@ -1,8 +1,10 @@
+"use client";
+
 import Link from "next/link";
 
 export default function ErrorPage() {
   return (
-    <div className="min-h-screen bg-brand-black flex items-center justify-center px-6">
+    <div className="min-h-screen bg-[#0C0C0C] flex items-center justify-center px-6">
       <div className="text-center max-w-md">
         {/* Error Icon */}
         <div className="w-24 h-24 bg-red-500/20 border-4 border-red-500 rounded-full flex items-center justify-center mx-auto mb-8">
@@ -11,7 +13,7 @@ export default function ErrorPage() {
           </svg>
         </div>
 
-        <h1 className="text-4xl font-display font-black text-brand-white mb-4">
+        <h1 className="text-4xl font-[family-name:var(--font-orbitron)] font-black text-white mb-4">
           Payment Failed
         </h1>
         <p className="text-gray-400 mb-8">
@@ -21,13 +23,13 @@ export default function ErrorPage() {
         <div className="flex flex-col gap-4">
           <Link
             href="/tracks"
-            className="bg-turquoise text-brand-black px-8 py-4 rounded-full font-bold text-lg hover:bg-turquoise-soft transition-colors"
+            className="bg-[#00CED1] text-[#0C0C0C] px-8 py-4 rounded-full font-bold text-lg hover:bg-[#5FE0E5] transition-colors"
           >
             Try Again
           </Link>
           <Link
             href="/"
-            className="border-2 border-turquoise text-turquoise px-8 py-4 rounded-full font-bold text-lg hover:bg-turquoise/10 transition-colors"
+            className="border-2 border-[#00CED1] text-[#00CED1] px-8 py-4 rounded-full font-bold text-lg hover:bg-[#00CED1]/10 transition-colors"
           >
             Back to Home
           </Link>
