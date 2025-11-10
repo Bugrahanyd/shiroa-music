@@ -5,6 +5,7 @@ import { Model, Types } from "mongoose";
 import Stripe from "stripe";
 import { Purchase, PurchaseStatus } from "./purchase.entity";
 import { TracksService } from "../tracks/tracks.service";
+import { TrackStatus } from "../tracks/track.entity";
 
 @Injectable()
 export class PaymentService {
@@ -97,15 +98,19 @@ export class PaymentService {
   private async fulfillPurchase(session: Stripe.Checkout.Session) {
     const purchaseId = session.metadata.purchaseId;
     const trackId = session.metadata.trackId;
+    const userId = session.metadata.userId;
+
+    const licenseKey = this.generateLicenseKey();
 
     await this.purchaseModel.findByIdAndUpdate(purchaseId, {
       status: PurchaseStatus.COMPLETED,
-      licenseKey: this.generateLicenseKey()
+      licenseKey
     });
 
     const track = await this.tracksService.findOne(trackId);
     if (track) {
       track.isSold = true;
+      track.status = TrackStatus.SOLD;
       await track.save();
     }
   }

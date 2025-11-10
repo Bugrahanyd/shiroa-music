@@ -1,4 +1,5 @@
-import { IsString, IsNumber, IsOptional, IsArray, IsBoolean, Min, Max } from "class-validator";
+import { IsString, IsNumber, IsOptional, IsArray, IsEnum, IsObject, Min, Max } from "class-validator";
+import { LicenseType } from "../track.entity";
 
 export class CreateTrackDto {
   @IsString()
@@ -11,8 +12,27 @@ export class CreateTrackDto {
   genre: string;
 
   @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  subgenres?: string[];
+
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  mood?: string[];
+
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  instruments?: string[];
+
+  @IsOptional()
   @IsString()
-  mood?: string;
+  language?: string;
+
+  @IsOptional()
+  @IsString()
+  lyrics?: string;
 
   @IsOptional()
   @IsNumber()
@@ -48,6 +68,27 @@ export class CreateTrackDto {
   tags?: string[];
 
   @IsOptional()
-  @IsBoolean()
-  isExclusive?: boolean;
+  @IsEnum(LicenseType)
+  licenseType?: LicenseType;
+
+  @IsOptional()
+  @IsString()
+  aiProfileId?: string;
+
+  @IsOptional()
+  @IsObject()
+  meta?: {
+    tempoConfidence?: number;
+    loudness?: number;
+    stemsCount?: number;
+    aiGenerated?: boolean;
+  };
+
+  @IsOptional()
+  @IsObject()
+  formats?: {
+    master?: string;
+    stream320?: string;
+    preview30?: string;
+  };
 }

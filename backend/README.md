@@ -23,20 +23,32 @@ Copy `.env.example` to `.env` and configure:
 MONGODB_URI=mongodb://localhost:27017/shiroa
 PORT=3001
 JWT_SECRET=your_jwt_secret_here
-JWT_EXPIRES_IN=7d
+JWT_ACCESS_EXPIRES_IN=15m
+JWT_REFRESH_EXPIRES_IN=7d
+
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_DB=shiroa
 
 AWS_REGION=us-east-1
 AWS_ACCESS_KEY_ID=your_aws_access_key
 AWS_SECRET_ACCESS_KEY=your_aws_secret_key
 S3_BUCKET_NAME=shiroa-tracks
+
+STRIPE_SECRET_KEY=sk_test_your_stripe_secret_key
+STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret
+FRONTEND_URL=http://localhost:3000
 ```
 
-### 3. Start MongoDB
+### 3. Start Databases
 ```bash
 # Using Docker
 docker run -d -p 27017:27017 --name mongodb mongo:latest
+docker run -d -p 5432:5432 -e POSTGRES_PASSWORD=postgres --name postgres postgres:15
 
-# Or install MongoDB Community Edition
+# Or install MongoDB Community Edition + PostgreSQL
 ```
 
 ### 4. Run Development Server
@@ -49,8 +61,9 @@ Server runs on `http://localhost:3001`
 ## API Endpoints
 
 ### Authentication
-- `POST /auth/register` - Register new user
-- `POST /auth/login` - Login (returns JWT token)
+- `POST /auth/register` - Register new user (returns access + refresh tokens)
+- `POST /auth/login` - Login (returns access + refresh tokens)
+- `POST /auth/refresh` - Refresh access token using refresh token
 - `GET /auth/profile` - Get user profile (requires JWT)
 
 ### Tracks
@@ -130,13 +143,16 @@ db.users.updateOne(
 ## Features
 
 ### ✅ Completed
+- [x] **Hybrid Database**: PostgreSQL (users, transactions) + MongoDB (tracks, analytics)
+- [x] **Refresh Token System**: 15min access + 7 day refresh tokens
+- [x] **Enhanced Track Schema**: subgenres, instruments, language, AI metadata, formats
+- [x] **Credit System**: User credit balance for studio features
 - [x] Validation pipes (class-validator)
 - [x] Stripe payment integration
 - [x] Analytics module
 - [x] Rate limiting (100 requests/minute)
 - [x] Download system with signed URLs
 - [x] JWT authentication with roles
-- [x] MongoDB integration
 - [x] S3 file upload
 
 ### 🔜 Next Steps

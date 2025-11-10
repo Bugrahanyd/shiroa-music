@@ -1,32 +1,41 @@
 import { Injectable } from "@nestjs/common";
-import { InjectModel } from "@nestjs/mongoose";
-import { Model } from "mongoose";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
 import * as bcrypt from "bcrypt";
-import { User } from "./user.entity";
+import { User } from "./user.entity.postgres";
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
+  constructor(
+    @InjectRepository(User)
+    private userRepository: Repository<User>
+  ) {}
 
   async create(email: string, password: string, name: string): Promise<User> {
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new this.userModel({
+    const newUser = this.userRepository.create({
       email,
       password: hashedPassword,
       name
     });
-    return newUser.save();
+    return this.userRepository.save(newUser);
   }
 
   async findByEmail(email: string): Promise<User | null> {
-    return this.userModel.findOne({ email }).exec();
+    return this.userRepository.findOne({ where: { email } });
   }
 
   async findById(id: string): Promise<User | null> {
-    return this.userModel.findById(id).exec();
+    return this.userRepository.findOne({ where: { id } });
   }
 
   async validatePassword(plainPassword: string, hashedPassword: string): Promise<boolean> {
     return bcrypt.compare(plainPassword, hashedPassword);
+  }
+
+  async updateCreditBalance(userId: string, amount: number): Promise<User> {
+    const user = await this.findById(userId);
+    user.creditBalance = Number(user.creditBalance) + amount;
+    return this.userRepository.save(user);
   }
 }

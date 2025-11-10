@@ -1,4 +1,5 @@
-import { IsString, IsNumber, IsOptional, IsArray, IsBoolean, Min, Max } from "class-validator";
+import { IsString, IsNumber, IsOptional, IsArray, IsEnum, IsObject, Min, Max } from "class-validator";
+import { LicenseType, TrackStatus } from "../track.entity";
 
 export class UpdateTrackDto {
   @IsOptional()
@@ -14,8 +15,27 @@ export class UpdateTrackDto {
   genre?: string;
 
   @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  subgenres?: string[];
+
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  mood?: string[];
+
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  instruments?: string[];
+
+  @IsOptional()
   @IsString()
-  mood?: string;
+  language?: string;
+
+  @IsOptional()
+  @IsString()
+  lyrics?: string;
 
   @IsOptional()
   @IsNumber()
@@ -47,6 +67,19 @@ export class UpdateTrackDto {
   tags?: string[];
 
   @IsOptional()
-  @IsBoolean()
-  isExclusive?: boolean;
+  @IsEnum(LicenseType)
+  licenseType?: LicenseType;
+
+  @IsOptional()
+  @IsEnum(TrackStatus)
+  status?: TrackStatus;
+
+  @IsOptional()
+  @IsObject()
+  meta?: {
+    tempoConfidence?: number;
+    loudness?: number;
+    stemsCount?: number;
+    aiGenerated?: boolean;
+  };
 }
