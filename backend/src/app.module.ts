@@ -23,13 +23,10 @@ import { Transaction } from "./modules/payment/entities/transaction.entity";
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
         type: "postgres",
-        host: configService.get("POSTGRES_HOST"),
-        port: configService.get("POSTGRES_PORT"),
-        username: configService.get("POSTGRES_USER"),
-        password: configService.get("POSTGRES_PASSWORD"),
-        database: configService.get("POSTGRES_DB"),
+        url: configService.get("DATABASE_URL"),
         entities: [User, RefreshToken, Transaction],
-        synchronize: true
+        synchronize: true,
+        ssl: process.env.NODE_ENV === "production" ? { rejectUnauthorized: false } : false
       }),
       inject: [ConfigService]
     }),
