@@ -29,7 +29,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (token) {
       api.getProfile()
         .then((data) => setUser(data))
-        .catch(() => {
+        .catch((error) => {
+          console.log("Token expired, clearing session");
           localStorage.removeItem("access_token");
           localStorage.removeItem("refresh_token");
           setUser(null);

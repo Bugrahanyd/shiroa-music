@@ -19,7 +19,21 @@ const orbitron = Orbitron({
 
 export const metadata: Metadata = {
   title: "SHIROA - Everything for your sound",
-  description: "AI-powered music production and exclusive licensing platform"
+  description: "AI-powered music production and exclusive licensing platform. Discover high-quality, licensed music tracks from top producers.",
+  keywords: ["music licensing", "exclusive tracks", "music production", "AI music", "beats", "instrumentals"],
+  authors: [{ name: "SHIROA" }],
+  openGraph: {
+    title: "SHIROA - Everything for your sound",
+    description: "AI-powered music production and exclusive licensing platform",
+    type: "website",
+    locale: "en_US",
+    siteName: "SHIROA"
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "SHIROA - Everything for your sound",
+    description: "AI-powered music production and exclusive licensing platform"
+  }
 };
 
 export default function RootLayout({

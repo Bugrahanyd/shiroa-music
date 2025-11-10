@@ -10,20 +10,27 @@ class ApiClient {
   }
 
   async request(endpoint: string, options: RequestInit = {}) {
-    const response = await fetch(`${API_URL}${endpoint}`, {
-      ...options,
-      headers: {
-        ...this.getHeaders(),
-        ...options.headers
+    try {
+      const response = await fetch(`${API_URL}${endpoint}`, {
+        ...options,
+        headers: {
+          ...this.getHeaders(),
+          ...options.headers
+        }
+      });
+
+      if (!response.ok) {
+        const error = await response.json().catch(() => ({ message: "Request failed" }));
+        throw new Error(error.message || `HTTP ${response.status}: ${response.statusText}`);
       }
-    });
 
-    if (!response.ok) {
-      const error = await response.json().catch(() => ({ message: "Request failed" }));
-      throw new Error(error.message || "Request failed");
+      return response.json();
+    } catch (error: any) {
+      if (error.message.includes("Failed to fetch")) {
+        throw new Error("Network error. Please check your connection.");
+      }
+      throw error;
     }
-
-    return response.json();
   }
 
   // Auth

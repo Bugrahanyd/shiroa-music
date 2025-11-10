@@ -5,6 +5,7 @@ import Link from "next/link";
 import { api } from "@/lib/api";
 import SearchBar from "@/components/SearchBar";
 import FilterPanel from "@/components/FilterPanel";
+import Loading from "@/components/Loading";
 
 export default function TracksPage() {
   const [tracks, setTracks] = useState<any[]>([]);
@@ -130,11 +131,7 @@ export default function TracksPage() {
         </div>
 
         {/* Loading */}
-        {loading && (
-          <div className="text-center py-20">
-            <p className="text-gray-400 text-lg">Loading tracks...</p>
-          </div>
-        )}
+        {loading && <Loading />}
 
         {/* Tracks Grid */}
         {!loading && filteredTracks.length > 0 && (

@@ -28,9 +28,14 @@ export default function Navigation() {
                   Purchases
                 </Link>
                 {user.role === "admin" && (
-                  <Link href="/admin" className="text-zinc-300 hover:text-[#00CED1] transition-colors">
-                    Upload
-                  </Link>
+                  <>
+                    <Link href="/admin" className="text-zinc-300 hover:text-[#00CED1] transition-colors">
+                      Upload
+                    </Link>
+                    <Link href="/admin/tracks" className="text-zinc-300 hover:text-[#00CED1] transition-colors">
+                      Manage
+                    </Link>
+                  </>
                 )}
                 <Link href="/profile" className="text-zinc-300 hover:text-[#00CED1] transition-colors">
                   Profile
