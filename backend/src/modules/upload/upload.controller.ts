@@ -5,6 +5,7 @@ import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 import { RolesGuard } from "../auth/guards/roles.guard";
 import { Roles } from "../auth/decorators/roles.decorator";
 import { UserRole } from "../users/user.entity";
+import { File } from "multer";
 
 @Controller("upload")
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -14,7 +15,7 @@ export class UploadController {
   @Post("audio")
   @Roles(UserRole.ADMIN)
   @UseInterceptors(FileInterceptor("file"))
-  async uploadAudio(@UploadedFile() file: Express.Multer.File) {
+  async uploadAudio(@UploadedFile() file: File) {
     if (!file) {
       throw new BadRequestException("No file uploaded");
     }
@@ -38,7 +39,7 @@ export class UploadController {
   @Post("cover")
   @Roles(UserRole.ADMIN)
   @UseInterceptors(FileInterceptor("file"))
-  async uploadCover(@UploadedFile() file: Express.Multer.File) {
+  async uploadCover(@UploadedFile() file: File) {
     if (!file) {
       throw new BadRequestException("No file uploaded");
     }

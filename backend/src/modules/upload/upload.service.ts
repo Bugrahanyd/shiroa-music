@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { S3Client, PutObjectCommand, DeleteObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { File } from "multer";
 
 @Injectable()
 export class UploadService {
@@ -19,7 +20,7 @@ export class UploadService {
     this.bucketName = this.configService.get<string>("S3_BUCKET_NAME");
   }
 
-  async uploadFile(file: Express.Multer.File, folder: string): Promise<string> {
+  async uploadFile(file: File, folder: string): Promise<string> {
     const key = `${folder}/${Date.now()}-${file.originalname}`;
     
     const command = new PutObjectCommand({
