@@ -1,6 +1,8 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { MongooseModule } from "@nestjs/mongoose";
+import { ThrottlerModule, ThrottlerGuard } from "@nestjs/throttler";
+import { APP_GUARD } from "@nestjs/core";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { TracksModule } from "./modules/tracks/tracks.module";
@@ -8,6 +10,7 @@ import { AuthModule } from "./modules/auth/auth.module";
 import { UsersModule } from "./modules/users/users.module";
 import { UploadModule } from "./modules/upload/upload.module";
 import { PaymentModule } from "./modules/payment/payment.module";
+import { AnalyticsModule } from "./modules/analytics/analytics.module";
 
 @Module({
   imports: [
@@ -19,13 +22,24 @@ import { PaymentModule } from "./modules/payment/payment.module";
       }),
       inject: [ConfigService]
     }),
+    ThrottlerModule.forRoot([{
+      ttl: 60000,
+      limit: 100
+    }]),
     AuthModule,
     UsersModule,
     TracksModule,
     UploadModule,
-    PaymentModule
+    PaymentModule,
+    AnalyticsModule
   ],
   controllers: [AppController],
-  providers: [AppService]
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard
+    }
+  ]
 })
 export class AppModule {}

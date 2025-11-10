@@ -64,6 +64,21 @@ Server runs on `http://localhost:3001`
 - `POST /upload/audio` - Upload audio file (ADMIN only)
 - `POST /upload/cover` - Upload cover image (ADMIN only)
 
+### Payment
+- `POST /payment/create-checkout` - Create Stripe checkout session (requires JWT)
+- `POST /payment/webhook` - Stripe webhook handler
+- `GET /payment/purchases` - Get user purchases (requires JWT)
+- `GET /payment/purchases/:id` - Get purchase details (requires JWT)
+
+### Download
+- `GET /download/purchase/:purchaseId` - Download purchased track (requires JWT)
+
+### Analytics
+- `POST /analytics/track/:id/view` - Track view event
+- `POST /analytics/track/:id/play` - Track play event
+- `GET /analytics/popular` - Get popular tracks
+- `GET /analytics/track/:id/stats` - Get track statistics (requires JWT)
+
 ## User Roles
 
 - `user` - Regular user (can browse and purchase)
@@ -112,11 +127,21 @@ db.users.updateOne(
 )
 ```
 
-## Next Steps
+## Features
 
-- [ ] Add validation pipes (class-validator)
+### ✅ Completed
+- [x] Validation pipes (class-validator)
+- [x] Stripe payment integration
+- [x] Analytics module
+- [x] Rate limiting (100 requests/minute)
+- [x] Download system with signed URLs
+- [x] JWT authentication with roles
+- [x] MongoDB integration
+- [x] S3 file upload
+
+### 🔜 Next Steps
 - [ ] Implement audio transcoding
-- [ ] Add Stripe payment integration
-- [ ] Create analytics module
-- [ ] Add rate limiting
-- [ ] Implement caching with Redis
+- [ ] Add Redis caching
+- [ ] Email notifications
+- [ ] Admin dashboard
+- [ ] Search functionality
