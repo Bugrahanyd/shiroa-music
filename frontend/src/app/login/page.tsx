@@ -2,14 +2,30 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/lib/auth-context";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const { login } = useAuth();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Login:", { email, password });
+    setError("");
+    setLoading(true);
+
+    try {
+      await login(email, password);
+      router.push("/dashboard");
+    } catch (err: any) {
+      setError(err.message || "Login failed");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -27,6 +43,12 @@ export default function LoginPage() {
             Welcome Back
           </h2>
           <p className="text-gray-400 mb-8">Login to access your account</p>
+
+          {error && (
+            <div className="bg-red-500/20 border border-red-500 rounded-xl p-4 mb-6">
+              <p className="text-red-400 text-sm">{error}</p>
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
@@ -59,9 +81,10 @@ export default function LoginPage() {
 
             <button
               type="submit"
-              className="w-full bg-turquoise text-brand-black py-4 rounded-full font-bold text-lg hover:bg-turquoise-soft transition-colors"
+              disabled={loading}
+              className="w-full bg-turquoise text-brand-black py-4 rounded-full font-bold text-lg hover:bg-turquoise-soft transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Login
+              {loading ? "Logging in..." : "Login"}
             </button>
           </form>
 

@@ -2,15 +2,31 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/lib/auth-context";
 
 export default function RegisterPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const { register } = useAuth();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Register:", { name, email, password });
+    setError("");
+    setLoading(true);
+
+    try {
+      await register(email, password, name);
+      router.push("/dashboard");
+    } catch (err: any) {
+      setError(err.message || "Registration failed");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -28,6 +44,12 @@ export default function RegisterPage() {
             Create Account
           </h2>
           <p className="text-gray-400 mb-8">Join SHIROA and start creating</p>
+
+          {error && (
+            <div className="bg-red-500/20 border border-red-500 rounded-xl p-4 mb-6">
+              <p className="text-red-400 text-sm">{error}</p>
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
@@ -76,9 +98,10 @@ export default function RegisterPage() {
 
             <button
               type="submit"
-              className="w-full bg-turquoise text-brand-black py-4 rounded-full font-bold text-lg hover:bg-turquoise-soft transition-colors"
+              disabled={loading}
+              className="w-full bg-turquoise text-brand-black py-4 rounded-full font-bold text-lg hover:bg-turquoise-soft transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Create Account
+              {loading ? "Creating Account..." : "Create Account"}
             </button>
           </form>
 
