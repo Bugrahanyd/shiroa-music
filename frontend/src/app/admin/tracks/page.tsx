@@ -29,7 +29,7 @@ export default function AdminTracksPage() {
     if (!confirm(`Delete "${title}"?`)) return;
 
     try {
-      await fetch(`http://localhost:3001/tracks/${id}`, {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/tracks/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access_token")}`

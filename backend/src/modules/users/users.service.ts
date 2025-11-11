@@ -38,4 +38,11 @@ export class UsersService {
     user.creditBalance = Number(user.creditBalance) + amount;
     return this.userRepository.save(user);
   }
+
+  async updateProfile(userId: string, updateData: { name?: string; email?: string }): Promise<User> {
+    const user = await this.findById(userId);
+    if (updateData.name) user.name = updateData.name;
+    if (updateData.email) user.email = updateData.email;
+    return this.userRepository.save(user);
+  }
 }

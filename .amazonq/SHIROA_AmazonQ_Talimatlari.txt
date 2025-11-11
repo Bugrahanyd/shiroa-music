@@ -1,0 +1,152 @@
+# SHIROA — Amazon Q için tam proje talimat seti
+
+## Amaç
+Bu doküman, Amazon Q'nin SHIROA projesini anlayıp, mevcut durumu analiz ederek geliştirme, tasarım ve sistem iyileştirmeleri yapabilmesi için hazırlanmıştır.
+Amazon Q bu dosyayı okuyarak gerekli issue’ları, PR’ları ve görevleri otomatik oluşturmalıdır.
+
+---
+
+## PROJE ÖZETİ
+SHIROA: Next.js frontend (Vercel) + NestJS backend (Render).
+Temel sistemler hazır. Eksikler: auth bağlantı hataları, signed download, admin CRUD, email workflow, analytics, security, test coverage.
+
+---
+
+## ÖNCELİKLİ GÖREVLER
+
+### 1. Auth Connection Bugfix (Acil)
+- Register/Login backend bağlantısı kontrol et.
+- ENV değişkenlerini doğrula (JWT_SECRET, REFRESH_SECRET, CORS).
+- Refresh token flow çalışmalı.
+- Test: signup → login → refresh → protected route.
+
+### 2. Signed Download Flow (Acil)
+- Backend endpoint: `GET /tracks/:id/download`
+- Kullanıcı satın almışsa: presigned URL oluştur (S3).
+- Log: downloads collection’a userId, trackId, timestamp.
+- Test: satın alma → download → dosya iniyor.
+
+### 3. Track Upload & Verification (Acil)
+- Admin upload sonrası dosya S3 ve DB’ye kaydolmalı.
+- Metadata ve cover render edilmeli.
+
+### 4. Register Sayfası Dark Mode (Kısa vadeli)
+- Form teması dark mode ile uyumlu hale getir.
+- Validation ve hata mesajları düzenle.
+
+### 5. Profile: Avatar Upload & Update Endpoint
+- S3’e avatar yükleme ekle.
+- Kullanıcı bilgilerini güncelleme endpoint’i oluştur.
+
+### 6. Admin: Track Management
+- Admin panel: list, edit, delete.
+- Silme S3 ve DB’den kaldırmalı.
+
+### 7. Email Verification ve Password Reset
+- SMTP / SES / SendGrid entegrasyonu.
+- Kullanıcı doğrulama ve şifre sıfırlama akışı.
+
+### 8. Analytics ve Popular Tracks
+- Track view counter.
+- Popularity algoritması.
+- Analytics dashboard.
+
+---
+
+## DİĞER GELİŞTİRMELER
+- License certificate ve download tracking.
+- Rate limiting, input sanitization, XSS koruması.
+- Stripe webhooks production test + idempotency.
+
+---
+
+## TASARIM VE UX GELİŞTİRMELERİ
+1. Konsolide renk paleti ve design token yapısı.
+2. Hero alanında net “value proposition” + CTA.
+3. Microinteraction’lar (hover, play preview, glow).
+4. Accessibility (WCAG AA, alt text, keyboard nav).
+5. Mobile menu + touch gestures.
+6. Skeleton load states.
+7. PWA (offline destek).
+
+---
+
+## TEKNİK İYİLEŞTİRMELER
+1. Staging environment ekle.
+2. CI/CD pipeline (GitHub Actions → deploy → test → prod).
+3. Secrets yönetimi (Vercel + Render).
+4. Signed URL akışı: backend doğrulama + expiry link.
+5. Stripe webhook güvenliği.
+6. CDN caching (CloudFront, static assets).
+7. Monitoring: Sentry + Prometheus + Grafana.
+8. Günlük yedekleme + restore testleri.
+
+---
+
+## GÜVENLİK
+- Helmet, CORS config.
+- Rate limiting, validation.
+- CSP, HTTPS, HSTS.
+- Dependabot security scan.
+
+---
+
+## TEST PLAN
+- Unit tests: controllers, services.
+- Integration tests: DB + S3 mocks.
+- E2E: signup → buy → download.
+- Manual QA: mobile/desktop.
+
+---
+
+## ÖRNEK API
+GET /tracks/:id/download  
+Auth: Bearer Token  
+Response: { "url": "https://s3.amazonaws.com/.../file.mp3?X-Amz-..." }
+
+---
+
+## ENV DEĞİŞKENLERİ
+JWT_SECRET=
+REFRESH_TOKEN_SECRET=
+DATABASE_URL=
+MONGO_URI=
+AWS_ACCESS_KEY_ID=
+AWS_SECRET_ACCESS_KEY=
+S3_BUCKET_NAME=shiroa-tracks
+STRIPE_SECRET_KEY=
+STRIPE_WEBHOOK_SECRET=
+EMAIL_PROVIDER_API_KEY=
+FRONTEND_URL=https://shiroa.vercel.app
+
+---
+
+## CI/CD
+1. Lint + Unit Test
+2. Build
+3. Deploy staging
+4. E2E test
+5. Merge prod
+6. Smoke test
+
+---
+
+## MONITORING
+- Sentry: exceptions
+- Prometheus/Grafana: metrics
+- Log format: JSON (timestamp, service, userId)
+
+---
+
+## TASARIM DETAYLARI
+- Track Card v2: 320px genişlik, hover lift + play ikon.
+- Player: waveform preview + 30s demo.
+- Checkout Success: license + share link.
+
+---
+
+## AMAZON Q’DEN BEKLENEN
+- Yukarıdaki görevleri okuyarak otomatik issue ve PR taslakları oluştur.
+- Her task için kabul kriteri, test adımı, env gereksinimi belirt.
+- Gereken dosyaları veya env değişkenlerini tespit edip raporla.
+- Tasarım ve sistem optimizasyon önerilerini uygula veya öneri PR’ı hazırla.

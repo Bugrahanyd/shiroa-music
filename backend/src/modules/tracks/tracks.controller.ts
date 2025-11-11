@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Patch, Delete, Body, Param, Query, HttpCode, HttpStatus, NotFoundException, UseGuards } from "@nestjs/common";
+import { Controller, Get, Post, Patch, Delete, Body, Param, Query, HttpCode, HttpStatus, NotFoundException, UseGuards, Req, ForbiddenException } from "@nestjs/common";
 import { TracksService } from "./tracks.service";
 import { CreateTrackDto } from "./dto/create-track.dto";
 import { UpdateTrackDto } from "./dto/update-track.dto";
@@ -17,11 +17,16 @@ export class TracksController {
   }
 
   @Get(":id")
-  async findOne(@Param("id") id: string) {
+  async findOne(@Param("id") id: string, @Req() req: any) {
     const track = await this.tracksService.findOne(id);
     if (!track) {
       throw new NotFoundException(`Track with ID ${id} not found`);
     }
+    
+    const userId = req.user?.userId;
+    const ipAddress = req.ip;
+    await this.tracksService.logView(id, userId, ipAddress);
+    
     return track;
   }
 
@@ -53,5 +58,26 @@ export class TracksController {
     if (!track) {
       throw new NotFoundException(`Track with ID ${id} not found`);
     }
+  }
+
+  @Get('popular')
+  async getPopular() {
+    return this.tracksService.getPopularTracks(10);
+  }
+
+  @Get(":id/download")
+  @UseGuards(JwtAuthGuard)
+  async getDownloadUrl(@Param("id") id: string, @Req() req: any) {
+    const userId = req.user.userId;
+    const hasPurchased = await this.tracksService.checkPurchase(userId, id);
+    
+    if (!hasPurchased) {
+      throw new ForbiddenException("You must purchase this track before downloading");
+    }
+
+    const downloadUrl = await this.tracksService.generateDownloadUrl(id);
+    await this.tracksService.logDownload(userId, id);
+    
+    return { url: downloadUrl };
   }
 }
