@@ -5,7 +5,7 @@ import Link from "next/link";
 import { api } from "@/lib/api";
 import SearchBar from "@/components/SearchBar";
 import FilterPanel from "@/components/FilterPanel";
-import Loading from "@/components/Loading";
+import SkeletonCard from "@/components/SkeletonCard";
 
 export default function TracksPage() {
   const [tracks, setTracks] = useState<any[]>([]);
@@ -116,7 +116,11 @@ export default function TracksPage() {
         </div>
 
         {/* Loading */}
-        {loading && <Loading />}
+        {loading && (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[...Array(6)].map((_, i) => <SkeletonCard key={i} />)}
+          </div>
+        )}
 
         {/* Tracks Grid */}
         {!loading && filteredTracks.length > 0 && (

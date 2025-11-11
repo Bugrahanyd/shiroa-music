@@ -44,6 +44,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#00CED1" />
+      </head>
       <body className={`${poppins.variable} ${orbitron.variable} font-sans antialiased`}>
         <div className="animated-bg"></div>
         <div className="glow-orb glow-orb-1"></div>

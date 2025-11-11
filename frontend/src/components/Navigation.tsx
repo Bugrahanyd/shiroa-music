@@ -3,9 +3,11 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useAuth } from "@/lib/auth-context";
+import { useState } from "react";
 
 export default function Navigation() {
   const { user, logout } = useAuth();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <nav className="bg-[#0a0e27]/95 backdrop-blur-md border-b border-[#00CED1]/20 sticky top-0 z-50">
@@ -23,7 +25,22 @@ export default function Navigation() {
             </span>
           </Link>
 
-          <div className="flex items-center gap-6">
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden text-white"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              {mobileMenuOpen ? (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              )}
+            </svg>
+          </button>
+
+          {/* Desktop Menu */}
+          <div className="hidden md:flex items-center gap-6">
             <Link href="/tracks" className="text-gray-300 hover:text-[#00CED1] transition-colors">
               Tracks
             </Link>
@@ -68,6 +85,55 @@ export default function Navigation() {
             )}
           </div>
         </div>
+
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden border-t border-[#00CED1]/20 py-4">
+            <div className="flex flex-col gap-4">
+              <Link href="/tracks" className="text-gray-300 hover:text-[#00CED1] transition-colors px-4">
+                Tracks
+              </Link>
+              {user ? (
+                <>
+                  <Link href="/dashboard" className="text-gray-300 hover:text-[#00CED1] transition-colors px-4">
+                    Dashboard
+                  </Link>
+                  <Link href="/purchases" className="text-gray-300 hover:text-[#00CED1] transition-colors px-4">
+                    Purchases
+                  </Link>
+                  {user.role === "admin" && (
+                    <>
+                      <Link href="/admin" className="text-gray-300 hover:text-[#00CED1] transition-colors px-4">
+                        Upload
+                      </Link>
+                      <Link href="/admin/tracks" className="text-gray-300 hover:text-[#00CED1] transition-colors px-4">
+                        Manage
+                      </Link>
+                    </>
+                  )}
+                  <Link href="/profile" className="text-gray-300 hover:text-[#00CED1] transition-colors px-4">
+                    Profile
+                  </Link>
+                  <button
+                    onClick={logout}
+                    className="text-left px-4 py-2 bg-[#1e3a5f]/50 text-gray-300 rounded-lg hover:bg-[#1e3a5f] transition-colors"
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link href="/login" className="text-gray-300 hover:text-[#00CED1] transition-colors px-4">
+                    Login
+                  </Link>
+                  <Link href="/register" className="mx-4 px-4 py-2 bg-[#00CED1] text-[#0a1628] font-bold rounded-lg hover:bg-[#5FE0E5] transition-all text-center">
+                    Sign Up
+                  </Link>
+                </>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </nav>
   );

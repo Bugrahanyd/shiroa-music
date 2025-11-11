@@ -4,6 +4,7 @@ import { ConfigService } from "@nestjs/config";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { UsersService } from "../users/users.service";
+import { EmailService } from "../email/email.service";
 import { RefreshToken } from "./entities/refresh-token.entity";
 import { RegisterDto } from "./dto/register.dto";
 import { LoginDto } from "./dto/login.dto";
@@ -15,6 +16,7 @@ export class AuthService {
     private usersService: UsersService,
     private jwtService: JwtService,
     private configService: ConfigService,
+    private emailService: EmailService,
     @InjectRepository(RefreshToken)
     private refreshTokenRepository: Repository<RefreshToken>
   ) {}
@@ -30,6 +32,8 @@ export class AuthService {
       registerDto.password,
       registerDto.name
     );
+
+    await this.emailService.sendVerificationEmail(user.email, user.verificationToken);
 
     const tokens = await this.generateTokens(user.id, user.email, user.role);
     return {
