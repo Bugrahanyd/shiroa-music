@@ -58,29 +58,6 @@ export default function TrackDetailPage() {
 
   return (
     <div className="min-h-screen bg-brand-black">
-      {/* Header */}
-      <header className="border-b border-turquoise/20">
-        <nav className="container mx-auto px-6 py-4 flex items-center justify-between">
-          <Link href="/" className="text-2xl font-display font-bold text-turquoise">
-            SHIROA
-          </Link>
-          <div className="flex items-center gap-6">
-            <Link href="/tracks" className="text-brand-white hover:text-turquoise transition-colors">
-              Browse
-            </Link>
-            <Link href="/login" className="text-brand-white hover:text-turquoise transition-colors">
-              Login
-            </Link>
-            <Link 
-              href="/register" 
-              className="bg-turquoise text-brand-black px-6 py-2 rounded-full font-medium hover:bg-turquoise-soft transition-colors"
-            >
-              Sign Up
-            </Link>
-          </div>
-        </nav>
-      </header>
-
       <div className="container mx-auto px-6 py-12">
         <Link href="/tracks" className="text-turquoise hover:text-turquoise-soft mb-8 inline-flex items-center gap-2">
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
