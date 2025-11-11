@@ -3,27 +3,6 @@ import Link from "next/link";
 export default function Home() {
   return (
     <div className="min-h-screen bg-[#0C0C0C]">
-      {/* Header */}
-      <header className="border-b border-turquoise/20">
-        <nav className="container mx-auto px-6 py-4 flex items-center justify-between">
-          <h1 className="text-2xl font-[family-name:var(--font-orbitron)] font-bold text-[#00CED1]">SHIROA</h1>
-          <div className="flex items-center gap-6">
-            <Link href="/tracks" className="text-white hover:text-[#00CED1] transition-colors">
-              Browse
-            </Link>
-            <Link href="/login" className="text-white hover:text-[#00CED1] transition-colors">
-              Login
-            </Link>
-            <Link 
-              href="/register" 
-              className="bg-[#00CED1] text-[#0C0C0C] px-6 py-2 rounded-full font-medium hover:bg-[#5FE0E5] transition-colors"
-            >
-              Sign Up
-            </Link>
-          </div>
-        </nav>
-      </header>
-
       {/* Hero Section */}
       <section className="container mx-auto px-6 py-32 text-center">
         <h2 className="text-6xl font-[family-name:var(--font-orbitron)] font-black text-white mb-6">
