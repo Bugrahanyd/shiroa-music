@@ -128,13 +128,9 @@ export default function TracksPage() {
                 className="group relative bg-gradient-to-br from-[#1a0033]/80 to-[#0d1b2a]/80 backdrop-blur-sm border-2 border-[#00CED1]/30 rounded-xl p-6 hover:border-[#FF00FF] transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(255,0,255,0.5)] overflow-hidden"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-[#FF00FF]/0 via-[#FF00FF]/10 to-[#FF00FF]/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
-                {/* Info */}
+                
                 <div className="mb-4 relative z-10">
                   <h3 className="text-xl font-display font-bold text-white mb-1 group-hover:text-[#00CED1] transition-colors">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
-                  </svg>
-                </div>
-
                     {track.title}
                   </h3>
                   <p className="text-[#00CED1]/70 group-hover:text-[#00CED1] transition-colors">{track.artist}</p>
