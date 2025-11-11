@@ -32,7 +32,7 @@ export class PaymentService {
     }
 
     const purchase = new this.purchaseModel({
-      userId: new Types.ObjectId(userId),
+      userId: userId,
       trackId: new Types.ObjectId(trackId),
       amount: track.price,
       currency: "usd",
@@ -121,7 +121,7 @@ export class PaymentService {
 
   async getUserPurchases(userId: string): Promise<Purchase[]> {
     return this.purchaseModel
-      .find({ userId: new Types.ObjectId(userId), status: PurchaseStatus.COMPLETED })
+      .find({ userId: userId, status: PurchaseStatus.COMPLETED })
       .populate("trackId")
       .exec();
   }
