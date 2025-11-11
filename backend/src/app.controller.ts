@@ -28,6 +28,12 @@ export class AppController {
 
   @Get("create-admin-user")
   async createAdmin() {
+    const user = await this.userRepo.findOne({ where: { email: "admin@shiroa.com" } });
+    if (user) {
+      user.role = "admin" as any;
+      await this.userRepo.save(user);
+      return { message: "User updated to admin", email: user.email };
+    }
     const hashedPassword = await bcrypt.hash("Admin123!", 10);
     const admin = await this.userRepo.save({
       email: "admin@shiroa.com",
