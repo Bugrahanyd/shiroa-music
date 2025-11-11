@@ -41,6 +41,7 @@ import { Transaction } from "./modules/payment/entities/transaction.entity";
       ttl: 60000,
       limit: 100
     }]),
+    TypeOrmModule.forFeature([User, RefreshToken, Transaction]),
     AuthModule,
     UsersModule,
     TracksModule,
