@@ -83,7 +83,7 @@ export default function TracksPage() {
         backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, #00CED1 2px, #00CED1 4px), repeating-linear-gradient(90deg, transparent, transparent 2px, #00CED1 2px, #00CED1 4px)',
         backgroundSize: '100px 100px'
       }}></div>
-      <div className="fixed top-0 left-0 w-full h-1 bg-gradient-to-r from-[#FF00FF] via-[#00CED1] to-[#00FF88] animate-pulse z-50"></div>
+
       <div className="container mx-auto px-6 py-12">
         {/* Page Title */}
         <div className="mb-8 relative">
