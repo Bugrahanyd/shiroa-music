@@ -3,7 +3,7 @@ import { Poppins } from "next/font/google";
 import { Orbitron } from "next/font/google";
 import { AuthProvider } from "@/lib/auth-context";
 import Navigation from "@/components/Navigation";
-import MouseGlow from "@/components/MouseGlow";
+import Footer from "@/components/Footer";
 import "./globals.css";
 
 const poppins = Poppins({
@@ -49,10 +49,11 @@ export default function RootLayout({
         <div className="glow-orb glow-orb-1"></div>
         <div className="glow-orb glow-orb-2"></div>
         <div className="glow-orb glow-orb-3"></div>
-        <MouseGlow />
+
         <AuthProvider>
           <Navigation />
           {children}
+          <Footer />
         </AuthProvider>
       </body>
     </html>
