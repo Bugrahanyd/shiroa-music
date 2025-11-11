@@ -43,7 +43,7 @@ export default function ProfilePage() {
           <div className="flex items-center gap-6 pb-6 border-b border-zinc-800">
             <div className="w-24 h-24 bg-[#00CED1] rounded-full flex items-center justify-center">
               <span className="text-4xl font-bold text-[#0C0C0C]">
-                {user.name.charAt(0).toUpperCase()}
+                {user.name?.charAt(0).toUpperCase() || "U"}
               </span>
             </div>
             <div>

@@ -8,53 +8,60 @@ export default function Navigation() {
   const { user, logout } = useAuth();
 
   return (
-    <nav className="bg-zinc-900 border-b border-zinc-800">
+    <nav className="bg-[#0a0e27]/95 backdrop-blur-md border-b border-[#00CED1]/20 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <Link href="/" className="flex items-center gap-3">
-            <Image src="/logo.jpg" alt="SHIROA" width={40} height={40} className="rounded-lg" />
-            <span className="text-2xl font-bold text-[#00CED1] font-[family-name:var(--font-orbitron)]">SHIROA</span>
+            <Image src="/logo.jpg" alt="SHIROA" width={40} height={40} className="rounded-lg mix-blend-lighten" />
+            <span className="text-2xl font-bold font-[family-name:var(--font-orbitron)] group flex">
+              <span className="hover:text-[#9D4EDD] transition-colors duration-300 text-[#00CED1]">S</span>
+              <span className="hover:text-[#8B4513] transition-colors duration-300 text-[#00CED1]">H</span>
+              <span className="hover:text-[#FFFFFF] transition-colors duration-300 text-[#00CED1]">I</span>
+              <span className="hover:text-[#FF4444] transition-colors duration-300 text-[#00CED1]">R</span>
+              <span className="hover:text-[#00FF88] transition-colors duration-300 text-[#00CED1]">O</span>
+              <span className="hover:text-[#1E3A8A] transition-colors duration-300 text-[#00CED1]">A</span>
+            </span>
           </Link>
 
           <div className="flex items-center gap-6">
-            <Link href="/tracks" className="text-zinc-300 hover:text-[#00CED1] transition-colors">
+            <Link href="/tracks" className="text-gray-300 hover:text-[#00CED1] transition-colors">
               Tracks
             </Link>
 
             {user ? (
               <>
-                <Link href="/dashboard" className="text-zinc-300 hover:text-[#00CED1] transition-colors">
+                <Link href="/dashboard" className="text-gray-300 hover:text-[#00CED1] transition-colors">
                   Dashboard
                 </Link>
-                <Link href="/purchases" className="text-zinc-300 hover:text-[#00CED1] transition-colors">
+                <Link href="/purchases" className="text-gray-300 hover:text-[#00CED1] transition-colors">
                   Purchases
                 </Link>
                 {user.role === "admin" && (
                   <>
-                    <Link href="/admin" className="text-zinc-300 hover:text-[#00CED1] transition-colors">
+                    <Link href="/admin" className="text-gray-300 hover:text-[#00CED1] transition-colors">
                       Upload
                     </Link>
-                    <Link href="/admin/tracks" className="text-zinc-300 hover:text-[#00CED1] transition-colors">
+                    <Link href="/admin/tracks" className="text-gray-300 hover:text-[#00CED1] transition-colors">
                       Manage
                     </Link>
                   </>
                 )}
-                <Link href="/profile" className="text-zinc-300 hover:text-[#00CED1] transition-colors">
+                <Link href="/profile" className="text-gray-300 hover:text-[#00CED1] transition-colors">
                   Profile
                 </Link>
                 <button
                   onClick={logout}
-                  className="px-4 py-2 bg-zinc-800 text-zinc-300 rounded-lg hover:bg-zinc-700 transition-colors"
+                  className="px-4 py-2 bg-[#1e3a5f]/50 text-gray-300 rounded-lg hover:bg-[#1e3a5f] transition-colors border border-[#00CED1]/30"
                 >
                   Logout
                 </button>
               </>
             ) : (
               <>
-                <Link href="/login" className="text-zinc-300 hover:text-[#00CED1] transition-colors">
+                <Link href="/login" className="text-gray-300 hover:text-[#00CED1] transition-colors">
                   Login
                 </Link>
-                <Link href="/register" className="px-4 py-2 bg-[#00CED1] text-[#0C0C0C] font-bold rounded-lg hover:bg-[#5FE0E5] transition-colors">
+                <Link href="/register" className="px-4 py-2 bg-[#00CED1] text-[#0a1628] font-bold rounded-lg hover:bg-[#5FE0E5] transition-all shadow-[0_0_15px_rgba(0,206,209,0.3)] hover:shadow-[0_0_20px_rgba(0,206,209,0.5)]">
                   Sign Up
                 </Link>
               </>

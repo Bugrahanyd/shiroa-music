@@ -1,11 +1,12 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0C0C0C;
+  --background: #0a1628;
   --foreground: #FFFFFF;
   --turquoise: #00CED1;
   --turquoise-soft: #5FE0E5;
-  --brand-blue: #003366;
+  --brand-blue: #1e3a5f;
+  --dark-blue: #0f1f3a;
 }
 
 @theme inline {
@@ -16,6 +17,68 @@
 }
 
 body {
-  background: var(--background);
+  background: #0a0e27;
   color: var(--foreground);
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(5deg); }
+}
+
+.animated-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #0a0e27, #1a1f3a, #0f1a2e, #1e2a4a);
+  background-size: 400% 400%;
+  animation: gradient-shift 15s ease infinite;
+  z-index: -2;
+}
+
+.glow-orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.3;
+  pointer-events: none;
+  z-index: -1;
+  animation: float 8s ease-in-out infinite;
+}
+
+.glow-orb-1 {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, #00CED1, transparent);
+  top: 10%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.glow-orb-2 {
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, #5F9FFF, transparent);
+  top: 60%;
+  right: 10%;
+  animation-delay: 2s;
+}
+
+.glow-orb-3 {
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, #9D4EDD, transparent);
+  bottom: 10%;
+  left: 50%;
+  animation-delay: 4s;
 }
