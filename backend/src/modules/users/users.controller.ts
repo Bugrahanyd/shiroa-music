@@ -45,7 +45,7 @@ export class UsersController {
   @Post('avatar')
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('avatar'))
-  async uploadAvatar(@Req() req: any, @UploadedFile() file: Express.Multer.File) {
+  async uploadAvatar(@Req() req: any, @UploadedFile() file: any) {
     const avatarUrl = await this.usersService.uploadAvatar(req.user.userId, file);
     return { avatarUrl };
   }

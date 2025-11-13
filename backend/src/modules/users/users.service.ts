@@ -66,7 +66,7 @@ export class UsersService {
     return this.userRepository.save(user);
   }
 
-  async uploadAvatar(userId: string, file: Express.Multer.File): Promise<string> {
+  async uploadAvatar(userId: string, file: any): Promise<string> {
     const key = `avatars/${userId}-${Date.now()}.${file.mimetype.split('/')[1]}`;
     
     await this.s3Client.send(new PutObjectCommand({
