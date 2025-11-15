@@ -1,8 +1,6 @@
 import Link from "next/link";
-import { useTranslations } from 'next-intl';
 
 export default function Home() {
-  const t = useTranslations('home');
 
   return (
     <div className="min-h-screen">
@@ -11,23 +9,23 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-b from-[#00CED1]/5 to-transparent rounded-3xl blur-3xl"></div>
         <div className="relative z-10">
           <h2 className="text-6xl md:text-7xl font-[family-name:var(--font-orbitron)] font-black text-white mb-6 leading-tight">
-            {t('hero.title')}
+Professional Music Licensing Made Simple
           </h2>
           <p className="text-xl text-gray-300 mb-12 max-w-2xl mx-auto">
-            {t('hero.subtitle')}
+Discover and license high-quality music tracks with full commercial rights. One track, one owner, unlimited possibilities.
           </p>
           <div className="flex items-center justify-center gap-4">
             <Link 
               href="/tracks" 
               className="bg-[#00CED1] text-[#0a1628] px-8 py-4 rounded-full font-semibold text-lg hover:bg-[#5FE0E5] transition-all shadow-[0_0_20px_rgba(0,206,209,0.4)] hover:shadow-[0_0_30px_rgba(0,206,209,0.6)]"
             >
-              {t('hero.browseCatalog')}
+Browse Catalog
             </Link>
             <Link 
               href="/about" 
               className="border-2 border-[#00CED1] text-[#00CED1] px-8 py-4 rounded-full font-semibold text-lg hover:bg-[#00CED1]/20 transition-all"
             >
-              {t('hero.howItWorks')}
+How It Works
             </Link>
           </div>
         </div>
@@ -43,10 +41,10 @@ export default function Home() {
               </svg>
             </div>
             <h3 className="text-xl font-[family-name:var(--font-orbitron)] font-bold text-white mb-2 group-hover:text-[#00CED1] transition-colors duration-300">
-              {t('features.exclusivity.title')}
+True Exclusivity
             </h3>
             <p className="text-gray-300 group-hover:text-gray-200 transition-colors duration-300">
-              {t('features.exclusivity.description')}
+Full commercial rights with lifetime ownership. No royalties, no recurring fees, no competition.
             </p>
           </div>
 
@@ -57,10 +55,10 @@ export default function Home() {
               </svg>
             </div>
             <h3 className="text-xl font-[family-name:var(--font-orbitron)] font-bold text-white mb-2 group-hover:text-[#5F9FFF] transition-colors duration-300">
-              {t('features.aiPowered.title')}
+AI-Powered Creation
             </h3>
             <p className="text-gray-300 group-hover:text-gray-200 transition-colors duration-300">
-              {t('features.aiPowered.description')}
+Advanced AI tools for composition, vocal processing, and mixing. Create professional music faster.
             </p>
           </div>
 
@@ -71,10 +69,10 @@ export default function Home() {
               </svg>
             </div>
             <h3 className="text-xl font-[family-name:var(--font-orbitron)] font-bold text-white mb-2 group-hover:text-[#9D4EDD] transition-colors duration-300">
-              {t('features.instant.title')}
+Instant Delivery
             </h3>
             <p className="text-gray-300 group-hover:text-gray-200 transition-colors duration-300">
-              {t('features.instant.description')}
+Secure checkout with Stripe. Instant access to high-quality files and license certificates.
             </p>
           </div>
         </div>
@@ -84,16 +82,16 @@ export default function Home() {
       <section className="container mx-auto px-6 py-20">
         <div className="bg-gradient-to-r from-[#00CED1] to-[#5FE0E5] rounded-3xl p-12 text-center shadow-[0_0_40px_rgba(0,206,209,0.3)]">
           <h3 className="text-4xl font-[family-name:var(--font-orbitron)] font-black text-[#0a1628] mb-4">
-            {t('cta.title')}
+Find Your Perfect Track Today
           </h3>
           <p className="text-lg text-[#0a1628]/80 mb-8">
-            {t('cta.subtitle')}
+Browse our catalog of exclusive tracks and elevate your content.
           </p>
           <Link 
             href="/tracks" 
             className="inline-block bg-[#0a1628] text-[#00CED1] px-8 py-4 rounded-full font-semibold text-lg hover:bg-[#1e3a5f] transition-all shadow-lg hover:shadow-xl"
           >
-            {t('cta.button')}
+Browse Tracks
           </Link>
         </div>
       </section>

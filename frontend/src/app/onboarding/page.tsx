@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
+
 import { useTheme, Theme } from "@/lib/theme-context";
 
 const themes = [
@@ -39,7 +39,7 @@ const themes = [
 ];
 
 export default function OnboardingPage() {
-  const t = useTranslations('themes');
+
   const { setTheme } = useTheme();
   const router = useRouter();
   const [selectedTheme, setSelectedTheme] = useState<Theme | null>(null);
@@ -62,10 +62,10 @@ export default function OnboardingPage() {
       <div className="max-w-6xl w-full">
         <div className="text-center mb-12">
           <h1 className="text-5xl font-[family-name:var(--font-orbitron)] font-black text-white mb-4">
-            {t('onboarding.title')}
+Choose Your Creative Atmosphere
           </h1>
           <p className="text-xl text-white/60">
-            {t('onboarding.subtitle')}
+Select a theme that resonates with your creative spirit. You can change it anytime.
           </p>
         </div>
 
@@ -85,15 +85,15 @@ export default function OnboardingPage() {
               </div>
 
               <h3 className="text-2xl font-[family-name:var(--font-orbitron)] font-bold text-white mb-3">
-                {t(`themes.${theme.id}.name`)}
+{theme.id === 'dark' ? 'Midnight Ocean' : theme.id === 'warm' ? 'Sunset Boulevard' : theme.id === 'cool' ? 'Arctic Aurora' : theme.id === 'neon' ? 'Tokyo Nights' : theme.id === 'classic' ? 'Timeless Elegance' : 'Sakura Dreams'}
               </h3>
 
               <p className="text-white/80 text-sm leading-relaxed mb-4">
-                {t(`themes.${theme.id}.story`)}
+{theme.id === 'dark' ? 'Dive into the depths of creativity...' : theme.id === 'warm' ? 'Feel the warmth of golden hour...' : theme.id === 'cool' ? 'Experience the serene beauty...' : theme.id === 'neon' ? 'Step into the electric pulse...' : theme.id === 'classic' ? 'Embrace the sophistication...' : 'Float through cherry blossom gardens...'}
               </p>
 
               <p className="text-white/60 text-xs font-semibold">
-                {t(`themes.${theme.id}.mood`)}
+{theme.id === 'dark' ? 'Professional • Focused • Mysterious' : theme.id === 'warm' ? 'Energetic • Passionate • Creative' : theme.id === 'cool' ? 'Clear • Calm • Inspiring' : theme.id === 'neon' ? 'Bold • Modern • Electric' : theme.id === 'classic' ? 'Minimal • Elegant • Timeless' : 'Peaceful • Delicate • Harmonious'}
               </p>
 
               {selectedTheme === theme.id && (
@@ -112,14 +112,14 @@ export default function OnboardingPage() {
             onClick={handleSkip}
             className="px-8 py-4 border-2 border-white/20 text-white/60 rounded-full font-semibold hover:border-white/40 hover:text-white transition-all"
           >
-            {t('onboarding.skip')}
+Skip for now
           </button>
           <button
             onClick={handleContinue}
             disabled={!selectedTheme}
             className="px-8 py-4 bg-white text-black rounded-full font-semibold hover:bg-white/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {t('onboarding.continue')}
+Continue
           </button>
         </div>
       </div>
