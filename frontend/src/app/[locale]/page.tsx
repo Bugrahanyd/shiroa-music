@@ -1,6 +1,9 @@
 import Link from "next/link";
+import { useTranslations } from 'next-intl';
 
 export default function Home() {
+  const t = useTranslations('home');
+
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -8,24 +11,23 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-b from-[#00CED1]/5 to-transparent rounded-3xl blur-3xl"></div>
         <div className="relative z-10">
           <h2 className="text-6xl md:text-7xl font-[family-name:var(--font-orbitron)] font-black text-white mb-6 leading-tight">
-            Everything for your <span className="text-[#00CED1] drop-shadow-[0_0_30px_rgba(0,206,209,0.5)]">sound</span>
+            {t('hero.title')}
           </h2>
           <p className="text-xl text-gray-300 mb-12 max-w-2xl mx-auto">
-            AI-powered music production and exclusive licensing platform. 
-            Create, license, and own professional tracks.
+            {t('hero.subtitle')}
           </p>
           <div className="flex items-center justify-center gap-4">
             <Link 
               href="/tracks" 
               className="bg-[#00CED1] text-[#0a1628] px-8 py-4 rounded-full font-semibold text-lg hover:bg-[#5FE0E5] transition-all shadow-[0_0_20px_rgba(0,206,209,0.4)] hover:shadow-[0_0_30px_rgba(0,206,209,0.6)]"
             >
-              Explore Tracks
+              {t('hero.browseCatalog')}
             </Link>
             <Link 
               href="/about" 
               className="border-2 border-[#00CED1] text-[#00CED1] px-8 py-4 rounded-full font-semibold text-lg hover:bg-[#00CED1]/20 transition-all"
             >
-              Learn More
+              {t('hero.howItWorks')}
             </Link>
           </div>
         </div>
@@ -40,9 +42,11 @@ export default function Home() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
               </svg>
             </div>
-            <h3 className="text-xl font-[family-name:var(--font-orbitron)] font-bold text-white mb-2 group-hover:text-[#00CED1] transition-colors duration-300">Exclusive Licensing</h3>
+            <h3 className="text-xl font-[family-name:var(--font-orbitron)] font-bold text-white mb-2 group-hover:text-[#00CED1] transition-colors duration-300">
+              {t('features.exclusivity.title')}
+            </h3>
             <p className="text-gray-300 group-hover:text-gray-200 transition-colors duration-300">
-              Purchase exclusive rights to professional tracks. One buyer, one license.
+              {t('features.exclusivity.description')}
             </p>
           </div>
 
@@ -52,9 +56,11 @@ export default function Home() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
             </div>
-            <h3 className="text-xl font-[family-name:var(--font-orbitron)] font-bold text-white mb-2 group-hover:text-[#5F9FFF] transition-colors duration-300">AI-Powered Studio</h3>
+            <h3 className="text-xl font-[family-name:var(--font-orbitron)] font-bold text-white mb-2 group-hover:text-[#5F9FFF] transition-colors duration-300">
+              {t('features.aiPowered.title')}
+            </h3>
             <p className="text-gray-300 group-hover:text-gray-200 transition-colors duration-300">
-              Create music with AI composer, vocalizer, and mixer tools.
+              {t('features.aiPowered.description')}
             </p>
           </div>
 
@@ -64,9 +70,11 @@ export default function Home() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
               </svg>
             </div>
-            <h3 className="text-xl font-[family-name:var(--font-orbitron)] font-bold text-white mb-2 group-hover:text-[#9D4EDD] transition-colors duration-300">Secure & Fast</h3>
+            <h3 className="text-xl font-[family-name:var(--font-orbitron)] font-bold text-white mb-2 group-hover:text-[#9D4EDD] transition-colors duration-300">
+              {t('features.instant.title')}
+            </h3>
             <p className="text-gray-300 group-hover:text-gray-200 transition-colors duration-300">
-              Instant downloads with license keys. Stripe-powered secure payments.
+              {t('features.instant.description')}
             </p>
           </div>
         </div>
@@ -76,21 +84,19 @@ export default function Home() {
       <section className="container mx-auto px-6 py-20">
         <div className="bg-gradient-to-r from-[#00CED1] to-[#5FE0E5] rounded-3xl p-12 text-center shadow-[0_0_40px_rgba(0,206,209,0.3)]">
           <h3 className="text-4xl font-[family-name:var(--font-orbitron)] font-black text-[#0a1628] mb-4">
-            Ready to elevate your sound?
+            {t('cta.title')}
           </h3>
           <p className="text-lg text-[#0a1628]/80 mb-8">
-            Join SHIROA and access exclusive tracks today.
+            {t('cta.subtitle')}
           </p>
           <Link 
-            href="/register" 
+            href="/tracks" 
             className="inline-block bg-[#0a1628] text-[#00CED1] px-8 py-4 rounded-full font-semibold text-lg hover:bg-[#1e3a5f] transition-all shadow-lg hover:shadow-xl"
           >
-            Get Started Free
+            {t('cta.button')}
           </Link>
         </div>
       </section>
-
-
     </div>
   );
 }

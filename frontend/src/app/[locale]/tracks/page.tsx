@@ -2,12 +2,14 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useAuth } from "@/lib/auth-context";
 import { api } from "@/lib/api";
 import SearchBar from "@/components/SearchBar";
 import FilterPanel from "@/components/FilterPanel";
 import SkeletonCard from "@/components/SkeletonCard";
 
 export default function TracksPage() {
+  const { user } = useAuth();
   const [tracks, setTracks] = useState<any[]>([]);
   const [filteredTracks, setFilteredTracks] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -72,26 +74,24 @@ export default function TracksPage() {
       }
     });
 
+    // Limit to 6 tracks for non-authenticated users
+    if (!user) {
+      filtered = filtered.slice(0, 6);
+    }
+
     setFilteredTracks(filtered);
   };
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      {/* Gaming Style Background */}
-      <div className="fixed inset-0 bg-gradient-to-br from-[#1a0033] via-[#0d1b2a] to-[#000814] z-[-3]"></div>
-      <div className="fixed inset-0 opacity-20 z-[-2]" style={{
-        backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, #00CED1 2px, #00CED1 4px), repeating-linear-gradient(90deg, transparent, transparent 2px, #00CED1 2px, #00CED1 4px)',
-        backgroundSize: '100px 100px'
-      }}></div>
 
       <div className="container mx-auto px-6 py-12">
         {/* Page Title */}
         <div className="mb-8 relative">
-          <div className="absolute -left-4 top-0 w-2 h-full bg-gradient-to-b from-[#FF00FF] via-[#00CED1] to-[#00FF88]"></div>
-          <h1 className="text-5xl font-display font-black text-transparent bg-clip-text bg-gradient-to-r from-[#FF00FF] via-[#00CED1] to-[#00FF88] mb-2 animate-pulse">
-            BROWSE TRACKS
+          <h1 className="text-5xl font-display font-black text-white mb-2">
+            Browse Tracks
           </h1>
-          <p className="text-[#00CED1] font-semibold">⚡ Discover exclusive music for your projects</p>
+          <p className="text-white/60">Discover exclusive music for your projects</p>
         </div>
 
         {/* Search & Filters */}
@@ -124,24 +124,25 @@ export default function TracksPage() {
 
         {/* Tracks Grid */}
         {!loading && filteredTracks.length > 0 && (
+          <>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredTracks.map((track) => (
               <Link
                 key={track._id}
                 href={`/tracks/${track._id}`}
-                className="group relative bg-gradient-to-br from-[#1a0033]/80 to-[#0d1b2a]/80 backdrop-blur-sm border-2 border-[#00CED1]/30 rounded-xl p-6 hover:border-[#FF00FF] transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(255,0,255,0.5)] overflow-hidden"
+                className="group relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:border-white/30 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl overflow-hidden"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-[#FF00FF]/0 via-[#FF00FF]/10 to-[#FF00FF]/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/5 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
                 
                 <div className="mb-4 relative z-10">
-                  <h3 className="text-xl font-display font-bold text-white mb-1 group-hover:text-[#00CED1] transition-colors">
+                  <h3 className="text-xl font-display font-bold text-white mb-1">
                     {track.title}
                   </h3>
-                  <p className="text-[#00CED1]/70 group-hover:text-[#00CED1] transition-colors">{track.artist}</p>
+                  <p className="text-white/60">{track.artist}</p>
                 </div>
 
                 {/* Details */}
-                <div className="flex items-center gap-4 text-sm text-[#00CED1]/50 mb-4 relative z-10">
+                <div className="flex items-center gap-4 text-sm text-white/40 mb-4 relative z-10">
                   <span>{track.genre}</span>
                   {track.bpm && (
                     <>
@@ -159,28 +160,55 @@ export default function TracksPage() {
 
                 {/* Price */}
                 <div className="flex items-center justify-between relative z-10">
-                  <span className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#FF00FF] to-[#00CED1] group-hover:from-[#00CED1] group-hover:to-[#00FF88] transition-all">
+                  <span className="text-3xl font-black text-white">
                     ${track.price}
                   </span>
                   {track.status === "sold" || track.isSold ? (
-                    <span className="bg-red-500/30 text-red-400 px-4 py-1 rounded-full text-sm font-bold border border-red-500/50">
-                      ❌ SOLD
+                    <span className="bg-red-500/20 text-red-400 px-4 py-1 rounded-full text-sm font-bold border border-red-500/50">
+                      SOLD
                     </span>
                   ) : (
-                    <span className="bg-[#00FF88]/20 text-[#00FF88] px-4 py-1 rounded-full text-sm font-bold border border-[#00FF88]/50 group-hover:bg-[#00FF88]/30 transition-all">
-                      ✓ AVAILABLE
+                    <span className="bg-green-500/20 text-green-400 px-4 py-1 rounded-full text-sm font-bold border border-green-500/50">
+                      AVAILABLE
                     </span>
                   )}
                 </div>
               </Link>
             ))}
           </div>
+
+          {/* Login Prompt for Non-Authenticated Users */}
+          {!user && tracks.length > 6 && (
+            <div className="mt-12 bg-gradient-to-r from-[#00CED1]/20 to-[#5F9FFF]/20 backdrop-blur-sm border border-white/20 rounded-3xl p-12 text-center">
+              <h3 className="text-3xl font-[family-name:var(--font-orbitron)] font-bold text-white mb-4">
+                Want to See More?
+              </h3>
+              <p className="text-white/80 mb-8 max-w-2xl mx-auto">
+                Sign up to browse our full catalog of exclusive tracks, change themes, and unlock premium features.
+              </p>
+              <div className="flex items-center justify-center gap-4">
+                <Link
+                  href="/register"
+                  className="bg-white text-black px-8 py-4 rounded-full font-semibold text-lg hover:bg-white/90 transition-all"
+                >
+                  Sign Up Free
+                </Link>
+                <Link
+                  href="/login"
+                  className="border-2 border-white text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-white/10 transition-all"
+                >
+                  Login
+                </Link>
+              </div>
+            </div>
+          )}
+          </>
         )}
 
         {/* Empty State */}
         {!loading && filteredTracks.length === 0 && (
           <div className="text-center py-20">
-            <p className="text-[#00CED1] text-lg font-bold">⚠️ No tracks found matching your criteria</p>
+            <p className="text-white/60 text-lg">No tracks found matching your criteria</p>
           </div>
         )}
       </div>

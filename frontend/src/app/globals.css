@@ -1,12 +1,51 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0a1628;
   --foreground: #FFFFFF;
   --turquoise: #00CED1;
   --turquoise-soft: #5FE0E5;
-  --brand-blue: #1e3a5f;
-  --dark-blue: #0f1f3a;
+}
+
+[data-theme="dark"] {
+  --bg-primary: #0a1628;
+  --bg-secondary: #1a2f4a;
+  --accent: #00CED1;
+  --accent-soft: #5FE0E5;
+}
+
+[data-theme="warm"] {
+  --bg-primary: #2d1b1b;
+  --bg-secondary: #4a2c2c;
+  --accent: #ff6b6b;
+  --accent-soft: #ffa07a;
+}
+
+[data-theme="cool"] {
+  --bg-primary: #1a2332;
+  --bg-secondary: #2d3f5a;
+  --accent: #64b5f6;
+  --accent-soft: #90caf9;
+}
+
+[data-theme="neon"] {
+  --bg-primary: #1a0033;
+  --bg-secondary: #330066;
+  --accent: #ff00ff;
+  --accent-soft: #ff66ff;
+}
+
+[data-theme="classic"] {
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #1a1a1a;
+  --accent: #ffffff;
+  --accent-soft: #cccccc;
+}
+
+[data-theme="sakura"] {
+  --bg-primary: #2d1b2e;
+  --bg-secondary: #4a2f4d;
+  --accent: #ffb7d5;
+  --accent-soft: #ffd4e5;
 }
 
 @theme inline {
@@ -17,11 +56,12 @@
 }
 
 body {
-  background: #0a0e27;
+  background: var(--bg-primary);
   color: var(--foreground);
   min-height: 100vh;
   position: relative;
   overflow-x: hidden;
+  transition: background 0.3s ease;
 }
 
 @keyframes gradient-shift {
@@ -45,10 +85,11 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #0a0e27, #1a1f3a, #0f1a2e, #1e2a4a);
+  background: linear-gradient(135deg, var(--bg-primary), var(--bg-secondary), var(--bg-primary), var(--bg-secondary));
   background-size: 400% 400%;
   animation: gradient-shift 15s ease infinite;
   z-index: -2;
+  transition: background 0.5s ease;
 }
 
 .glow-orb {
@@ -64,26 +105,29 @@ body {
 .glow-orb-1 {
   width: 400px;
   height: 400px;
-  background: radial-gradient(circle, #00CED1, transparent);
+  background: radial-gradient(circle, var(--accent), transparent);
   top: 10%;
   left: 10%;
   animation-delay: 0s;
+  transition: background 0.5s ease;
 }
 
 .glow-orb-2 {
   width: 300px;
   height: 300px;
-  background: radial-gradient(circle, #5F9FFF, transparent);
+  background: radial-gradient(circle, var(--accent-soft), transparent);
   top: 60%;
   right: 10%;
   animation-delay: 2s;
+  transition: background 0.5s ease;
 }
 
 .glow-orb-3 {
   width: 350px;
   height: 350px;
-  background: radial-gradient(circle, #9D4EDD, transparent);
+  background: radial-gradient(circle, var(--accent), transparent);
   bottom: 10%;
   left: 50%;
   animation-delay: 4s;
+  transition: background 0.5s ease;
 }

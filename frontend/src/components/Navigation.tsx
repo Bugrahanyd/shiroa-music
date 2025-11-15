@@ -13,15 +13,12 @@ export default function Navigation() {
     <nav className="bg-[#0a0e27]/95 backdrop-blur-md border-b border-[#00CED1]/20 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <Link href="/" className="flex items-center gap-3">
-            <Image src="/logo.jpg" alt="SHIROA" width={40} height={40} className="rounded-lg mix-blend-lighten" />
-            <span className="text-2xl font-bold font-[family-name:var(--font-orbitron)] group flex">
-              <span className="hover:text-[#9D4EDD] transition-colors duration-300 text-[#00CED1]">S</span>
-              <span className="hover:text-[#8B4513] transition-colors duration-300 text-[#00CED1]">H</span>
-              <span className="hover:text-[#FFFFFF] transition-colors duration-300 text-[#00CED1]">I</span>
-              <span className="hover:text-[#FF4444] transition-colors duration-300 text-[#00CED1]">R</span>
-              <span className="hover:text-[#00FF88] transition-colors duration-300 text-[#00CED1]">O</span>
-              <span className="hover:text-[#1E3A8A] transition-colors duration-300 text-[#00CED1]">A</span>
+          <Link href="/" className="flex items-center gap-3 group">
+            <div className="relative w-10 h-10 transition-transform group-hover:scale-110 duration-300">
+              <Image src="/logo.svg" alt="SHIROA" fill className="object-contain" priority />
+            </div>
+            <span className="text-2xl font-bold font-[family-name:var(--font-orbitron)] text-[#00CED1] group-hover:text-white transition-colors duration-300">
+              SHIROA
             </span>
           </Link>
 

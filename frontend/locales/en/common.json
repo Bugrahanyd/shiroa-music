@@ -1,0 +1,83 @@
+{
+  "nav": {
+    "tracks": "Tracks",
+    "dashboard": "Dashboard",
+    "purchases": "Purchases",
+    "upload": "Upload",
+    "manage": "Manage",
+    "profile": "Profile",
+    "login": "Login",
+    "signup": "Sign Up",
+    "logout": "Logout"
+  },
+  "home": {
+    "hero": {
+      "title": "Professional Music Licensing Made Simple",
+      "subtitle": "Discover and license high-quality music tracks with full commercial rights. One track, one owner, unlimited possibilities.",
+      "browseCatalog": "Browse Catalog",
+      "howItWorks": "How It Works"
+    },
+    "features": {
+      "exclusivity": {
+        "title": "True Exclusivity",
+        "description": "Full commercial rights with lifetime ownership. No royalties, no recurring fees, no competition."
+      },
+      "aiPowered": {
+        "title": "AI-Powered Creation",
+        "description": "Advanced AI tools for composition, vocal processing, and mixing. Create professional music faster."
+      },
+      "instant": {
+        "title": "Instant Delivery",
+        "description": "Secure checkout with Stripe. Instant access to high-quality files and license certificates."
+      }
+    },
+    "cta": {
+      "title": "Find Your Perfect Track Today",
+      "subtitle": "Browse our catalog of exclusive tracks and elevate your content.",
+      "button": "Browse Tracks"
+    }
+  },
+  "tracks": {
+    "title": "Browse Tracks",
+    "subtitle": "Discover exclusive music for your projects",
+    "search": "Search tracks...",
+    "filters": "Filters",
+    "sortBy": "Sort by",
+    "genre": "Genre",
+    "price": "Price",
+    "all": "All",
+    "newest": "Newest",
+    "priceLow": "Price: Low to High",
+    "priceHigh": "Price: High to Low",
+    "noTracks": "No tracks found matching your criteria",
+    "sold": "SOLD",
+    "available": "AVAILABLE"
+  },
+  "login": {
+    "title": "Welcome Back!",
+    "subtitle": "We're excited to see you again",
+    "email": "Email",
+    "password": "Password",
+    "button": "Login",
+    "loggingIn": "Logging in...",
+    "noAccount": "Don't have an account?",
+    "signupLink": "Sign up",
+    "backHome": "Back to home"
+  },
+  "footer": {
+    "tagline": "Everything for your sound",
+    "product": "Product",
+    "tracks": "Browse Tracks",
+    "studio": "Studio",
+    "pricing": "Pricing",
+    "company": "Company",
+    "about": "About",
+    "contact": "Contact",
+    "careers": "Careers",
+    "legal": "Legal",
+    "terms": "Terms of Service",
+    "privacy": "Privacy Policy",
+    "licenses": "Licenses",
+    "rights": "All rights reserved."
+  }
+}

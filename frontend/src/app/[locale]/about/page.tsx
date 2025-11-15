@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export default function AboutPage() {
   return (
@@ -6,9 +7,12 @@ export default function AboutPage() {
       <div className="container mx-auto px-6 py-12 max-w-4xl">
         {/* Header */}
         <div className="text-center mb-16">
-          <h1 className="text-6xl font-[family-name:var(--font-orbitron)] font-black text-transparent bg-clip-text bg-gradient-to-r from-[#00CED1] via-[#5F9FFF] to-[#9D4EDD] mb-4">
-            🐯 SHIROA
-          </h1>
+          <div className="flex items-center justify-center gap-4 mb-4">
+            <Image src="/logo.jpg" alt="SHIROA" width={80} height={80} className="rounded-2xl" />
+            <h1 className="text-6xl font-[family-name:var(--font-orbitron)] font-black text-transparent bg-clip-text bg-gradient-to-r from-[#00CED1] via-[#5F9FFF] to-[#9D4EDD]">
+              SHIROA
+            </h1>
+          </div>
           <p className="text-xl text-gray-400">Profesyonel yaklaşım, disiplinli yapı ve beyaz kaplan sembolizmi</p>
         </div>
 

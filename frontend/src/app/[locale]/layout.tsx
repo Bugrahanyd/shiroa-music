@@ -1,10 +1,15 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import { Orbitron } from "next/font/google";
+import { NextIntlClientProvider } from 'next-intl';
+import { getMessages } from 'next-intl/server';
 import { AuthProvider } from "@/lib/auth-context";
+import { ThemeProvider } from "@/lib/theme-context";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import "./globals.css";
+import ThemeSwitcher from "@/components/ThemeSwitcher";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
+import "../globals.css";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -20,30 +25,20 @@ const orbitron = Orbitron({
 
 export const metadata: Metadata = {
   title: "SHIROA - Everything for your sound",
-  description: "AI-powered music production and exclusive licensing platform. Discover high-quality, licensed music tracks from top producers.",
-  keywords: ["music licensing", "exclusive tracks", "music production", "AI music", "beats", "instrumentals"],
-  authors: [{ name: "SHIROA" }],
-  openGraph: {
-    title: "SHIROA - Everything for your sound",
-    description: "AI-powered music production and exclusive licensing platform",
-    type: "website",
-    locale: "en_US",
-    siteName: "SHIROA"
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "SHIROA - Everything for your sound",
-    description: "AI-powered music production and exclusive licensing platform"
-  }
+  description: "AI-powered music production and exclusive licensing platform.",
 };
 
-export default function RootLayout({
-  children
+export default async function RootLayout({
+  children,
+  params: { locale }
 }: Readonly<{
   children: React.ReactNode;
+  params: { locale: string };
 }>) {
+  const messages = await getMessages();
+
   return (
-    <html lang="en">
+    <html lang={locale}>
       <head>
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#00CED1" />
@@ -54,11 +49,19 @@ export default function RootLayout({
         <div className="glow-orb glow-orb-2"></div>
         <div className="glow-orb glow-orb-3"></div>
 
-        <AuthProvider>
-          <Navigation />
-          {children}
-          <Footer />
-        </AuthProvider>
+        <NextIntlClientProvider messages={messages}>
+          <ThemeProvider>
+            <AuthProvider>
+              <div className="fixed top-20 right-6 z-50">
+                <LanguageSwitcher />
+              </div>
+              <Navigation />
+              {children}
+              <Footer />
+              <ThemeSwitcher />
+            </AuthProvider>
+          </ThemeProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

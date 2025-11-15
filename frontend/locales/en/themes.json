@@ -1,0 +1,40 @@
+{
+  "themes": {
+    "dark": {
+      "name": "Midnight Ocean",
+      "story": "Dive into the depths of creativity where the ocean meets the night sky. Deep blues and turquoise waves inspire your musical journey through calm, mysterious waters.",
+      "mood": "Professional • Focused • Mysterious"
+    },
+    "warm": {
+      "name": "Sunset Boulevard",
+      "story": "Feel the warmth of golden hour as creativity flows like molten amber. Rich oranges and warm reds ignite passion in every note, like a perfect sunset over the city.",
+      "mood": "Energetic • Passionate • Creative"
+    },
+    "cool": {
+      "name": "Arctic Aurora",
+      "story": "Experience the serene beauty of northern lights dancing across frozen landscapes. Cool blues and icy tones bring clarity and focus to your creative process.",
+      "mood": "Clear • Calm • Inspiring"
+    },
+    "neon": {
+      "name": "Tokyo Nights",
+      "story": "Step into the electric pulse of neon-lit streets where music never sleeps. Vibrant purples and magentas fuel your late-night creative sessions with pure energy.",
+      "mood": "Bold • Modern • Electric"
+    },
+    "classic": {
+      "name": "Timeless Elegance",
+      "story": "Embrace the sophistication of black and white, where every detail matters. Clean, minimal, and eternally stylish—like a perfectly mastered track.",
+      "mood": "Minimal • Elegant • Timeless"
+    },
+    "sakura": {
+      "name": "Sakura Dreams",
+      "story": "Float through cherry blossom gardens where soft pinks meet gentle whites. Delicate and peaceful, like petals dancing in spring breeze—perfect for your most serene creations.",
+      "mood": "Peaceful • Delicate • Harmonious"
+    }
+  },
+  "onboarding": {
+    "title": "Choose Your Creative Atmosphere",
+    "subtitle": "Select a theme that resonates with your creative spirit. You can change it anytime.",
+    "skip": "Skip for now",
+    "continue": "Continue"
+  }
+}
