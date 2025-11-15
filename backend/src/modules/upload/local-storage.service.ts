@@ -2,7 +2,8 @@ import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import * as fs from "fs";
 import * as path from "path";
-import { File } from "multer";
+import type { File as MulterFile } from "multer";
+type File = MulterFile;
 
 @Injectable()
 export class LocalStorageService {

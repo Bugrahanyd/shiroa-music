@@ -5,7 +5,8 @@ import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 import { RolesGuard } from "../auth/guards/roles.guard";
 import { Roles } from "../auth/decorators/roles.decorator";
 import { UserRole } from "../users/user.entity";
-import { File } from "multer";
+import type { File as MulterFile } from "multer";
+type File = MulterFile;
 
 @Controller("upload")
 @UseGuards(JwtAuthGuard, RolesGuard)
