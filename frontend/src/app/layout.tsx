@@ -8,7 +8,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import ThemeSwitcher from "@/components/ThemeSwitcher";
 
-import "../globals.css";
+import "./globals.css";
 
 const poppins = Poppins({
   variable: "--font-poppins",
