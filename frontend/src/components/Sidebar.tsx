@@ -6,7 +6,7 @@ import { useAuth } from '@/lib/auth-context';
 import { useTheme } from '@/lib/theme-context';
 import { 
   Home, Music, User, Settings, Bell, Search, 
-  ChevronLeft, ChevronRight, Palette, Studio,
+  ChevronLeft, ChevronRight, Palette, Mic,
   ShoppingCart, BarChart3, Upload
 } from 'lucide-react';
 
@@ -25,7 +25,7 @@ export default function Sidebar() {
   const menuItems = [
     { icon: Home, label: 'Home', href: '/' },
     { icon: Music, label: 'Tracks', href: '/tracks' },
-    { icon: Studio, label: 'Studio', href: '/studio' },
+    { icon: Mic, label: 'Studio', href: '/studio' },
     { icon: Search, label: 'Discover', href: '/discover' },
     ...(user ? [
       { icon: User, label: 'Profile', href: '/profile' },
