@@ -1,4 +1,4 @@
-.PHONY: dev build up down logs clean
+.PHONY: dev build up down logs clean validate
 
 dev:
 	docker-compose up -d postgres mongodb redis
@@ -20,3 +20,6 @@ logs:
 clean:
 	docker-compose down -v
 	rm -rf frontend/.next backend/dist
+
+validate:
+	node validate-env.js
