@@ -186,6 +186,37 @@ button:active, a:active {
   outline-offset: 2px;
 }
 
+/* Animated Gradient Text */
+@keyframes gradient-flow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-gradient-text {
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background-size: 400% 400%;
+  animation: gradient-flow 3s ease infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+[data-theme="japanese"] .animate-gradient-text {
+  background: linear-gradient(-45deg, #ec4899, #f472b6, #be185d, #db2777);
+  background-size: 400% 400%;
+}
+
+[data-theme="neon"] .animate-gradient-text {
+  background: linear-gradient(-45deg, #00f5ff, #a855f7, #7c3aed, #8b5cf6);
+  background-size: 400% 400%;
+}
+
+[data-theme="dark"] .animate-gradient-text {
+  background: linear-gradient(-45deg, #60a5fa, #8b5cf6, #6366f1, #3b82f6);
+  background-size: 400% 400%;
+}
+
 /* Theme Utility Classes */
 .theme-bg { background-color: var(--theme-bg); }
 .theme-bg-secondary { background-color: var(--theme-bg-secondary); }
@@ -193,6 +224,7 @@ button:active, a:active {
 .theme-text-secondary { color: var(--theme-text-secondary); }
 .theme-border { border-color: var(--theme-border); }
 .theme-border-r { border-right: 1px solid var(--theme-border); }
+.theme-border-b { border-bottom: 1px solid var(--theme-border); }
 .theme-accent { color: var(--theme-accent); }
 .theme-hover:hover { background-color: var(--theme-bg-secondary); }
 

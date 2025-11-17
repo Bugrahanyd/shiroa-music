@@ -5,9 +5,9 @@ import Link from 'next/link';
 import { useAuth } from '@/lib/auth-context';
 import { useTheme } from '@/lib/theme-context';
 import { 
-  Home, Music, User, Settings, Bell, Search, 
+  Music, User, Search, 
   ChevronLeft, ChevronRight, Palette, Mic,
-  ShoppingCart, BarChart3, Upload
+  ShoppingCart, BarChart3, Upload, Compass, Heart
 } from 'lucide-react';
 
 export default function Sidebar() {
@@ -23,14 +23,14 @@ export default function Sidebar() {
   ];
 
   const menuItems = [
-    { icon: Home, label: 'Home', href: '/' },
-    { icon: Music, label: 'Tracks', href: '/tracks' },
+    { icon: Music, label: 'Browse', href: '/tracks' },
     { icon: Mic, label: 'Studio', href: '/studio' },
-    { icon: Search, label: 'Discover', href: '/discover' },
+    { icon: Compass, label: 'Discover', href: '/discover' },
+    { icon: Search, label: 'Search', href: '/search' },
     ...(user ? [
-      { icon: User, label: 'Profile', href: '/profile' },
+      { icon: Heart, label: 'Favorites', href: '/favorites' },
       { icon: ShoppingCart, label: 'Purchases', href: '/purchases' },
-      { icon: BarChart3, label: 'Dashboard', href: '/dashboard' },
+      { icon: BarChart3, label: 'Analytics', href: '/dashboard/analytics' },
     ] : []),
     ...(user?.role === 'admin' ? [
       { icon: Upload, label: 'Admin', href: '/admin' },
@@ -76,7 +76,7 @@ export default function Sidebar() {
       </nav>
 
       {/* Theme Switcher */}
-      <div className="absolute bottom-20 left-0 right-0 p-4">
+      <div className="absolute bottom-4 left-0 right-0 p-4">
         <div className="space-y-2">
           <div className={`flex items-center gap-2 ${isCollapsed ? 'justify-center' : ''}`}>
             <Palette size={20} className="theme-text-secondary" />
@@ -102,18 +102,7 @@ export default function Sidebar() {
         </div>
       </div>
 
-      {/* Notifications */}
-      <div className="absolute bottom-4 left-0 right-0 p-4">
-        <button className={`w-full flex items-center gap-3 p-3 rounded-lg theme-hover ${
-          isCollapsed ? 'justify-center' : ''
-        }`}>
-          <div className="relative">
-            <Bell size={20} className="theme-text-secondary" />
-            <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></div>
-          </div>
-          {!isCollapsed && <span className="theme-text">Notifications</span>}
-        </button>
-      </div>
+
     </div>
   );
 }
