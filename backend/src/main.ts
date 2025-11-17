@@ -6,6 +6,8 @@ import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
+import { LoggerService } from './common/logger.service';
+import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -14,6 +16,10 @@ async function bootstrap() {
   
   // Trust proxy for Render
   app.set('trust proxy', 1);
+  
+  // Logger and Exception Filter
+  const logger = new LoggerService();
+  app.useGlobalFilters(new HttpExceptionFilter(logger));
   
   app.useStaticAssets(join(__dirname, '..', 'uploads'), {
     prefix: '/uploads/'
