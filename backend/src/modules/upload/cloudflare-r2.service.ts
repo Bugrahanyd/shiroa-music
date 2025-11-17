@@ -23,7 +23,7 @@ export class CloudflareR2Service {
     this.bucketName = this.configService.get<string>('S3_BUCKET_NAME');
   }
 
-  async uploadFile(file: Express.Multer.File, key: string): Promise<string> {
+  async uploadFile(file: any, key: string): Promise<string> {
     const command = new PutObjectCommand({
       Bucket: this.bucketName,
       Key: key,
