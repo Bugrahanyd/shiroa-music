@@ -12,6 +12,9 @@ async function bootstrap() {
     rawBody: true
   });
   
+  // Trust proxy for Render
+  app.set('trust proxy', 1);
+  
   app.useStaticAssets(join(__dirname, '..', 'uploads'), {
     prefix: '/uploads/'
   });
