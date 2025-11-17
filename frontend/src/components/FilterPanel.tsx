@@ -1,5 +1,8 @@
 "use client";
 
+import { useState } from "react";
+import PriceRangeSlider from "./PriceRangeSlider";
+
 interface FilterPanelProps {
   genre: string;
   onGenreChange: (genre: string) => void;
@@ -20,8 +23,21 @@ export default function FilterPanel({
   onSortChange
 }: FilterPanelProps) {
   const genres = ["All", "Electronic", "Hip-Hop", "Pop", "Rock", "Jazz", "Classical", "Ambient"];
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
+    <>
+    {/* Mobile Filter Button */}
+    <button
+      onClick={() => setIsOpen(!isOpen)}
+      className="lg:hidden w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white font-semibold flex items-center justify-between hover:bg-white/10 transition-all"
+    >
+      <span>Filters & Sort</span>
+      <span>{isOpen ? "✕" : "☰"}</span>
+    </button>
+
+    {/* Filter Panel */}
+    <div className={`${isOpen ? "block" : "hidden"} lg:block`}>
     <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-6 space-y-6">
       <div>
         <h3 className="text-sm font-bold text-zinc-300 mb-3">Genre</h3>
@@ -42,23 +58,12 @@ export default function FilterPanel({
       </div>
 
       <div>
-        <h3 className="text-sm font-bold text-zinc-300 mb-3">Price Range</h3>
-        <div className="flex gap-2">
-          <input
-            type="number"
-            placeholder="Min"
-            value={minPrice}
-            onChange={(e) => onPriceChange(e.target.value, maxPrice)}
-            className="w-full px-3 py-2 bg-zinc-800 border border-zinc-700 rounded text-white text-sm focus:border-[#00CED1] focus:outline-none"
-          />
-          <input
-            type="number"
-            placeholder="Max"
-            value={maxPrice}
-            onChange={(e) => onPriceChange(minPrice, e.target.value)}
-            className="w-full px-3 py-2 bg-zinc-800 border border-zinc-700 rounded text-white text-sm focus:border-[#00CED1] focus:outline-none"
-          />
-        </div>
+        <PriceRangeSlider
+          min={0}
+          max={500}
+          value={[Number(minPrice) || 0, Number(maxPrice) || 500]}
+          onChange={([min, max]) => onPriceChange(String(min), String(max))}
+        />
       </div>
 
       <div>
@@ -75,5 +80,7 @@ export default function FilterPanel({
         </select>
       </div>
     </div>
+    </div>
+    </>
   );
 }

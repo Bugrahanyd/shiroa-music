@@ -9,7 +9,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-b from-[#00CED1]/5 to-transparent rounded-3xl blur-3xl"></div>
         <div className="relative z-10">
           <h2 className="text-6xl md:text-7xl font-[family-name:var(--font-orbitron)] font-black text-white mb-6 leading-tight">
-Professional Music Licensing Made Simple
+Everything for your <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00CED1] via-[#5F9FFF] to-[#9D4EDD]">sound</span>
           </h2>
           <p className="text-xl text-gray-300 mb-12 max-w-2xl mx-auto">
 Discover and license high-quality music tracks with full commercial rights. One track, one owner, unlimited possibilities.

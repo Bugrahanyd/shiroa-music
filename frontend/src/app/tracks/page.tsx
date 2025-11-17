@@ -7,6 +7,8 @@ import { api } from "@/lib/api";
 import SearchBar from "@/components/SearchBar";
 import FilterPanel from "@/components/FilterPanel";
 import SkeletonCard from "@/components/SkeletonCard";
+import ScrollToTop from "@/components/ScrollToTop";
+import TrackCard from "@/components/TrackCard";
 
 export default function TracksPage() {
   const { user } = useAuth();
@@ -83,6 +85,8 @@ export default function TracksPage() {
   };
 
   return (
+    <>
+    <ScrollToTop />
     <div className="min-h-screen relative overflow-hidden">
 
       <div className="container mx-auto px-6 py-12">
@@ -95,23 +99,24 @@ export default function TracksPage() {
         </div>
 
         {/* Search & Filters */}
-        <div className="grid lg:grid-cols-4 gap-6 mb-8">
-          <div className="lg:col-span-3">
-            <SearchBar value={searchQuery} onChange={setSearchQuery} />
-          </div>
-          <div>
-            <FilterPanel
-              genre={selectedGenre}
-              onGenreChange={setSelectedGenre}
-              minPrice={minPrice}
-              maxPrice={maxPrice}
-              onPriceChange={(min, max) => {
-                setMinPrice(min);
-                setMaxPrice(max);
-              }}
-              sortBy={sortBy}
-              onSortChange={setSortBy}
-            />
+        <div className="mb-8 space-y-4">
+          <SearchBar value={searchQuery} onChange={setSearchQuery} />
+          
+          <div className="grid lg:grid-cols-4 gap-6">
+            <div className="lg:col-span-4">
+              <FilterPanel
+                genre={selectedGenre}
+                onGenreChange={setSelectedGenre}
+                minPrice={minPrice}
+                maxPrice={maxPrice}
+                onPriceChange={(min, max) => {
+                  setMinPrice(min);
+                  setMaxPrice(max);
+                }}
+                sortBy={sortBy}
+                onSortChange={setSortBy}
+              />
+            </div>
           </div>
         </div>
 
@@ -127,53 +132,7 @@ export default function TracksPage() {
           <>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredTracks.map((track) => (
-              <Link
-                key={track._id}
-                href={`/tracks/${track._id}`}
-                className="group relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:border-white/30 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl overflow-hidden"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/5 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
-                
-                <div className="mb-4 relative z-10">
-                  <h3 className="text-xl font-display font-bold text-white mb-1">
-                    {track.title}
-                  </h3>
-                  <p className="text-white/60">{track.artist}</p>
-                </div>
-
-                {/* Details */}
-                <div className="flex items-center gap-4 text-sm text-white/40 mb-4 relative z-10">
-                  <span>{track.genre}</span>
-                  {track.bpm && (
-                    <>
-                      <span>•</span>
-                      <span>{track.bpm} BPM</span>
-                    </>
-                  )}
-                  {track.key && (
-                    <>
-                      <span>•</span>
-                      <span>{track.key}</span>
-                    </>
-                  )}
-                </div>
-
-                {/* Price */}
-                <div className="flex items-center justify-between relative z-10">
-                  <span className="text-3xl font-black text-white">
-                    ${track.price}
-                  </span>
-                  {track.status === "sold" || track.isSold ? (
-                    <span className="bg-red-500/20 text-red-400 px-4 py-1 rounded-full text-sm font-bold border border-red-500/50">
-                      SOLD
-                    </span>
-                  ) : (
-                    <span className="bg-green-500/20 text-green-400 px-4 py-1 rounded-full text-sm font-bold border border-green-500/50">
-                      AVAILABLE
-                    </span>
-                  )}
-                </div>
-              </Link>
+              <TrackCard key={track._id} track={track} />
             ))}
           </div>
 
@@ -213,5 +172,6 @@ export default function TracksPage() {
         )}
       </div>
     </div>
+    </>
   );
 }

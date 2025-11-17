@@ -6,6 +6,7 @@
   "scripts": {
     "start": "nest start",
     "start:dev": "nest start --watch",
+    "start:simple": "ts-node src/main-simple.ts",
     "start:prod": "node dist/main",
     "build": "nest build",
     "create-admin": "ts-node src/create-admin.ts",

@@ -13,33 +13,33 @@ export default function AboutPage() {
               SHIROA
             </h1>
           </div>
-          <p className="text-xl text-gray-400">Profesyonel yaklaşım, disiplinli yapı ve beyaz kaplan sembolizmi</p>
+          <p className="text-xl text-gray-400">Professional approach, disciplined structure, and white tiger symbolism</p>
         </div>
 
         {/* Hakkımızda */}
         <section className="mb-16">
           <h2 className="text-4xl font-[family-name:var(--font-orbitron)] font-bold text-white mb-6 border-l-4 border-[#00CED1] pl-6">
-            Hakkımızda
+            About Us
           </h2>
           <p className="text-gray-300 text-lg leading-relaxed">
-            Profesyonel yaklaşım, disiplinli yapı ve beyaz kaplan sembolizmini benimseyen SHIROA; Türkiye'den doğan, 
-            teknoloji ve rekabeti birleştiren yeni nesil bir organizasyondur. Temellerimizi 2026'da atarak, 
-            topluluk merkezli bir platform inşa etmeyi ve sürdürülebilir başarıyı hedefliyoruz.
+            SHIROA embraces professional approach, disciplined structure, and white tiger symbolism. Born in Turkey, 
+            we are a next-generation organization combining technology and competition. Laying our foundations in 2026, 
+            we aim to build a community-centered platform and achieve sustainable success.
           </p>
         </section>
 
         {/* Felsefemiz */}
         <section className="mb-16 bg-[#1e3a5f]/30 backdrop-blur-sm border border-[#00CED1]/30 rounded-2xl p-8">
           <h2 className="text-4xl font-[family-name:var(--font-orbitron)] font-bold text-white mb-6">
-            Felsefemiz
+            Our Philosophy
           </h2>
           <blockquote className="text-[#00CED1] text-xl italic mb-6 border-l-4 border-[#00CED1] pl-6">
-            "Beyaz Kaplan gibi güçlü, disiplinli ve kararlı bir organizasyonuz; her kalıcı başarının ardında 
-            takım ruhu ve tutarlı iş birliği olduğuna inanırız."
+            "Like the White Tiger, we are a strong, disciplined, and determined organization; we believe that 
+            team spirit and consistent collaboration are behind every lasting success."
           </blockquote>
           <p className="text-gray-300 text-lg leading-relaxed">
-            Bireysel yetenekleri ölçülebilir hedeflerle takım başarısına dönüştürür; sürekli öğrenme ve gelişimi 
-            kültürümüzün temeline koyarız.
+            We transform individual talents into team success with measurable goals; we place continuous learning 
+            and development at the foundation of our culture.
           </p>
         </section>
 
@@ -47,22 +47,22 @@ export default function AboutPage() {
         <div className="grid md:grid-cols-2 gap-8 mb-16">
           <section className="bg-gradient-to-br from-[#00CED1]/10 to-[#5F9FFF]/10 border border-[#00CED1]/30 rounded-2xl p-8">
             <h2 className="text-3xl font-[family-name:var(--font-orbitron)] font-bold text-[#00CED1] mb-4">
-              Misyonumuz
+              Our Mission
             </h2>
             <p className="text-gray-300 leading-relaxed">
-              2026 başlangıcımızla birlikte, Discord topluluğu, Ar-Ge ve Medya ekseninde adil, güvenli ve üretken 
-              bir ekosistem kurarak; veriyle desteklenen yenilikçi çözümler ve tutarlı bir marka diliyle kalıcı değer üretmek.
+              With our 2026 launch, to create lasting value by building a fair, secure, and productive ecosystem 
+              around Discord community, R&D, and Media; with data-driven innovative solutions and consistent brand language.
             </p>
           </section>
 
           <section className="bg-gradient-to-br from-[#5F9FFF]/10 to-[#9D4EDD]/10 border border-[#5F9FFF]/30 rounded-2xl p-8">
             <h2 className="text-3xl font-[family-name:var(--font-orbitron)] font-bold text-[#5F9FFF] mb-4">
-              Vizyonumuz
+              Our Vision
             </h2>
             <p className="text-gray-300 leading-relaxed">
-              Türkiye'den doğup bölgede referans gösterilen bir platform olmak; Ar-Ge çıktılarını ürünleştirip 
-              ölçeklenebilir iş modelleriyle medya etkisini yükseltmeyi ve koşullar olgunlaştığında esporu 
-              sürdürülebilir bir programla etkinleştirerek ekosistemimizi tamamlamayı hedefliyoruz.
+              To become a platform born in Turkey and recognized as a reference in the region; to productize R&D outputs, 
+              increase media impact with scalable business models, and complete our ecosystem by activating esports 
+              with a sustainable program when conditions mature.
             </p>
           </section>
         </div>
@@ -70,46 +70,46 @@ export default function AboutPage() {
         {/* Değerlerimiz */}
         <section className="mb-16">
           <h2 className="text-4xl font-[family-name:var(--font-orbitron)] font-bold text-white mb-8 text-center">
-            Değerlerimiz
+            Our Values
           </h2>
           <p className="text-gray-400 text-center mb-8">
-            Organizasyonumuzun temelini oluşturan ve Beyaz Kaplan disiplinini yansıtan değerler
+            Values that form the foundation of our organization and reflect White Tiger discipline
           </p>
 
           <div className="grid md:grid-cols-2 gap-6">
             <div className="group bg-[#1e3a5f]/30 backdrop-blur-sm border border-[#00CED1]/30 rounded-xl p-6 hover:border-[#00CED1] hover:shadow-[0_0_30px_rgba(0,206,209,0.3)] transition-all duration-300">
               <h3 className="text-2xl font-bold text-[#00CED1] mb-3 group-hover:text-white transition-colors">
-                Tutku & Üretim
+                Passion & Production
               </h3>
               <p className="text-gray-300">
-                Oyun, topluluk ve üretime duyduğumuz tutku.
+                Our passion for gaming, community, and creation.
               </p>
             </div>
 
             <div className="group bg-[#1e3a5f]/30 backdrop-blur-sm border border-[#5F9FFF]/30 rounded-xl p-6 hover:border-[#5F9FFF] hover:shadow-[0_0_30px_rgba(95,159,255,0.3)] transition-all duration-300">
               <h3 className="text-2xl font-bold text-[#5F9FFF] mb-3 group-hover:text-white transition-colors">
-                Disiplin & Kalite
+                Discipline & Quality
               </h3>
               <p className="text-gray-300">
-                Standartlarımızı sürekli yükseltme ve profesyonel yaklaşım.
+                Continuously raising our standards and professional approach.
               </p>
             </div>
 
             <div className="group bg-[#1e3a5f]/30 backdrop-blur-sm border border-[#9D4EDD]/30 rounded-xl p-6 hover:border-[#9D4EDD] hover:shadow-[0_0_30px_rgba(157,78,221,0.3)] transition-all duration-300">
               <h3 className="text-2xl font-bold text-[#9D4EDD] mb-3 group-hover:text-white transition-colors">
-                Güven & Şeffaflık
+                Trust & Transparency
               </h3>
               <p className="text-gray-300">
-                Sözümüzde durma ve şeffaf süreçlerle güven oluşturma.
+                Keeping our word and building trust through transparent processes.
               </p>
             </div>
 
             <div className="group bg-[#1e3a5f]/30 backdrop-blur-sm border border-[#00CED1]/30 rounded-xl p-6 hover:border-[#00CED1] hover:shadow-[0_0_30px_rgba(0,206,209,0.3)] transition-all duration-300">
               <h3 className="text-2xl font-bold text-[#00CED1] mb-3 group-hover:text-white transition-colors">
-                Yenilikçilik (Ar-Ge Odaklılık)
+                Innovation (R&D Focus)
               </h3>
               <p className="text-gray-300">
-                Yeni fikirleri hızlı deneyip ölçekleme.
+                Rapidly testing and scaling new ideas.
               </p>
             </div>
           </div>
@@ -121,7 +121,7 @@ export default function AboutPage() {
             href="/tracks"
             className="inline-block bg-gradient-to-r from-[#00CED1] to-[#5F9FFF] text-white px-8 py-4 rounded-full font-bold text-lg hover:shadow-[0_0_30px_rgba(0,206,209,0.5)] transition-all transform hover:scale-105"
           >
-            Müzik Kataloğumuzu Keşfedin →
+            Explore Our Music Catalog →
           </Link>
         </section>
       </div>

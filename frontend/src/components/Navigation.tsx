@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useAuth } from "@/lib/auth-context";
 import { useState } from "react";
+import NotificationCenter from "./NotificationCenter";
 
 export default function Navigation() {
   const { user, logout } = useAuth();
@@ -14,10 +15,8 @@ export default function Navigation() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="relative w-10 h-10 transition-transform group-hover:scale-110 duration-300">
-              <Image src="/logo.svg" alt="SHIROA" fill className="object-contain" priority />
-            </div>
-            <span className="text-2xl font-bold font-[family-name:var(--font-orbitron)] text-[#00CED1] group-hover:text-white transition-colors duration-300">
+            <Image src="/logo.jpg" alt="SHIROA" width={40} height={40} className="rounded-lg" priority />
+            <span className="text-2xl font-bold font-[family-name:var(--font-orbitron)] text-white group-hover:opacity-80 transition-opacity duration-300">
               SHIROA
             </span>
           </Link>
@@ -41,11 +40,21 @@ export default function Navigation() {
             <Link href="/tracks" className="text-gray-300 hover:text-[#00CED1] transition-colors">
               Tracks
             </Link>
+            <Link href="/playlists" className="text-gray-300 hover:text-[#00CED1] transition-colors">
+              Playlists
+            </Link>
+            <Link href="/community" className="text-gray-300 hover:text-[#00CED1] transition-colors">
+              Community
+            </Link>
 
             {user ? (
               <>
+                <NotificationCenter />
                 <Link href="/dashboard" className="text-gray-300 hover:text-[#00CED1] transition-colors">
                   Dashboard
+                </Link>
+                <Link href="/dashboard/analytics" className="text-gray-300 hover:text-[#00CED1] transition-colors">
+                  Analytics
                 </Link>
                 <Link href="/purchases" className="text-gray-300 hover:text-[#00CED1] transition-colors">
                   Purchases

@@ -56,12 +56,12 @@
 }
 
 body {
-  background: var(--bg-primary);
+  background: linear-gradient(135deg, var(--bg-primary), var(--bg-secondary));
   color: var(--foreground);
   min-height: 100vh;
   position: relative;
   overflow-x: hidden;
-  transition: background 0.3s ease;
+  transition: background 0.5s ease;
 }
 
 @keyframes gradient-shift {
@@ -79,15 +79,31 @@ body {
   50% { transform: translateY(-20px) rotate(5deg); }
 }
 
+@keyframes slide-in {
+  from { transform: translateX(400px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.animate-slide-in {
+  animation: slide-in 0.3s ease-out;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(0, 206, 209, 0.4); }
+  50% { box-shadow: 0 0 40px rgba(0, 206, 209, 0.8); }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
 .animated-bg {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, var(--bg-primary), var(--bg-secondary), var(--bg-primary), var(--bg-secondary));
-  background-size: 400% 400%;
-  animation: gradient-shift 15s ease infinite;
+  background: var(--bg-primary);
   z-index: -2;
   transition: background 0.5s ease;
 }
@@ -103,31 +119,26 @@ body {
 }
 
 .glow-orb-1 {
-  width: 400px;
-  height: 400px;
-  background: radial-gradient(circle, var(--accent), transparent);
-  top: 10%;
-  left: 10%;
-  animation-delay: 0s;
-  transition: background 0.5s ease;
+  display: none;
 }
 
 .glow-orb-2 {
-  width: 300px;
-  height: 300px;
-  background: radial-gradient(circle, var(--accent-soft), transparent);
-  top: 60%;
-  right: 10%;
-  animation-delay: 2s;
-  transition: background 0.5s ease;
+  display: none;
 }
 
 .glow-orb-3 {
-  width: 350px;
-  height: 350px;
-  background: radial-gradient(circle, var(--accent), transparent);
-  bottom: 10%;
-  left: 50%;
-  animation-delay: 4s;
-  transition: background 0.5s ease;
+  display: none;
+}
+
+button, a {
+  transition: all 0.2s ease;
+}
+
+button:active, a:active {
+  transform: scale(0.95);
+}
+
+*:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }

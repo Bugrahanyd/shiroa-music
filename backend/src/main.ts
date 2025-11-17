@@ -18,14 +18,43 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   const port = configService.get<number>("PORT") || 3001;
 
-  app.use(helmet());
+  // Güvenlik başlıkları
+  app.use(helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        scriptSrc: ["'self'"],
+        imgSrc: ["'self'", "data:", "https:"],
+        connectSrc: ["'self'"],
+        fontSrc: ["'self'"],
+        objectSrc: ["'none'"],
+        mediaSrc: ["'self'"],
+        frameSrc: ["'none'"]
+      }
+    },
+    crossOriginEmbedderPolicy: false // Audio dosyaları için
+  }));
   
-  const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 100,
-    message: 'Too many requests from this IP, please try again later.'
+  // Genel rate limiting
+  const generalLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 dakika
+    max: 50, // IP başına 50 request
+    message: { error: 'Too many requests, please try again later.' },
+    standardHeaders: true,
+    legacyHeaders: false
   });
-  app.use(limiter);
+  
+  // Auth endpoint'leri için daha sıkı limit
+  const authLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 5, // 15 dakikada 5 login denemesi
+    message: { error: 'Too many login attempts, please try again later.' }
+  });
+  
+  app.use(generalLimiter);
+  app.use('/auth/login', authLimiter);
+  app.use('/auth/register', authLimiter);
   
   app.useGlobalPipes(
     new ValidationPipe({
@@ -39,16 +68,26 @@ async function bootstrap() {
     })
   );
 
+  // CORS - Sadece bilinen domainler
+  const allowedOrigins = configService.get('NODE_ENV') === 'production' 
+    ? [
+        'https://shiroa.vercel.app',
+        'https://shiroa-git-main-bugrahanyds-projects.vercel.app'
+      ]
+    : ['http://localhost:3000'];
+
   app.enableCors({
-    origin: [
-      'http://localhost:3000',
-      'https://shiroa.vercel.app',
-      'https://shiroa-git-develop-bugrahanyds-projects.vercel.app',
-      /\.vercel\.app$/
-    ],
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('CORS policy violation'));
+      }
+    },
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    maxAge: 86400 // 24 saat cache
   });
   await app.listen(port);
   console.log(`🚀 SHIROA Backend running on http://localhost:${port}`);
