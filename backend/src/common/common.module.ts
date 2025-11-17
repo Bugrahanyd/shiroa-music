@@ -15,4 +15,11 @@ import { HealthController } from './health/health.controller';
   providers: [LoggerService],
   exports: [LoggerService, RedisCacheModule],
 })
-export class CommonModule {}
+export class CommonModule {
+  static forRoot() {
+    return {
+      module: CommonModule,
+      global: true,
+    };
+  }
+}

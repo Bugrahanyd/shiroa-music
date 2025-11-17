@@ -13,6 +13,7 @@ import { UploadModule } from "./modules/upload/upload.module";
 import { PaymentModule } from "./modules/payment/payment.module";
 import { AnalyticsModule } from "./modules/analytics/analytics.module";
 import { CommonModule } from "./common/common.module";
+import { StudioModule } from "./modules/studio/studio.module";
 import { User } from "./modules/users/user.entity.postgres";
 import { RefreshToken } from "./modules/auth/entities/refresh-token.entity";
 import { Transaction } from "./modules/payment/entities/transaction.entity";
@@ -49,7 +50,8 @@ import { Transaction } from "./modules/payment/entities/transaction.entity";
     UploadModule,
     PaymentModule,
     AnalyticsModule,
-    CommonModule
+    CommonModule.forRoot(),
+    StudioModule
   ],
   controllers: [AppController],
   providers: [

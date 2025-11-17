@@ -4,9 +4,8 @@ import { Orbitron } from "next/font/google";
 
 import { AuthProvider } from "@/lib/auth-context";
 import { ThemeProvider } from "@/lib/theme-context";
-import Navigation from "@/components/Navigation";
+import Sidebar from "@/components/Sidebar";
 import Footer from "@/components/Footer";
-import ThemeSwitcher from "@/components/ThemeSwitcher";
 
 import "./globals.css";
 
@@ -42,7 +41,7 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body className={`${poppins.variable} ${orbitron.variable} font-sans antialiased`}>
+      <body className={`${poppins.variable} ${orbitron.variable} font-sans antialiased theme-bg theme-text`}>
         <div className="animated-bg"></div>
         <div className="glow-orb glow-orb-1"></div>
         <div className="glow-orb glow-orb-2"></div>
@@ -50,10 +49,11 @@ export default function RootLayout({
 
         <ThemeProvider>
           <AuthProvider>
-            <Navigation />
-            {children}
+            <Sidebar />
+            <main className="ml-16 lg:ml-64 transition-all duration-300">
+              {children}
+            </main>
             <Footer />
-            <ThemeSwitcher />
           </AuthProvider>
         </ThemeProvider>
       </body>

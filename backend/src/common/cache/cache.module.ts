@@ -7,12 +7,21 @@ import * as redisStore from 'cache-manager-redis-store';
   imports: [
     CacheModule.registerAsync({
       imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        store: redisStore,
-        host: configService.get('REDIS_HOST') || 'localhost',
-        port: configService.get('REDIS_PORT') || 6379,
-        ttl: 300,
-      }),
+      useFactory: async (configService: ConfigService) => {
+        const redisHost = configService.get('REDIS_HOST');
+        
+        if (!redisHost || redisHost === 'localhost') {
+          // Use memory cache for development
+          return { ttl: 300 };
+        }
+        
+        return {
+          store: redisStore,
+          host: redisHost,
+          port: configService.get('REDIS_PORT') || 6379,
+          ttl: 300,
+        };
+      },
       inject: [ConfigService],
     }),
   ],
