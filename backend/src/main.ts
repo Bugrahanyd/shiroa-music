@@ -18,7 +18,7 @@ async function bootstrap() {
   app.set('trust proxy', 1);
   
   // Logger and Exception Filter
-  const logger = new LoggerService();
+  const logger = app.get(LoggerService);
   app.useGlobalFilters(new HttpExceptionFilter(logger));
   
   app.useStaticAssets(join(__dirname, '..', 'uploads'), {

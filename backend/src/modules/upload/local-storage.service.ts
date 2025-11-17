@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import * as fs from "fs";
 import * as path from "path";
-import type { File as MulterFile } from "multer";
+type MulterFile = Express.Multer.File;
 type File = MulterFile;
 
 @Injectable()

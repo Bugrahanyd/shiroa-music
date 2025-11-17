@@ -12,6 +12,7 @@ import { UsersModule } from "./modules/users/users.module";
 import { UploadModule } from "./modules/upload/upload.module";
 import { PaymentModule } from "./modules/payment/payment.module";
 import { AnalyticsModule } from "./modules/analytics/analytics.module";
+import { CommonModule } from "./common/common.module";
 import { User } from "./modules/users/user.entity.postgres";
 import { RefreshToken } from "./modules/auth/entities/refresh-token.entity";
 import { Transaction } from "./modules/payment/entities/transaction.entity";
@@ -47,7 +48,8 @@ import { Transaction } from "./modules/payment/entities/transaction.entity";
     TracksModule,
     UploadModule,
     PaymentModule,
-    AnalyticsModule
+    AnalyticsModule,
+    CommonModule
   ],
   controllers: [AppController],
   providers: [

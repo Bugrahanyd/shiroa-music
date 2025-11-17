@@ -15,7 +15,7 @@ export class ValidationMiddleware implements NestMiddleware {
   }
 }
 
-export const createValidationMiddleware = (schema: Joi.ObjectSchema) => {
+export const createValidationMiddleware = (schema: Joi.ObjectSchema): any => {
   return class extends ValidationMiddleware {
     constructor() {
       super(schema);
