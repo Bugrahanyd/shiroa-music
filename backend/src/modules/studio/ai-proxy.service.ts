@@ -11,7 +11,7 @@ export class AIProxyService {
     private readonly httpService: HttpService,
     private readonly configService: ConfigService,
   ) {
-    this.aiServiceUrl = this.configService.get('AI_SERVICE_URL') || 'http://localhost:8000';
+    this.aiServiceUrl = this.configService.get('AI_SERVICE_URL') || 'http://localhost:8001';
   }
 
   async generateMusic(params: {
