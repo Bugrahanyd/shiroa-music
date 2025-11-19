@@ -1,10 +1,25 @@
 "use client";
 
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useAuth } from "@/lib/auth-context";
 import { useLanguage } from "@/lib/language-context";
 
 export default function Home() {
+  const { user } = useAuth();
+  const router = useRouter();
   const { t } = useLanguage();
+
+  useEffect(() => {
+    if (!user) {
+      router.push('/landing');
+    }
+  }, [user, router]);
+
+  if (!user) {
+    return null;
+  }
 
   return (
     <div className="min-h-screen">

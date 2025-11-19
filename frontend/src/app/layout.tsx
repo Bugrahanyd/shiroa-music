@@ -56,7 +56,7 @@ export default function RootLayout({
               <KeepAliveWrapper />
               <TopNavigation />
               <Sidebar />
-              <main className="md:ml-16 lg:ml-64 mt-16 pb-20 md:pb-0 transition-all duration-300">
+              <main className="mt-16 pb-20 md:pb-0 container mx-auto px-4 max-w-7xl">
                 {children}
               </main>
               <Footer />

@@ -43,52 +43,14 @@ export default function Sidebar() {
     <>
     {/* Desktop Sidebar */}
     <div 
-      className={`hidden md:block fixed left-0 top-0 h-full z-50 transition-all duration-300 ${
+      className={`hidden md:block fixed left-0 top-16 h-[calc(100vh-4rem)] z-30 transition-all duration-300 ${
         isOpen ? 'w-64' : 'w-16'
-      } theme-bg theme-border-r`}
+      } theme-bg border-r theme-border shadow-2xl`}
       onMouseEnter={() => !isPinned && setIsHovered(true)}
       onMouseLeave={() => !isPinned && setIsHovered(false)}
     >
-      
-      {/* Header */}
-      <div className="p-4 border-b theme-border">
-        <div className="flex items-center justify-center">
-          {isOpen ? (
-            <div className="flex items-center gap-2">
-              <img 
-                src="/logo.jpg" 
-                alt="SHIROA" 
-                className="w-8 h-8 rounded-lg transition-transform duration-300 hover:scale-110" 
-                style={{ imageRendering: 'crisp-edges' }}
-              />
-              <div className="flex">
-                {['S', 'H', 'I', 'R', 'O', 'A'].map((letter, index) => (
-                  <span
-                    key={index}
-                    className="text-xl font-bold theme-text font-orbitron transition-all duration-300 hover:scale-125 cursor-pointer"
-                    style={{
-                      transitionDelay: `${index * 50}ms`,
-                      color: ['#00CED1', '#5F9FFF', '#9D4EDD', '#FF6B9D', '#FFB347', '#00CED1'][index],
-                    }}
-                  >
-                    {letter}
-                  </span>
-                ))}
-              </div>
-            </div>
-          ) : (
-            <img 
-              src="/logo.jpg" 
-              alt="SHIROA" 
-              className="w-8 h-8 rounded-lg transition-transform duration-300 hover:scale-110" 
-              style={{ imageRendering: 'crisp-edges' }}
-            />
-          )}
-        </div>
-      </div>
-
       {/* Navigation */}
-      <nav className="p-4 space-y-2">
+      <nav className="p-4 space-y-2 mt-4">
         {menuItems.map((item) => (
           <Link
             key={item.href}
@@ -98,7 +60,7 @@ export default function Sidebar() {
             }`}
             title={!isOpen ? item.label : ''}
           >
-            <item.icon size={!isOpen ? 24 : 20} className="theme-text-secondary" />
+            <item.icon size={!isOpen ? 22 : 20} className="theme-icon" />
             {isOpen && (
               <span className="theme-text">{item.label}</span>
             )}

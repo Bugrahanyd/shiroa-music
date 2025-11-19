@@ -40,9 +40,29 @@ export default function TopNavigation() {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-40 h-16 theme-bg backdrop-blur-md bg-opacity-95 border-b theme-border">
-      <div className="flex items-center justify-between h-full px-3 md:px-6 md:ml-16 lg:ml-64">
-        {/* Empty space - logo is in sidebar */}
-        <div></div>
+      <div className="flex items-center justify-between h-full px-3 md:px-6">
+        {/* Logo & SHIROA */}
+        <Link href="/" className="flex items-center gap-2 hover:scale-105 transition-transform">
+          <img 
+            src="/logo.jpg" 
+            alt="SHIROA" 
+            className="w-10 h-10 rounded-lg shadow-lg" 
+            style={{ imageRendering: 'crisp-edges' }}
+          />
+          <div className="hidden sm:flex">
+            {['S', 'H', 'I', 'R', 'O', 'A'].map((letter, index) => (
+              <span
+                key={index}
+                className="text-2xl font-bold font-orbitron"
+                style={{
+                  color: ['#00CED1', '#5F9FFF', '#9D4EDD', '#FF6B9D', '#FFB347', '#00CED1'][index],
+                }}
+              >
+                {letter}
+              </span>
+            ))}
+          </div>
+        </Link>
 
         {/* Right Side */}
         <div className="flex items-center gap-4">
@@ -104,7 +124,7 @@ export default function TopNavigation() {
             </button>
 
             {showNotifications && (
-              <div className="absolute right-0 top-14 w-[calc(100vw-2rem)] max-w-sm md:w-80 theme-bg border-2 theme-border rounded-xl shadow-2xl animate-slide-in">
+              <div className="absolute right-0 top-14 w-80 max-w-[calc(100vw-1rem)] theme-bg border-2 theme-border rounded-xl shadow-2xl animate-slide-in">
                 <div className="p-4 border-b theme-border flex items-center justify-between">
                   <h3 className="font-bold theme-text">{t('notif.title')}</h3>
                   {unreadCount > 0 && (

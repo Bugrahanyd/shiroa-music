@@ -1,120 +1,183 @@
 "use client";
 
+'use client';
+
 import { useState } from "react";
-import WaveformEditor from "@/components/studio/WaveformEditor";
-import TrackList from "@/components/studio/TrackList";
-import EffectsPanel from "@/components/studio/EffectsPanel";
-import TransportControls from "@/components/studio/TransportControls";
-import AIGenerator from "@/components/studio/AIGenerator";
+import { Sparkles, Waveform, Sliders, Play, Pause, SkipBack, SkipForward, Volume2 } from "lucide-react";
 
 export default function StudioPage() {
   const [isPlaying, setIsPlaying] = useState(false);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
   const [showAIGenerator, setShowAIGenerator] = useState(false);
-  const [generatedTracks, setGeneratedTracks] = useState<any[]>([]);
-
-  const handleGenerateMusic = async (params: any) => {
-    try {
-      const response = await fetch('/api/studio/compose', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(params)
-      });
-      const result = await response.json();
-      setGeneratedTracks(prev => [...prev, result]);
-    } catch (error) {
-      console.error('Music generation failed:', error);
-    }
-  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0a0e27] via-[#1a1f3a] to-[#0f1a2e] flex flex-col">
+    <div className="min-h-screen bg-black text-white overflow-hidden">
+      {/* Animated Background */}
+      <div className="fixed inset-0 bg-gradient-to-br from-purple-900/20 via-black to-cyan-900/20"></div>
+      <div className="fixed inset-0">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+      </div>
+
       {/* Header */}
-      <header className="border-b border-[#00CED1]/20 bg-[#0f1f3a]/80 backdrop-blur-md">
-        <div className="container mx-auto px-6 py-4 flex items-center justify-between">
+      <header className="relative z-10 border-b border-white/10 backdrop-blur-xl bg-black/50">
+        <div className="px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <h1 className="text-3xl font-[family-name:var(--font-orbitron)] font-black text-transparent bg-clip-text bg-gradient-to-r from-[#00CED1] to-[#5F9FFF]">
-              SHIROA STUDIO
-            </h1>
-            <span className="px-3 py-1 bg-[#00CED1]/20 text-[#00CED1] rounded-full text-sm font-bold">
-              BETA
-            </span>
+            <div className="flex items-center gap-2">
+              {['S', 'H', 'I', 'R', 'O', 'A'].map((letter, index) => (
+                <span
+                  key={index}
+                  className="text-3xl font-bold font-orbitron"
+                  style={{
+                    color: ['#00CED1', '#5F9FFF', '#9D4EDD', '#FF6B9D', '#FFB347', '#00CED1'][index],
+                  }}
+                >
+                  {letter}
+                </span>
+              ))}
+            </div>
+            <span className="text-2xl font-bold font-orbitron text-white/50">STUDIO</span>
+            <span className="px-2 py-1 bg-cyan-500/20 text-cyan-400 rounded text-xs font-bold">BETA</span>
           </div>
           
-          <div className="flex items-center gap-4">
-            <button 
-              onClick={() => setShowAIGenerator(!showAIGenerator)}
-              className={`px-4 py-2 rounded-lg transition-all ${
-                showAIGenerator 
-                  ? 'bg-[#00CED1] text-white shadow-[0_0_15px_rgba(0,206,209,0.4)]' 
-                  : 'bg-[#1e3a5f]/50 text-white hover:bg-[#1e3a5f]'
-              }`}
-            >
-              AI Generate
+          <div className="flex items-center gap-3">
+            <button className="px-4 py-2 bg-white/5 hover:bg-white/10 rounded-lg transition-all text-sm">
+              Save
             </button>
-            <button className="px-4 py-2 bg-[#1e3a5f]/50 text-white rounded-lg hover:bg-[#1e3a5f] transition-all">
-              Save Project
-            </button>
-            <button className="px-4 py-2 bg-gradient-to-r from-[#00CED1] to-[#5F9FFF] text-white rounded-lg hover:shadow-[0_0_20px_rgba(0,206,209,0.5)] transition-all">
+            <button className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-lg hover:shadow-lg hover:shadow-cyan-500/50 transition-all text-sm font-semibold">
               Export
             </button>
           </div>
         </div>
       </header>
 
-      {/* AI Generator Modal */}
-      {showAIGenerator && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-6">
-          <div className="relative max-w-md w-full">
-            <button
-              onClick={() => setShowAIGenerator(false)}
-              className="absolute -top-2 -right-2 w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-colors z-10"
-            >
-              ×
+      {/* Main Content */}
+      <div className="relative z-10 flex h-[calc(100vh-73px)]">
+        {/* Left Panel - AI Generator */}
+        <div className="w-80 border-r border-white/10 backdrop-blur-xl bg-black/30 p-6 overflow-y-auto">
+          <div className="flex items-center gap-2 mb-6">
+            <Sparkles className="text-cyan-400" size={20} />
+            <h2 className="text-lg font-bold">AI Generator</h2>
+          </div>
+
+          <div className="space-y-4">
+            <div>
+              <label className="text-sm text-white/60 mb-2 block">Prompt</label>
+              <textarea 
+                className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-sm focus:border-cyan-500 focus:outline-none resize-none"
+                rows={4}
+                placeholder="Describe your music..."
+              />
+            </div>
+
+            <div>
+              <label className="text-sm text-white/60 mb-2 block">Genre</label>
+              <select className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-sm focus:border-cyan-500 focus:outline-none">
+                <option>Electronic</option>
+                <option>Hip Hop</option>
+                <option>Rock</option>
+                <option>Jazz</option>
+                <option>Classical</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="text-sm text-white/60 mb-2 block">Duration (seconds)</label>
+              <input 
+                type="number" 
+                className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-sm focus:border-cyan-500 focus:outline-none"
+                defaultValue={30}
+              />
+            </div>
+
+            <button className="w-full py-3 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-lg font-semibold hover:shadow-lg hover:shadow-cyan-500/50 transition-all">
+              Generate Music
             </button>
-            <AIGenerator onGenerate={handleGenerateMusic} />
           </div>
         </div>
-      )}
 
-      {/* Main Studio Area */}
-      <div className="flex-1 flex overflow-hidden">
-        {/* Left Sidebar - Track List */}
-        <div className="w-64 border-r border-[#00CED1]/20 bg-[#0f1f3a]/50 backdrop-blur-sm">
-          <TrackList 
-            generatedTracks={generatedTracks}
-            onTrackSelect={(track) => console.log('Selected track:', track)}
-          />
-        </div>
-
-        {/* Center - Waveform Editor */}
+        {/* Center - Waveform Area */}
         <div className="flex-1 flex flex-col">
-          <div className="flex-1 p-6 overflow-auto">
-            <WaveformEditor 
-              isPlaying={isPlaying}
-              currentTime={currentTime}
-              duration={duration}
-              onTimeUpdate={setCurrentTime}
-              onDurationChange={setDuration}
-            />
+          <div className="flex-1 p-8 flex items-center justify-center">
+            <div className="text-center">
+              <Waveform className="mx-auto mb-4 text-cyan-400" size={64} />
+              <h3 className="text-xl font-bold mb-2">No track loaded</h3>
+              <p className="text-white/60">Generate music with AI or upload a track</p>
+            </div>
           </div>
 
           {/* Transport Controls */}
-          <div className="border-t border-[#00CED1]/20 bg-[#0f1f3a]/80 backdrop-blur-md">
-            <TransportControls
-              isPlaying={isPlaying}
-              onPlayPause={() => setIsPlaying(!isPlaying)}
-              currentTime={currentTime}
-              duration={duration}
-              onSeek={setCurrentTime}
-            />
+          <div className="border-t border-white/10 backdrop-blur-xl bg-black/50 p-6">
+            <div className="flex items-center justify-between mb-4">
+              <div className="text-sm text-white/60">00:00</div>
+              <div className="flex-1 mx-6">
+                <div className="h-1 bg-white/10 rounded-full overflow-hidden">
+                  <div className="h-full w-0 bg-gradient-to-r from-cyan-500 to-purple-500"></div>
+                </div>
+              </div>
+              <div className="text-sm text-white/60">00:00</div>
+            </div>
+
+            <div className="flex items-center justify-center gap-4">
+              <button className="p-2 hover:bg-white/10 rounded-lg transition-all">
+                <SkipBack size={20} />
+              </button>
+              <button 
+                onClick={() => setIsPlaying(!isPlaying)}
+                className="p-4 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full hover:shadow-lg hover:shadow-cyan-500/50 transition-all"
+              >
+                {isPlaying ? <Pause size={24} /> : <Play size={24} />}
+              </button>
+              <button className="p-2 hover:bg-white/10 rounded-lg transition-all">
+                <SkipForward size={20} />
+              </button>
+              <div className="ml-8 flex items-center gap-2">
+                <Volume2 size={20} className="text-white/60" />
+                <input type="range" className="w-24" />
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Right Sidebar - Effects */}
-        <div className="w-80 border-l border-[#00CED1]/20 bg-[#0f1f3a]/50 backdrop-blur-sm">
-          <EffectsPanel />
+        {/* Right Panel - Effects */}
+        <div className="w-80 border-l border-white/10 backdrop-blur-xl bg-black/30 p-6 overflow-y-auto">
+          <div className="flex items-center gap-2 mb-6">
+            <Sliders className="text-purple-400" size={20} />
+            <h2 className="text-lg font-bold">Effects</h2>
+          </div>
+
+          <div className="space-y-6">
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm">Reverb</span>
+                <span className="text-xs text-white/60">50%</span>
+              </div>
+              <input type="range" className="w-full" defaultValue={50} />
+            </div>
+
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm">Delay</span>
+                <span className="text-xs text-white/60">30%</span>
+              </div>
+              <input type="range" className="w-full" defaultValue={30} />
+            </div>
+
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm">Distortion</span>
+                <span className="text-xs text-white/60">0%</span>
+              </div>
+              <input type="range" className="w-full" defaultValue={0} />
+            </div>
+
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm">Filter</span>
+                <span className="text-xs text-white/60">100%</span>
+              </div>
+              <input type="range" className="w-full" defaultValue={100} />
+            </div>
+          </div>
         </div>
       </div>
     </div>
