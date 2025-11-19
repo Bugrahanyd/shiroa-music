@@ -4,7 +4,6 @@ import { StudioService } from './studio.service';
 import { AIProxyService } from './ai-proxy.service';
 
 @Controller('studio')
-@UseGuards(JwtAuthGuard)
 export class StudioController {
   constructor(
     private readonly studioService: StudioService,
