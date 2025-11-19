@@ -14,22 +14,22 @@ export default function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isPinned, setIsPinned] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [hoveredTheme, setHoveredTheme] = useState<string | null>(null);
   const { user, logout } = useAuth();
   const { theme, setTheme } = useTheme();
 
   const isOpen = isPinned || isHovered;
 
   const themes = [
-    { id: 'dark', name: 'Night', color: 'bg-gray-900' },
-    { id: 'light', name: 'Day', color: 'bg-white' },
-    { id: 'japanese', name: 'Sakura', color: 'bg-pink-100' },
-    { id: 'neon', name: 'Cyber', color: 'bg-purple-900' },
+    { id: 'dark', name: 'Night', color: 'bg-gray-900', story: 'Deep focus in the darkness. Where creativity meets silence.' },
+    { id: 'light', name: 'Day', color: 'bg-white', story: 'Bright and clear. Perfect for daytime productivity.' },
+    { id: 'japanese', name: 'Sakura', color: 'bg-pink-100', story: 'Cherry blossoms in spring. Elegant and peaceful.' },
+    { id: 'neon', name: 'Cyber', color: 'bg-purple-900', story: 'Futuristic vibes. Electric dreams and neon lights.' },
+    { id: 'sunset', name: 'Sunset', color: 'bg-gradient-to-br from-orange-600 to-red-700', story: 'Warm embrace of the golden hour. Creative fire burns bright.' },
   ];
 
   const menuItems = [
     { icon: Music, label: 'Browse', href: '/tracks' },
-    { icon: Compass, label: 'Discover', href: '/discover' },
-    { icon: Search, label: 'Search', href: '/search' },
     ...(user ? [
       { icon: Heart, label: 'Favorites', href: '/favorites' },
       { icon: ShoppingCart, label: 'Purchases', href: '/purchases' },
@@ -94,9 +94,9 @@ export default function Sidebar() {
         </button>
 
         {/* Theme Switcher */}
-        <div className="space-y-2">
+        <div className="space-y-2 relative">
           <div className={`flex items-center gap-2 ${!isOpen ? 'justify-center' : ''}`}>
-            <Palette size={20} className="theme-text-secondary" />
+            <Palette size={20} className="theme-icon" />
             {isOpen && <span className="text-sm theme-text-secondary">Theme</span>}
           </div>
           
@@ -105,17 +105,31 @@ export default function Sidebar() {
               <button
                 key={t.id}
                 onClick={() => setTheme(t.id)}
-                className={`p-2 rounded-lg border-2 transition-all ${
+                onMouseEnter={() => setHoveredTheme(t.id)}
+                onMouseLeave={() => setHoveredTheme(null)}
+                className={`p-2 rounded-lg border-2 transition-all relative ${
                   theme === t.id ? 'border-blue-500' : 'border-transparent theme-border'
-                } ${t.color}`}
+                } ${t.color} ${t.id === 'sunset' && isOpen ? 'col-span-2' : ''}`}
                 title={t.name}
               >
                 {isOpen && (
-                  <span className="text-xs font-medium">{t.name}</span>
+                  <span className="text-xs font-medium text-white">{t.name}</span>
                 )}
               </button>
             ))}
           </div>
+
+          {/* Theme Story Card */}
+          {hoveredTheme && (
+            <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 glass-card p-6 max-w-sm w-full mx-4 shadow-2xl animate-slide-in">
+              <h3 className="text-xl font-bold theme-text mb-2">
+                {themes.find(t => t.id === hoveredTheme)?.name}
+              </h3>
+              <p className="theme-text-secondary text-sm">
+                {themes.find(t => t.id === hoveredTheme)?.story}
+              </p>
+            </div>
+          )}
         </div>
       </div>
 

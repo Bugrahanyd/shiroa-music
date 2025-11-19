@@ -44,7 +44,7 @@ export default function TopNavigation() {
         {/* Logo & SHIROA */}
         <Link href="/" className="flex items-center gap-2 hover:scale-105 transition-transform">
           <img 
-            src="/logo.jpg" 
+            src="/logo.png" 
             alt="SHIROA" 
             className="w-10 h-10 rounded-lg shadow-lg" 
             style={{ imageRendering: 'crisp-edges' }}
@@ -117,9 +117,7 @@ export default function TopNavigation() {
               <Bell size={18} className="md:hidden theme-text-secondary" />
               <Bell size={20} className="hidden md:block theme-text-secondary" />
               {unreadCount > 0 && (
-                <div className="absolute -top-1 -right-1 w-4 h-4 md:w-5 md:h-5 bg-gradient-to-r from-red-500 to-pink-500 rounded-full flex items-center justify-center animate-pulse">
-                  <span className="text-white text-[8px] md:text-[10px] font-bold">{unreadCount}</span>
-                </div>
+                <div className="absolute -top-1 -right-1 w-2 h-2 md:w-2.5 md:h-2.5 bg-red-600 rounded-full animate-ping"></div>
               )}
             </button>
 
@@ -211,13 +209,13 @@ export default function TopNavigation() {
             <div className="flex items-center gap-2">
               <Link
                 href="/login"
-                className="px-3 md:px-5 py-2 rounded-lg theme-text-secondary hover:theme-text transition-all hover:scale-105 text-sm"
+                className={`px-3 md:px-5 py-2 rounded-lg ${getGradientClass()} bg-[length:200%_100%] animate-gradient-shift text-white font-medium shadow-lg hover:shadow-xl transition-all hover:scale-105 text-sm`}
               >
                 {t('nav.login')}
               </Link>
               <Link
                 href="/register"
-                className={`px-3 md:px-5 py-2 rounded-lg ${getGradientClass()} text-white font-medium shadow-lg hover:shadow-xl transition-all hover:scale-105 text-sm`}
+                className={`px-3 md:px-5 py-2 rounded-lg ${getGradientClass()} bg-[length:200%_100%] animate-gradient-shift text-white font-medium shadow-lg hover:shadow-xl transition-all hover:scale-105 text-sm`}
               >
                 {t('nav.signup')}
               </Link>

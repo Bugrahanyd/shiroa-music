@@ -219,6 +219,67 @@ export default function TrackDetailPage() {
           </div>
         </div>
       </div>
+
+      {/* AI Story & Lyrics Section */}
+      <div className="mt-16 grid lg:grid-cols-2 gap-8">
+        {/* AI Generated Story */}
+        <div className="theme-card rounded-3xl p-8">
+          <h2 className="text-2xl font-bold theme-text mb-4 font-orbitron flex items-center gap-2">
+            <span className="text-2xl">✨</span>
+            The Story Behind
+          </h2>
+          <div className="theme-text-secondary space-y-4 leading-relaxed">
+            <p>
+              This track was born from the intersection of human creativity and artificial intelligence. 
+              The artist envisioned a soundscape that captures the essence of {track.genre} while pushing 
+              the boundaries of modern production.
+            </p>
+            <p>
+              Using SHIROA's AI-powered studio, the composition evolved through multiple iterations, 
+              each one refining the emotional depth and sonic texture. The result is a unique piece 
+              that resonates with both contemporary and timeless qualities.
+            </p>
+            <p>
+              At {track.bpm} BPM in the key of {track.key || 'unknown'}, this track creates an atmosphere 
+              that's perfect for {track.tags?.join(', ') || 'various applications'}. Every element was 
+              carefully crafted to ensure maximum impact and versatility.
+            </p>
+          </div>
+        </div>
+
+        {/* Lyrics / Production Notes */}
+        <div className="theme-card rounded-3xl p-8">
+          <h2 className="text-2xl font-bold theme-text mb-4 font-orbitron flex items-center gap-2">
+            <span className="text-2xl">🎵</span>
+            Production Notes
+          </h2>
+          <div className="theme-text-secondary space-y-3 font-mono text-sm">
+            <div className="border-l-2 pl-4" style={{ borderColor: 'var(--theme-icon-color)' }}>
+              <p className="theme-text font-semibold mb-1">Intro (0:00 - 0:30)</p>
+              <p>Atmospheric build-up with layered synths and subtle percussion</p>
+            </div>
+            <div className="border-l-2 pl-4" style={{ borderColor: 'var(--theme-icon-color)' }}>
+              <p className="theme-text font-semibold mb-1">Verse (0:30 - 1:15)</p>
+              <p>Main melody introduction with rhythmic elements</p>
+            </div>
+            <div className="border-l-2 pl-4" style={{ borderColor: 'var(--theme-icon-color)' }}>
+              <p className="theme-text font-semibold mb-1">Drop (1:15 - 2:00)</p>
+              <p>Full energy release with all elements combined</p>
+            </div>
+            <div className="border-l-2 pl-4" style={{ borderColor: 'var(--theme-icon-color)' }}>
+              <p className="theme-text font-semibold mb-1">Outro (2:00 - 3:00)</p>
+              <p>Gradual wind-down maintaining emotional resonance</p>
+            </div>
+          </div>
+          
+          <div className="mt-6 p-4 rounded-xl" style={{ backgroundColor: 'var(--theme-bg-secondary)' }}>
+            <p className="theme-text-secondary text-xs">
+              <span className="theme-accent font-semibold">Note:</span> This track is 100% royalty-free 
+              with exclusive licensing. Once purchased, you own all commercial rights forever.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

@@ -40,10 +40,10 @@ export default function PurchasesPage() {
 
   if (!user) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#0C0C0C]">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-[#00CED1] mb-4">Please Login</h1>
-          <Link href="/login" className="text-zinc-400 hover:text-[#00CED1]">
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-center theme-card p-12 rounded-3xl">
+          <h1 className="text-2xl font-bold theme-text mb-4">Please Login</h1>
+          <Link href="/login" className="theme-accent hover:opacity-80">
             Go to Login
           </Link>
         </div>
@@ -53,79 +53,80 @@ export default function PurchasesPage() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#0C0C0C]">
-        <div className="text-[#00CED1] text-xl">Loading...</div>
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="theme-accent text-xl">Loading...</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#0C0C0C] py-16 px-4">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-4xl font-bold text-[#00CED1] mb-8 font-[family-name:var(--font-orbitron)]">
+    <div className="container mx-auto px-4 py-8">
+      <div className="mb-8">
+        <h1 className="text-4xl font-bold theme-text mb-2 font-orbitron">
           My Purchases
         </h1>
-
-        {purchases.length === 0 ? (
-          <div className="text-center py-16">
-            <p className="text-zinc-400 text-lg mb-6">You haven't purchased any tracks yet.</p>
-            <Link
-              href="/tracks"
-              className="inline-block px-6 py-3 bg-[#00CED1] text-[#0C0C0C] font-bold rounded-lg hover:bg-[#5FE0E5] transition-colors"
-            >
-              Browse Tracks
-            </Link>
-          </div>
-        ) : (
-          <div className="space-y-4">
-            {purchases.map((purchase) => (
-              <div
-                key={purchase._id}
-                className="bg-zinc-900 border border-zinc-800 rounded-lg p-6 flex items-center justify-between"
-              >
-                <div className="flex-1">
-                  <h3 className="text-xl font-bold text-white mb-1">
-                    {purchase.trackId?.title || "Unknown Track"}
-                  </h3>
-                  <p className="text-zinc-400 mb-2">
-                    {purchase.trackId?.artist || "Unknown Artist"}
-                  </p>
-                  <div className="flex items-center gap-4 text-sm text-zinc-500">
-                    <span>Purchased: {new Date(purchase.createdAt).toLocaleDateString()}</span>
-                    <span>•</span>
-                    <span>${purchase.amount}</span>
-                    <span>•</span>
-                    <span className="text-[#00CED1]">{purchase.status}</span>
-                  </div>
-                  {purchase.licenseKey && (
-                    <div className="mt-2">
-                      <span className="text-xs text-zinc-500">License: </span>
-                      <code className="text-xs bg-zinc-800 px-2 py-1 rounded text-[#00CED1]">
-                        {purchase.licenseKey}
-                      </code>
-                    </div>
-                  )}
-                </div>
-
-                <div className="flex gap-3">
-                  <button
-                    onClick={() => handleDownload(purchase._id)}
-                    className="px-6 py-3 bg-[#00CED1] text-[#0C0C0C] font-bold rounded-lg hover:bg-[#5FE0E5] transition-colors"
-                  >
-                    Download
-                  </button>
-                  <Link
-                    href={`/tracks/${purchase.trackId?._id}`}
-                    className="px-6 py-3 bg-zinc-800 text-zinc-300 font-bold rounded-lg hover:bg-zinc-700 transition-colors"
-                  >
-                    View Track
-                  </Link>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+        <p className="theme-text-secondary">Download and manage your licensed tracks</p>
       </div>
+
+      {purchases.length === 0 ? (
+        <div className="text-center py-20 theme-card rounded-3xl">
+          <p className="theme-text-secondary text-lg mb-6">You haven't purchased any tracks yet.</p>
+          <Link
+            href="/tracks"
+            className="theme-button px-8 py-3 rounded-full font-semibold inline-block"
+          >
+            Browse Tracks
+          </Link>
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {purchases.map((purchase) => (
+            <div
+              key={purchase._id}
+              className="theme-card rounded-2xl p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4"
+            >
+              <div className="flex-1">
+                <h3 className="text-xl font-bold theme-text mb-1">
+                  {purchase.trackId?.title || "Unknown Track"}
+                </h3>
+                <p className="theme-text-secondary mb-2">
+                  {purchase.trackId?.artist || "Unknown Artist"}
+                </p>
+                <div className="flex flex-wrap items-center gap-3 text-sm theme-text-secondary">
+                  <span>Purchased: {new Date(purchase.createdAt).toLocaleDateString()}</span>
+                  <span>•</span>
+                  <span>${purchase.amount}</span>
+                  <span>•</span>
+                  <span className="theme-accent">{purchase.status}</span>
+                </div>
+                {purchase.licenseKey && (
+                  <div className="mt-2">
+                    <span className="text-xs theme-text-secondary">License: </span>
+                    <code className="text-xs theme-card px-2 py-1 rounded theme-accent">
+                      {purchase.licenseKey}
+                    </code>
+                  </div>
+                )}
+              </div>
+
+              <div className="flex gap-3">
+                <button
+                  onClick={() => handleDownload(purchase._id)}
+                  className="theme-button px-6 py-3 rounded-lg font-semibold"
+                >
+                  Download
+                </button>
+                <Link
+                  href={`/tracks/${purchase.trackId?._id}`}
+                  className="theme-button-outline px-6 py-3 rounded-lg font-semibold"
+                >
+                  View Track
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

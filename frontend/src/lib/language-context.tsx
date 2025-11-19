@@ -75,6 +75,7 @@ const translations = {
     'home.cta.title': 'Find Your Perfect Track Today',
     'home.cta.subtitle': 'Browse our catalog of exclusive tracks and elevate your content.',
     'home.cta.button': 'Browse Tracks',
+    'home.cta.free': 'No credit card required • Free to start',
   },
   tr: {
     // Navigation
@@ -140,6 +141,7 @@ const translations = {
     'home.cta.title': 'Bugün Mükemmel Parçanızı Bulun',
     'home.cta.subtitle': 'Özel parça kataloğumuza göz atın ve içeriğinizi yükseltin.',
     'home.cta.button': 'Parçalara Göz At',
+    'home.cta.free': 'Kredi kartı gerekmez • Ücretsiz başlayın',
   },
 };
 

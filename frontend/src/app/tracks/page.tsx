@@ -18,7 +18,7 @@ export default function TracksPage() {
   const [selectedGenre, setSelectedGenre] = useState("all");
   const [sortBy, setSortBy] = useState("newest");
 
-  const genres = ["all", "electronic", "hip-hop", "rock", "pop", "jazz", "trap", "ambient"];
+  const genres = ["all", "Electronic", "Hip Hop", "Rock", "Pop", "Jazz", "Trap", "Ambient", "Synthwave", "Acoustic"];
 
   useEffect(() => {
     loadTracks();
@@ -59,7 +59,7 @@ export default function TracksPage() {
     }
 
     if (selectedGenre !== "all") {
-      filtered = filtered.filter(t => t.genre === selectedGenre);
+      filtered = filtered.filter(t => t.genre?.toLowerCase() === selectedGenre.toLowerCase());
     }
 
     filtered.sort((a, b) => {
