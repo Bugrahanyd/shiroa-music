@@ -8,10 +8,10 @@ export default function Home() {
       <section className="container mx-auto px-6 py-32 text-center relative">
         <div className="absolute inset-0 bg-gradient-to-b from-[#00CED1]/5 to-transparent rounded-3xl blur-3xl"></div>
         <div className="relative z-10">
-          <h2 className="text-6xl md:text-7xl font-[family-name:var(--font-orbitron)] font-black text-white mb-6 leading-tight">
+          <h2 className="text-6xl md:text-7xl font-[family-name:var(--font-orbitron)] font-black theme-text mb-6 leading-tight">
 Everything for your <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00CED1] via-[#5F9FFF] to-[#9D4EDD]">sound</span>
           </h2>
-          <p className="text-xl text-gray-300 mb-12 max-w-2xl mx-auto">
+          <p className="text-xl theme-text-secondary mb-12 max-w-2xl mx-auto">
 Discover and license high-quality music tracks with full commercial rights. One track, one owner, unlimited possibilities.
           </p>
           <div className="flex items-center justify-center gap-4">
@@ -34,44 +34,44 @@ How It Works
       {/* Features */}
       <section className="container mx-auto px-6 py-20">
         <div className="grid md:grid-cols-3 gap-8">
-          <div className="group bg-[#1e3a5f]/30 backdrop-blur-sm border border-[#00CED1]/30 rounded-2xl p-8 hover:border-[#00CED1] hover:bg-[#00CED1]/5 transition-all duration-500 hover:shadow-[0_0_30px_rgba(0,206,209,0.4)] hover:scale-105 cursor-pointer">
-            <div className="w-12 h-12 bg-gradient-to-br from-[#00CED1] to-[#5F9FFF] rounded-full flex items-center justify-center mb-4 shadow-[0_0_15px_rgba(0,206,209,0.4)] group-hover:shadow-[0_0_25px_rgba(0,206,209,0.6)] transition-all duration-500 group-hover:scale-110">
+          <div className="group theme-card rounded-2xl p-8 transition-all duration-500 hover:scale-105 cursor-pointer">
+            <div className="w-12 h-12 bg-gradient-to-br from-[#00CED1] to-[#5F9FFF] rounded-full flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-all">
               <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
               </svg>
             </div>
-            <h3 className="text-xl font-[family-name:var(--font-orbitron)] font-bold text-white mb-2 group-hover:text-[#00CED1] transition-colors duration-300">
+            <h3 className="text-xl font-[family-name:var(--font-orbitron)] font-bold theme-text mb-2 group-hover:text-[#00CED1] transition-colors">
 True Exclusivity
             </h3>
-            <p className="text-gray-300 group-hover:text-gray-200 transition-colors duration-300">
+            <p className="theme-text-secondary transition-colors">
 Full commercial rights with lifetime ownership. No royalties, no recurring fees, no competition.
             </p>
           </div>
 
-          <div className="group bg-[#1e3a5f]/30 backdrop-blur-sm border border-[#5F9FFF]/30 rounded-2xl p-8 hover:border-[#5F9FFF] hover:bg-[#5F9FFF]/5 transition-all duration-500 hover:shadow-[0_0_30px_rgba(95,159,255,0.4)] hover:scale-105 cursor-pointer">
-            <div className="w-12 h-12 bg-gradient-to-br from-[#5F9FFF] to-[#9D4EDD] rounded-full flex items-center justify-center mb-4 shadow-[0_0_15px_rgba(95,159,255,0.4)] group-hover:shadow-[0_0_25px_rgba(95,159,255,0.6)] transition-all duration-500 group-hover:scale-110">
+          <div className="group theme-card rounded-2xl p-8 transition-all duration-500 hover:scale-105 cursor-pointer">
+            <div className="w-12 h-12 bg-gradient-to-br from-[#5F9FFF] to-[#9D4EDD] rounded-full flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-all">
               <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
             </div>
-            <h3 className="text-xl font-[family-name:var(--font-orbitron)] font-bold text-white mb-2 group-hover:text-[#5F9FFF] transition-colors duration-300">
+            <h3 className="text-xl font-[family-name:var(--font-orbitron)] font-bold theme-text mb-2 group-hover:text-[#5F9FFF] transition-colors">
 AI-Powered Creation
             </h3>
-            <p className="text-gray-300 group-hover:text-gray-200 transition-colors duration-300">
+            <p className="theme-text-secondary transition-colors">
 Advanced AI tools for composition, vocal processing, and mixing. Create professional music faster.
             </p>
           </div>
 
-          <div className="group bg-[#1e3a5f]/30 backdrop-blur-sm border border-[#9D4EDD]/30 rounded-2xl p-8 hover:border-[#9D4EDD] hover:bg-[#9D4EDD]/5 transition-all duration-500 hover:shadow-[0_0_30px_rgba(157,78,221,0.4)] hover:scale-105 cursor-pointer">
-            <div className="w-12 h-12 bg-gradient-to-br from-[#9D4EDD] to-[#00CED1] rounded-full flex items-center justify-center mb-4 shadow-[0_0_15px_rgba(157,78,221,0.4)] group-hover:shadow-[0_0_25px_rgba(157,78,221,0.6)] transition-all duration-500 group-hover:scale-110">
+          <div className="group theme-card rounded-2xl p-8 transition-all duration-500 hover:scale-105 cursor-pointer">
+            <div className="w-12 h-12 bg-gradient-to-br from-[#9D4EDD] to-[#00CED1] rounded-full flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-all">
               <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
               </svg>
             </div>
-            <h3 className="text-xl font-[family-name:var(--font-orbitron)] font-bold text-white mb-2 group-hover:text-[#9D4EDD] transition-colors duration-300">
+            <h3 className="text-xl font-[family-name:var(--font-orbitron)] font-bold theme-text mb-2 group-hover:text-[#9D4EDD] transition-colors">
 Instant Delivery
             </h3>
-            <p className="text-gray-300 group-hover:text-gray-200 transition-colors duration-300">
+            <p className="theme-text-secondary transition-colors">
 Secure checkout with Stripe. Instant access to high-quality files and license certificates.
             </p>
           </div>

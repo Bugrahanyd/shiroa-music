@@ -4,12 +4,26 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/lib/auth-context';
 import { useTheme } from '@/lib/theme-context';
-import { Bell, User, LogOut, Menu } from 'lucide-react';
+import { useLanguage } from '@/lib/language-context';
+import { Bell, User, LogOut, Menu, Globe } from 'lucide-react';
 
 export default function TopNavigation() {
   const { user, logout } = useAuth();
   const { theme } = useTheme();
+  const { language, setLanguage, t } = useLanguage();
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(3);
+  const [notifications, setNotifications] = useState([
+    { id: 1, title: 'New track uploaded', message: 'Your track "Summer Vibes" is now live', time: '5m ago', read: false },
+    { id: 2, title: 'Purchase completed', message: 'You bought "Dark Trap Beat"', time: '1h ago', read: false },
+    { id: 3, title: 'New follower', message: 'ProducerX started following you', time: '2h ago', read: false },
+  ]);
+
+  const markAllAsRead = () => {
+    setNotifications(notifications.map(n => ({ ...n, read: true })));
+    setUnreadCount(0);
+  };
 
   const getGradientClass = () => {
     switch (theme) {
@@ -25,18 +39,20 @@ export default function TopNavigation() {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-40 h-16 theme-bg theme-border-b backdrop-blur-sm bg-opacity-90">
-      <div className="flex items-center justify-between h-full px-4 ml-16 lg:ml-64">
+    <nav className="fixed top-0 left-0 right-0 z-40 h-16 theme-bg backdrop-blur-md bg-opacity-95 shadow-lg">
+      <div className="flex items-center justify-between h-full px-3 md:px-6 md:ml-16 lg:ml-64">
+        {/* Subtle gradient line at bottom */}
+        <div className={`absolute bottom-0 left-0 right-0 h-[2px] ${getGradientClass()} opacity-60`}></div>
         
         {/* Logo + Animated Text */}
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-            <span className="text-white font-bold text-sm">S</span>
+        <div className="flex items-center gap-2 md:gap-4">
+          <div className={`w-8 h-8 md:w-10 md:h-10 rounded-xl ${getGradientClass()} flex items-center justify-center shadow-lg`}>
+            <span className="text-white font-bold text-sm md:text-lg">S</span>
           </div>
-          <div className="flex items-center">
-            <span className="text-xl font-bold theme-text font-orbitron mr-2">SHIROA</span>
-            <div className={`text-sm font-medium ${getGradientClass()} bg-clip-text text-transparent animate-pulse`}>
-              Everything for your sound
+          <div className="flex flex-col">
+            <span className="text-sm md:text-lg font-bold theme-text font-orbitron leading-none">SHIROA</span>
+            <div className={`hidden sm:block text-[10px] md:text-xs font-medium ${getGradientClass()} bg-clip-text text-transparent`}>
+              {t('tagline')}
             </div>
           </div>
         </div>
@@ -45,41 +61,133 @@ export default function TopNavigation() {
         <div className="flex items-center gap-4">
           
           {/* Quick Navigation */}
-          <div className="hidden md:flex items-center gap-2">
-            <Link href="/" className="px-3 py-2 rounded-lg theme-hover theme-text-secondary hover:theme-text transition-colors">
-              Home
+          <div className="hidden md:flex items-center gap-1">
+            <Link href="/" className="px-4 py-2 rounded-lg theme-text-secondary hover:theme-text transition-all hover:scale-105 relative group">
+              <span>{t('nav.home')}</span>
+              <div className={`absolute bottom-0 left-0 right-0 h-0.5 ${getGradientClass()} scale-x-0 group-hover:scale-x-100 transition-transform`}></div>
             </Link>
-            <Link href="/tracks" className="px-3 py-2 rounded-lg theme-hover theme-text-secondary hover:theme-text transition-colors">
-              Tracks
+            <Link href="/tracks" className="px-4 py-2 rounded-lg theme-text-secondary hover:theme-text transition-all hover:scale-105 relative group">
+              <span>{t('nav.tracks')}</span>
+              <div className={`absolute bottom-0 left-0 right-0 h-0.5 ${getGradientClass()} scale-x-0 group-hover:scale-x-100 transition-transform`}></div>
             </Link>
+            <a 
+              href="/studio" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="px-4 py-2 rounded-lg theme-text-secondary hover:theme-text transition-all hover:scale-105 relative group"
+            >
+              <span className="flex items-center gap-1">
+                {t('nav.studio')}
+                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+              </span>
+              <div className={`absolute bottom-0 left-0 right-0 h-0.5 ${getGradientClass()} scale-x-0 group-hover:scale-x-100 transition-transform`}></div>
+            </a>
+          </div>
+
+          {/* Language Switcher */}
+          <div className="relative">
+            <button
+              onClick={() => setLanguage(language === 'en' ? 'tr' : 'en')}
+              className="flex items-center gap-1 md:gap-2 px-2 md:px-3 py-2 rounded-lg theme-hover transition-all hover:scale-105"
+              title={language === 'en' ? 'Türkçe' : 'English'}
+            >
+              <Globe size={16} className="md:hidden theme-text-secondary" />
+              <Globe size={18} className="hidden md:block theme-text-secondary" />
+              <span className="hidden lg:block theme-text-secondary font-medium text-sm uppercase">
+                {language}
+              </span>
+            </button>
           </div>
 
           {/* Notifications */}
-          <button className="relative p-2 rounded-lg theme-hover">
-            <Bell size={20} className="theme-text-secondary" />
-            <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></div>
-          </button>
+          <div className="relative">
+            <button 
+              onClick={() => setShowNotifications(!showNotifications)}
+              className="relative p-1.5 md:p-2 rounded-lg theme-hover transition-all hover:scale-110"
+            >
+              <Bell size={18} className="md:hidden theme-text-secondary" />
+              <Bell size={20} className="hidden md:block theme-text-secondary" />
+              {unreadCount > 0 && (
+                <div className="absolute -top-1 -right-1 w-4 h-4 md:w-5 md:h-5 bg-gradient-to-r from-red-500 to-pink-500 rounded-full flex items-center justify-center animate-pulse">
+                  <span className="text-white text-[8px] md:text-[10px] font-bold">{unreadCount}</span>
+                </div>
+              )}
+            </button>
+
+            {showNotifications && (
+              <div className="absolute right-0 top-14 w-[calc(100vw-2rem)] max-w-sm md:w-80 theme-bg border-2 theme-border rounded-xl shadow-2xl animate-slide-in">
+                <div className="p-4 border-b theme-border flex items-center justify-between">
+                  <h3 className="font-bold theme-text">{t('notif.title')}</h3>
+                  {unreadCount > 0 && (
+                    <button 
+                      onClick={markAllAsRead}
+                      className="text-xs theme-accent hover:opacity-80 transition-opacity"
+                    >
+                      {t('notif.markRead')}
+                    </button>
+                  )}
+                </div>
+                <div className="max-h-96 overflow-y-auto">
+                  {notifications.length > 0 ? (
+                    notifications.map((notif) => (
+                      <div 
+                        key={notif.id}
+                        className={`p-4 border-b theme-border hover:theme-bg-secondary transition-colors cursor-pointer ${
+                          !notif.read ? 'bg-opacity-50' : ''
+                        }`}
+                        onClick={() => {
+                          setNotifications(notifications.map(n => 
+                            n.id === notif.id ? { ...n, read: true } : n
+                          ));
+                          setUnreadCount(Math.max(0, unreadCount - 1));
+                        }}
+                      >
+                        <div className="flex items-start gap-3">
+                          {!notif.read && (
+                            <div className="w-2 h-2 bg-gradient-to-r from-red-500 to-pink-500 rounded-full mt-2"></div>
+                          )}
+                          <div className="flex-1">
+                            <h4 className="font-semibold theme-text text-sm">{notif.title}</h4>
+                            <p className="theme-text-secondary text-xs mt-1">{notif.message}</p>
+                            <span className="theme-text-secondary text-xs mt-2 block">{notif.time}</span>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="p-8 text-center theme-text-secondary">
+                      <Bell size={32} className="mx-auto mb-2 opacity-50" />
+                      <p>{t('notif.empty')}</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
 
           {/* User Menu */}
           {user ? (
             <div className="relative">
               <button
                 onClick={() => setShowUserMenu(!showUserMenu)}
-                className="flex items-center gap-2 p-2 rounded-lg theme-hover"
+                className="flex items-center gap-2 md:gap-3 px-2 md:px-3 py-2 rounded-xl theme-hover transition-all hover:scale-105"
               >
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-                  <User size={16} className="text-white" />
+                <div className={`w-7 h-7 md:w-9 md:h-9 rounded-full ${getGradientClass()} flex items-center justify-center shadow-lg`}>
+                  <User size={14} className="md:hidden text-white" />
+                  <User size={18} className="hidden md:block text-white" />
                 </div>
-                <span className="hidden md:block theme-text">{user.name}</span>
+                <span className="hidden lg:block theme-text font-medium text-sm">{user.name}</span>
               </button>
 
               {showUserMenu && (
-                <div className="absolute right-0 top-12 w-48 theme-bg theme-border rounded-lg shadow-lg py-2">
+                <div className="absolute right-0 top-14 w-48 md:w-56 theme-bg border-2 theme-border rounded-xl shadow-2xl py-2 animate-slide-in">
                   <Link href="/profile" className="block px-4 py-2 theme-hover theme-text">
-                    Profile
+                    {t('nav.profile')}
                   </Link>
                   <Link href="/dashboard" className="block px-4 py-2 theme-hover theme-text">
-                    Dashboard
+                    {t('nav.dashboard')}
                   </Link>
                   <hr className="my-2 theme-border" />
                   <button
@@ -87,7 +195,7 @@ export default function TopNavigation() {
                     className="w-full text-left px-4 py-2 theme-hover theme-text flex items-center gap-2"
                   >
                     <LogOut size={16} />
-                    Logout
+                    {t('nav.logout')}
                   </button>
                 </div>
               )}
@@ -96,15 +204,15 @@ export default function TopNavigation() {
             <div className="flex items-center gap-2">
               <Link
                 href="/login"
-                className="px-4 py-2 rounded-lg theme-hover theme-text-secondary hover:theme-text transition-colors"
+                className="px-3 md:px-5 py-2 rounded-lg theme-text-secondary hover:theme-text transition-all hover:scale-105 text-sm"
               >
-                Login
+                {t('nav.login')}
               </Link>
               <Link
                 href="/register"
-                className="px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:from-blue-600 hover:to-purple-700 transition-all"
+                className={`px-3 md:px-5 py-2 rounded-lg ${getGradientClass()} text-white font-medium shadow-lg hover:shadow-xl transition-all hover:scale-105 text-sm`}
               >
-                Register
+                {t('nav.signup')}
               </Link>
             </div>
           )}

@@ -15,10 +15,30 @@ export default function Navigation() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <Link href="/" className="flex items-center gap-3 group">
-            <Image src="/logo.jpg" alt="SHIROA" width={40} height={40} className="rounded-lg" priority />
-            <span className="text-2xl font-bold font-[family-name:var(--font-orbitron)] text-white group-hover:opacity-80 transition-opacity duration-300">
-              SHIROA
-            </span>
+            <Image 
+              src="/logo.jpg" 
+              alt="SHIROA" 
+              width={40} 
+              height={40} 
+              className="rounded-lg transition-transform duration-300 group-hover:scale-110" 
+              style={{ imageRendering: 'crisp-edges' }}
+              priority 
+            />
+            <div className="flex">
+              {['S', 'H', 'I', 'R', 'O', 'A'].map((letter, index) => (
+                <span
+                  key={index}
+                  className="text-2xl font-bold font-[family-name:var(--font-orbitron)] text-white transition-all duration-300 hover:scale-125 hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r"
+                  style={{
+                    transitionDelay: `${index * 50}ms`,
+                    '--tw-gradient-from': ['#00CED1', '#5F9FFF', '#9D4EDD', '#FF6B9D', '#FFB347', '#00CED1'][index],
+                    '--tw-gradient-to': ['#5F9FFF', '#9D4EDD', '#FF6B9D', '#FFB347', '#00CED1', '#5F9FFF'][index],
+                  } as any}
+                >
+                  {letter}
+                </span>
+              ))}
+            </div>
           </Link>
 
           {/* Mobile Menu Button */}

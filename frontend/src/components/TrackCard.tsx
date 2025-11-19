@@ -29,7 +29,15 @@ export default function TrackCard({ track }: TrackCardProps) {
 
   const handlePlay = (e: React.MouseEvent) => {
     e.preventDefault();
-    setIsPlaying(!isPlaying);
+    const audio = new Audio('/demo-track.mp3');
+    if (!isPlaying) {
+      audio.play();
+      setIsPlaying(true);
+      audio.onended = () => setIsPlaying(false);
+    } else {
+      audio.pause();
+      setIsPlaying(false);
+    }
   };
 
   const isSold = track.status === "sold" || track.isSold;
@@ -37,10 +45,10 @@ export default function TrackCard({ track }: TrackCardProps) {
   return (
     <Link
       href={`/tracks/${track._id}`}
-      className="group relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:border-white/30 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl overflow-hidden"
+      className="group relative theme-card rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02] overflow-hidden"
     >
       {/* Shine Effect */}
-      <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/5 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[var(--theme-accent)]/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
       
       {/* Waveform Background */}
       <div className="absolute inset-0 opacity-0 group-hover:opacity-30 transition-all duration-300 z-5">
@@ -68,14 +76,14 @@ export default function TrackCard({ track }: TrackCardProps) {
       </button>
 
       <div className="mb-4 relative z-10">
-        <h3 className="text-xl font-display font-bold text-white mb-1">
+        <h3 className="text-xl font-display font-bold theme-text mb-1">
           {track.title}
         </h3>
-        <p className="text-white/60">{track.artist}</p>
+        <p className="theme-text-secondary">{track.artist}</p>
       </div>
 
       {/* Details */}
-      <div className="flex items-center gap-4 text-sm text-white/40 mb-4 relative z-10">
+      <div className="flex items-center gap-4 text-sm theme-text-secondary mb-4 relative z-10">
         <span>{track.genre}</span>
         {track.bpm && (
           <>
@@ -93,7 +101,7 @@ export default function TrackCard({ track }: TrackCardProps) {
 
       {/* Price */}
       <div className="flex items-center justify-between relative z-10">
-        <span className="text-3xl font-black text-white">
+        <span className="text-3xl font-black theme-text">
           ${track.price}
         </span>
         {isSold ? (

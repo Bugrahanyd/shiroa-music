@@ -4,6 +4,7 @@ import { Orbitron } from "next/font/google";
 
 import { AuthProvider } from "@/lib/auth-context";
 import { ThemeProvider } from "@/lib/theme-context";
+import { LanguageProvider } from "@/lib/language-context";
 import Sidebar from "@/components/Sidebar";
 import TopNavigation from "@/components/TopNavigation";
 import Footer from "@/components/Footer";
@@ -48,16 +49,18 @@ export default function RootLayout({
         <div className="glow-orb glow-orb-2"></div>
         <div className="glow-orb glow-orb-3"></div>
 
-        <ThemeProvider>
-          <AuthProvider>
-            <TopNavigation />
-            <Sidebar />
-            <main className="ml-16 lg:ml-64 mt-16 transition-all duration-300">
-              {children}
-            </main>
-            <Footer />
-          </AuthProvider>
-        </ThemeProvider>
+        <LanguageProvider>
+          <ThemeProvider>
+            <AuthProvider>
+              <TopNavigation />
+              <Sidebar />
+              <main className="md:ml-16 lg:ml-64 mt-16 pb-20 md:pb-0 transition-all duration-300">
+                {children}
+              </main>
+              <Footer />
+            </AuthProvider>
+          </ThemeProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

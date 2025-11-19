@@ -12,8 +12,12 @@ import {
 
 export default function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isPinned, setIsPinned] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const { user, logout } = useAuth();
   const { theme, setTheme } = useTheme();
+
+  const isOpen = isPinned || isHovered;
 
   const themes = [
     { id: 'dark', name: 'Night', color: 'bg-gray-900' },
@@ -24,13 +28,11 @@ export default function Sidebar() {
 
   const menuItems = [
     { icon: Music, label: 'Browse', href: '/tracks' },
-    { icon: Mic, label: 'Studio', href: '/studio' },
     { icon: Compass, label: 'Discover', href: '/discover' },
     { icon: Search, label: 'Search', href: '/search' },
     ...(user ? [
       { icon: Heart, label: 'Favorites', href: '/favorites' },
       { icon: ShoppingCart, label: 'Purchases', href: '/purchases' },
-      { icon: BarChart3, label: 'Analytics', href: '/dashboard/analytics' },
     ] : []),
     ...(user?.role === 'admin' ? [
       { icon: Upload, label: 'Admin', href: '/admin' },
@@ -38,22 +40,50 @@ export default function Sidebar() {
   ];
 
   return (
-    <div className={`fixed left-0 top-0 h-full z-50 transition-all duration-300 ${
-      isCollapsed ? 'w-16' : 'w-64'
-    } theme-bg theme-border-r`}>
+    <>
+    {/* Desktop Sidebar */}
+    <div 
+      className={`hidden md:block fixed left-0 top-0 h-full z-50 transition-all duration-300 ${
+        isOpen ? 'w-64' : 'w-16'
+      } theme-bg theme-border-r`}
+      onMouseEnter={() => !isPinned && setIsHovered(true)}
+      onMouseLeave={() => !isPinned && setIsHovered(false)}
+    >
       
       {/* Header */}
       <div className="p-4 border-b theme-border">
-        <div className="flex items-center justify-between">
-          {!isCollapsed && (
-            <h1 className="text-xl font-bold theme-text font-orbitron">SHIROA</h1>
+        <div className="flex items-center justify-center">
+          {isOpen ? (
+            <div className="flex items-center gap-2">
+              <img 
+                src="/logo.jpg" 
+                alt="SHIROA" 
+                className="w-8 h-8 rounded-lg transition-transform duration-300 hover:scale-110" 
+                style={{ imageRendering: 'crisp-edges' }}
+              />
+              <div className="flex">
+                {['S', 'H', 'I', 'R', 'O', 'A'].map((letter, index) => (
+                  <span
+                    key={index}
+                    className="text-xl font-bold theme-text font-orbitron transition-all duration-300 hover:scale-125 cursor-pointer"
+                    style={{
+                      transitionDelay: `${index * 50}ms`,
+                      color: ['#00CED1', '#5F9FFF', '#9D4EDD', '#FF6B9D', '#FFB347', '#00CED1'][index],
+                    }}
+                  >
+                    {letter}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <img 
+              src="/logo.jpg" 
+              alt="SHIROA" 
+              className="w-8 h-8 rounded-lg transition-transform duration-300 hover:scale-110" 
+              style={{ imageRendering: 'crisp-edges' }}
+            />
           )}
-          <button
-            onClick={() => setIsCollapsed(!isCollapsed)}
-            className="p-2 rounded-lg theme-hover"
-          >
-            {isCollapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
-          </button>
         </div>
       </div>
 
@@ -63,27 +93,52 @@ export default function Sidebar() {
           <Link
             key={item.href}
             href={item.href}
-            className={`flex items-center gap-3 p-3 rounded-lg theme-hover transition-colors ${
-              isCollapsed ? 'justify-center' : ''
+            className={`flex items-center gap-3 rounded-lg theme-hover transition-all hover:scale-105 ${
+              !isOpen ? 'justify-center p-4' : 'p-3'
             }`}
+            title={!isOpen ? item.label : ''}
           >
-            <item.icon size={20} className="theme-text-secondary" />
-            {!isCollapsed && (
+            <item.icon size={!isOpen ? 24 : 20} className="theme-text-secondary" />
+            {isOpen && (
               <span className="theme-text">{item.label}</span>
             )}
           </Link>
         ))}
       </nav>
 
-      {/* Theme Switcher */}
-      <div className="absolute bottom-4 left-0 right-0 p-4">
+      {/* Theme Switcher & Pin Button */}
+      <div className="absolute bottom-4 left-0 right-0 p-4 space-y-3">
+        {/* Pin Button */}
+        <button
+          onClick={() => setIsPinned(!isPinned)}
+          className={`w-full p-3 rounded-lg transition-all ${
+            isPinned ? 'theme-accent bg-opacity-20' : 'theme-hover'
+          } flex items-center gap-2 ${!isOpen ? 'justify-center' : ''}`}
+          title={isPinned ? 'Unpin sidebar' : 'Pin sidebar'}
+        >
+          <svg 
+            className={`w-5 h-5 transition-transform ${isPinned ? 'rotate-45 theme-accent' : 'theme-text-secondary'}`} 
+            fill="none" 
+            stroke="currentColor" 
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+          </svg>
+          {isOpen && (
+            <span className="text-sm theme-text-secondary">
+              {isPinned ? 'Pinned' : 'Pin sidebar'}
+            </span>
+          )}
+        </button>
+
+        {/* Theme Switcher */}
         <div className="space-y-2">
-          <div className={`flex items-center gap-2 ${isCollapsed ? 'justify-center' : ''}`}>
+          <div className={`flex items-center gap-2 ${!isOpen ? 'justify-center' : ''}`}>
             <Palette size={20} className="theme-text-secondary" />
-            {!isCollapsed && <span className="text-sm theme-text-secondary">Theme</span>}
+            {isOpen && <span className="text-sm theme-text-secondary">Theme</span>}
           </div>
           
-          <div className={`grid gap-2 ${isCollapsed ? 'grid-cols-1' : 'grid-cols-2'}`}>
+          <div className={`grid gap-2 ${!isOpen ? 'grid-cols-1' : 'grid-cols-2'}`}>
             {themes.map((t) => (
               <button
                 key={t.id}
@@ -93,7 +148,7 @@ export default function Sidebar() {
                 } ${t.color}`}
                 title={t.name}
               >
-                {!isCollapsed && (
+                {isOpen && (
                   <span className="text-xs font-medium">{t.name}</span>
                 )}
               </button>
@@ -104,5 +159,22 @@ export default function Sidebar() {
 
 
     </div>
+
+    {/* Mobile Bottom Navigation */}
+    <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 theme-bg border-t-2 theme-border backdrop-blur-md bg-opacity-95 safe-area-bottom">
+      <div className="flex items-center justify-around px-2 py-3">
+        {menuItems.slice(0, 5).map((item) => (
+          <Link
+            key={item.href}
+            href={item.href}
+            className="flex flex-col items-center gap-1 p-2 rounded-lg theme-hover transition-all active:scale-95"
+          >
+            <item.icon size={22} className="theme-text-secondary" />
+            <span className="text-[10px] theme-text-secondary">{item.label}</span>
+          </Link>
+        ))}
+      </div>
+    </div>
+    </>
   );
 }
