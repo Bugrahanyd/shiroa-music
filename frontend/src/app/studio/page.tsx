@@ -3,7 +3,7 @@
 'use client';
 
 import { useState } from "react";
-import { Sparkles, Waveform, Sliders, Play, Pause, SkipBack, SkipForward, Volume2 } from "lucide-react";
+import { Sparkles, Music, Sliders, Play, Pause, SkipBack, SkipForward, Volume2 } from "lucide-react";
 
 export default function StudioPage() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -99,7 +99,7 @@ export default function StudioPage() {
         <div className="flex-1 flex flex-col">
           <div className="flex-1 p-8 flex items-center justify-center">
             <div className="text-center">
-              <Waveform className="mx-auto mb-4 text-cyan-400" size={64} />
+              <Music className="mx-auto mb-4 text-cyan-400" size={64} />
               <h3 className="text-xl font-bold mb-2">No track loaded</h3>
               <p className="text-white/60">Generate music with AI or upload a track</p>
             </div>
