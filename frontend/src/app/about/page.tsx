@@ -1,129 +1,125 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
+import { useLanguage } from "@/lib/language-context";
+import { Target, Eye, Heart, Shield, Zap, Users } from "lucide-react";
 
 export default function AboutPage() {
+  const { t } = useLanguage();
+
   return (
-    <div className="min-h-screen">
-      <div className="container mx-auto px-6 py-12 max-w-4xl">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <div className="flex items-center justify-center gap-4 mb-4">
-            <Image src="/logo.jpg" alt="SHIROA" width={80} height={80} className="rounded-2xl" />
-            <h1 className="text-6xl font-[family-name:var(--font-orbitron)] font-black text-transparent bg-clip-text bg-gradient-to-r from-[#00CED1] via-[#5F9FFF] to-[#9D4EDD]">
-              SHIROA
-            </h1>
-          </div>
-          <p className="text-xl text-gray-400">Professional approach, disciplined structure, and white tiger symbolism</p>
+    <div className="container mx-auto px-4 py-12 max-w-5xl">
+      {/* Hero */}
+      <div className="text-center mb-16">
+        <div className="flex items-center justify-center gap-4 mb-6">
+          <Image src="/logo.jpg" alt="SHIROA" width={80} height={80} className="rounded-2xl" />
+          <h1 className="text-6xl font-bold font-orbitron text-transparent bg-clip-text bg-gradient-to-r from-[#00CED1] via-[#5F9FFF] to-[#9D4EDD]">
+            SHIROA
+          </h1>
+        </div>
+        <p className="text-xl theme-text-secondary">AI-Powered Music Production & Licensing Platform</p>
+      </div>
+
+      {/* About */}
+      <section className="mb-16 theme-card rounded-3xl p-8">
+        <h2 className="text-4xl font-bold theme-text mb-6 font-orbitron">About Us</h2>
+        <p className="theme-text-secondary text-lg leading-relaxed">
+          SHIROA is a next-generation music platform combining AI technology with exclusive licensing. 
+          We empower creators with high-quality, unique tracks and provide producers with a fair marketplace. 
+          Born from passion for music and innovation, we're building the future of music production.
+        </p>
+      </section>
+
+      {/* Mission & Vision */}
+      <div className="grid md:grid-cols-2 gap-8 mb-16">
+        <div className="theme-card rounded-2xl p-8 hover:scale-105 transition-transform">
+          <Target size={40} className="mb-4" style={{ color: 'var(--theme-icon-color)' }} />
+          <h2 className="text-3xl font-bold theme-text mb-4 font-orbitron">Our Mission</h2>
+          <p className="theme-text-secondary leading-relaxed">
+            To democratize music production by providing AI-powered tools and exclusive tracks, 
+            making professional music accessible to everyone.
+          </p>
         </div>
 
-        {/* Hakkımızda */}
-        <section className="mb-16">
-          <h2 className="text-4xl font-[family-name:var(--font-orbitron)] font-bold text-white mb-6 border-l-4 border-[#00CED1] pl-6">
-            About Us
-          </h2>
-          <p className="text-gray-300 text-lg leading-relaxed">
-            SHIROA embraces professional approach, disciplined structure, and white tiger symbolism. Born in Turkey, 
-            we are a next-generation organization combining technology and competition. Laying our foundations in 2026, 
-            we aim to build a community-centered platform and achieve sustainable success.
+        <div className="theme-card rounded-2xl p-8 hover:scale-105 transition-transform">
+          <Eye size={40} className="mb-4" style={{ color: 'var(--theme-accent)' }} />
+          <h2 className="text-3xl font-bold theme-text mb-4 font-orbitron">Our Vision</h2>
+          <p className="theme-text-secondary leading-relaxed">
+            To become the world's leading platform for AI-generated music and exclusive licensing, 
+            revolutionizing how music is created and distributed.
           </p>
-        </section>
-
-        {/* Felsefemiz */}
-        <section className="mb-16 bg-[#1e3a5f]/30 backdrop-blur-sm border border-[#00CED1]/30 rounded-2xl p-8">
-          <h2 className="text-4xl font-[family-name:var(--font-orbitron)] font-bold text-white mb-6">
-            Our Philosophy
-          </h2>
-          <blockquote className="text-[#00CED1] text-xl italic mb-6 border-l-4 border-[#00CED1] pl-6">
-            "Like the White Tiger, we are a strong, disciplined, and determined organization; we believe that 
-            team spirit and consistent collaboration are behind every lasting success."
-          </blockquote>
-          <p className="text-gray-300 text-lg leading-relaxed">
-            We transform individual talents into team success with measurable goals; we place continuous learning 
-            and development at the foundation of our culture.
-          </p>
-        </section>
-
-        {/* Misyon & Vizyon */}
-        <div className="grid md:grid-cols-2 gap-8 mb-16">
-          <section className="bg-gradient-to-br from-[#00CED1]/10 to-[#5F9FFF]/10 border border-[#00CED1]/30 rounded-2xl p-8">
-            <h2 className="text-3xl font-[family-name:var(--font-orbitron)] font-bold text-[#00CED1] mb-4">
-              Our Mission
-            </h2>
-            <p className="text-gray-300 leading-relaxed">
-              With our 2026 launch, to create lasting value by building a fair, secure, and productive ecosystem 
-              around Discord community, R&D, and Media; with data-driven innovative solutions and consistent brand language.
-            </p>
-          </section>
-
-          <section className="bg-gradient-to-br from-[#5F9FFF]/10 to-[#9D4EDD]/10 border border-[#5F9FFF]/30 rounded-2xl p-8">
-            <h2 className="text-3xl font-[family-name:var(--font-orbitron)] font-bold text-[#5F9FFF] mb-4">
-              Our Vision
-            </h2>
-            <p className="text-gray-300 leading-relaxed">
-              To become a platform born in Turkey and recognized as a reference in the region; to productize R&D outputs, 
-              increase media impact with scalable business models, and complete our ecosystem by activating esports 
-              with a sustainable program when conditions mature.
-            </p>
-          </section>
         </div>
+      </div>
 
-        {/* Değerlerimiz */}
-        <section className="mb-16">
-          <h2 className="text-4xl font-[family-name:var(--font-orbitron)] font-bold text-white mb-8 text-center">
-            Our Values
-          </h2>
-          <p className="text-gray-400 text-center mb-8">
-            Values that form the foundation of our organization and reflect White Tiger discipline
-          </p>
-
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="group bg-[#1e3a5f]/30 backdrop-blur-sm border border-[#00CED1]/30 rounded-xl p-6 hover:border-[#00CED1] hover:shadow-[0_0_30px_rgba(0,206,209,0.3)] transition-all duration-300">
-              <h3 className="text-2xl font-bold text-[#00CED1] mb-3 group-hover:text-white transition-colors">
-                Passion & Production
-              </h3>
-              <p className="text-gray-300">
-                Our passion for gaming, community, and creation.
-              </p>
-            </div>
-
-            <div className="group bg-[#1e3a5f]/30 backdrop-blur-sm border border-[#5F9FFF]/30 rounded-xl p-6 hover:border-[#5F9FFF] hover:shadow-[0_0_30px_rgba(95,159,255,0.3)] transition-all duration-300">
-              <h3 className="text-2xl font-bold text-[#5F9FFF] mb-3 group-hover:text-white transition-colors">
-                Discipline & Quality
-              </h3>
-              <p className="text-gray-300">
-                Continuously raising our standards and professional approach.
-              </p>
-            </div>
-
-            <div className="group bg-[#1e3a5f]/30 backdrop-blur-sm border border-[#9D4EDD]/30 rounded-xl p-6 hover:border-[#9D4EDD] hover:shadow-[0_0_30px_rgba(157,78,221,0.3)] transition-all duration-300">
-              <h3 className="text-2xl font-bold text-[#9D4EDD] mb-3 group-hover:text-white transition-colors">
-                Trust & Transparency
-              </h3>
-              <p className="text-gray-300">
-                Keeping our word and building trust through transparent processes.
-              </p>
-            </div>
-
-            <div className="group bg-[#1e3a5f]/30 backdrop-blur-sm border border-[#00CED1]/30 rounded-xl p-6 hover:border-[#00CED1] hover:shadow-[0_0_30px_rgba(0,206,209,0.3)] transition-all duration-300">
-              <h3 className="text-2xl font-bold text-[#00CED1] mb-3 group-hover:text-white transition-colors">
-                Innovation (R&D Focus)
-              </h3>
-              <p className="text-gray-300">
-                Rapidly testing and scaling new ideas.
-              </p>
-            </div>
+      {/* Values */}
+      <section className="mb-16">
+        <h2 className="text-4xl font-bold theme-text mb-8 text-center font-orbitron">Our Values</h2>
+        
+        <div className="grid md:grid-cols-3 gap-6">
+          <div className="theme-card rounded-2xl p-6 hover:scale-105 transition-transform">
+            <Heart size={32} className="mb-4" style={{ color: 'var(--theme-icon-color)' }} />
+            <h3 className="text-xl font-bold theme-text mb-2">Passion</h3>
+            <p className="theme-text-secondary text-sm">
+              Driven by love for music and innovation
+            </p>
           </div>
-        </section>
 
-        {/* CTA */}
-        <section className="text-center">
-          <Link 
-            href="/tracks"
-            className="inline-block bg-gradient-to-r from-[#00CED1] to-[#5F9FFF] text-white px-8 py-4 rounded-full font-bold text-lg hover:shadow-[0_0_30px_rgba(0,206,209,0.5)] transition-all transform hover:scale-105"
-          >
-            Explore Our Music Catalog →
-          </Link>
-        </section>
+          <div className="theme-card rounded-2xl p-6 hover:scale-105 transition-transform">
+            <Shield size={32} className="mb-4" style={{ color: 'var(--theme-accent)' }} />
+            <h3 className="text-xl font-bold theme-text mb-2">Trust</h3>
+            <p className="theme-text-secondary text-sm">
+              Transparent processes and fair practices
+            </p>
+          </div>
+
+          <div className="theme-card rounded-2xl p-6 hover:scale-105 transition-transform">
+            <Zap size={32} className="mb-4" style={{ color: 'var(--theme-icon-color)', opacity: 0.8 }} />
+            <h3 className="text-xl font-bold theme-text mb-2">Innovation</h3>
+            <p className="theme-text-secondary text-sm">
+              Pushing boundaries with AI technology
+            </p>
+          </div>
+
+          <div className="theme-card rounded-2xl p-6 hover:scale-105 transition-transform">
+            <Users size={32} className="mb-4" style={{ color: 'var(--theme-accent)', opacity: 0.8 }} />
+            <h3 className="text-xl font-bold theme-text mb-2">Community</h3>
+            <p className="theme-text-secondary text-sm">
+              Building together with creators
+            </p>
+          </div>
+
+          <div className="theme-card rounded-2xl p-6 hover:scale-105 transition-transform">
+            <Target size={32} className="mb-4" style={{ color: 'var(--theme-icon-color)' }} />
+            <h3 className="text-xl font-bold theme-text mb-2">Quality</h3>
+            <p className="theme-text-secondary text-sm">
+              Professional standards in everything
+            </p>
+          </div>
+
+          <div className="theme-card rounded-2xl p-6 hover:scale-105 transition-transform">
+            <Eye size={32} className="mb-4" style={{ color: 'var(--theme-accent)' }} />
+            <h3 className="text-xl font-bold theme-text mb-2">Vision</h3>
+            <p className="theme-text-secondary text-sm">
+              Long-term thinking and sustainability
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <div className="text-center theme-card rounded-3xl p-12">
+        <h3 className="text-3xl font-bold theme-text mb-4 font-orbitron">Ready to Create?</h3>
+        <p className="theme-text-secondary mb-8 max-w-2xl mx-auto">
+          Join thousands of creators using SHIROA to produce professional music
+        </p>
+        <Link 
+          href="/tracks"
+          className="inline-block px-8 py-4 rounded-full font-bold text-lg text-white transition-all hover:scale-105"
+          style={{ background: `linear-gradient(135deg, var(--theme-icon-color), var(--theme-accent))` }}
+        >
+          Explore Music Catalog →
+        </Link>
       </div>
     </div>
   );

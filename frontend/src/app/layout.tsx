@@ -5,6 +5,7 @@ import { Orbitron } from "next/font/google";
 import { AuthProvider } from "@/lib/auth-context";
 import { ThemeProvider } from "@/lib/theme-context";
 import { LanguageProvider } from "@/lib/language-context";
+import KeepAliveWrapper from "@/components/KeepAliveWrapper";
 import Sidebar from "@/components/Sidebar";
 import TopNavigation from "@/components/TopNavigation";
 import Footer from "@/components/Footer";
@@ -52,6 +53,7 @@ export default function RootLayout({
         <LanguageProvider>
           <ThemeProvider>
             <AuthProvider>
+              <KeepAliveWrapper />
               <TopNavigation />
               <Sidebar />
               <main className="md:ml-16 lg:ml-64 mt-16 pb-20 md:pb-0 transition-all duration-300">

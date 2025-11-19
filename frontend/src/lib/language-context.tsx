@@ -59,6 +59,22 @@ const translations = {
     
     // Tagline
     'tagline': 'AI Music Platform',
+    
+    // Homepage
+    'home.hero.title': 'Everything for your',
+    'home.hero.sound': 'sound',
+    'home.hero.subtitle': 'Discover and license high-quality music tracks with full commercial rights. One track, one owner, unlimited possibilities.',
+    'home.hero.browse': 'Browse Catalog',
+    'home.hero.howItWorks': 'How It Works',
+    'home.feature1.title': 'True Exclusivity',
+    'home.feature1.desc': 'Full commercial rights with lifetime ownership. No royalties, no recurring fees, no competition.',
+    'home.feature2.title': 'AI-Powered Creation',
+    'home.feature2.desc': 'Advanced AI tools for composition, vocal processing, and mixing. Create professional music faster.',
+    'home.feature3.title': 'Instant Delivery',
+    'home.feature3.desc': 'Secure checkout with Stripe. Instant access to high-quality files and license certificates.',
+    'home.cta.title': 'Find Your Perfect Track Today',
+    'home.cta.subtitle': 'Browse our catalog of exclusive tracks and elevate your content.',
+    'home.cta.button': 'Browse Tracks',
   },
   tr: {
     // Navigation
@@ -108,6 +124,22 @@ const translations = {
     
     // Tagline
     'tagline': 'AI Müzik Platformu',
+    
+    // Homepage
+    'home.hero.title': 'Sesiniz için',
+    'home.hero.sound': 'her şey',
+    'home.hero.subtitle': 'Tam ticari haklarla yüksek kaliteli müzik parçalarını keşfedin ve lisanslayın. Bir parça, bir sahip, sınırsız olasılıklar.',
+    'home.hero.browse': 'Kataloğa Göz At',
+    'home.hero.howItWorks': 'Nasıl Çalışır',
+    'home.feature1.title': 'Gerçek Münhasırlık',
+    'home.feature1.desc': 'Ömür boyu sahiplik ile tam ticari haklar. Telif ücreti yok, tekrarlayan ücret yok, rekabet yok.',
+    'home.feature2.title': 'AI Destekli Yaratım',
+    'home.feature2.desc': 'Kompozisyon, vokal işleme ve mixing için gelişmiş AI araçları. Profesyonel müziği daha hızlı oluşturun.',
+    'home.feature3.title': 'Anında Teslimat',
+    'home.feature3.desc': 'Stripe ile güvenli ödeme. Yüksek kaliteli dosyalara ve lisans sertifikalarına anında erişim.',
+    'home.cta.title': 'Bugün Mükemmel Parçanızı Bulun',
+    'home.cta.subtitle': 'Özel parça kataloğumuza göz atın ve içeriğinizi yükseltin.',
+    'home.cta.button': 'Parçalara Göz At',
   },
 };
 

@@ -4,6 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
+import { useLanguage } from "@/lib/language-context";
+import Image from "next/image";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -12,6 +14,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { login } = useAuth();
+  const { t } = useLanguage();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,84 +32,105 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen relative flex items-center justify-center px-6 overflow-hidden">
-      {/* Dark Background */}
-      <div className="fixed inset-0 bg-gradient-to-br from-[#0a0e27] via-[#1a1f3a] to-[#0f1a2e] z-[-2]"></div>
-      <div className="fixed inset-0 z-[-1]">
-        <div className="absolute top-20 left-20 w-96 h-96 bg-[#00CED1]/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-20 right-20 w-96 h-96 bg-[#5F9FFF]/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
-        <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-[#9D4EDD]/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
-      </div>
-      <div className="w-full max-w-md">
-        {/* Logo */}
-        <Link href="/" className="block text-center mb-8">
-          <h1 className="text-5xl font-display font-black text-transparent bg-clip-text bg-gradient-to-r from-[#00CED1] via-[#5F9FFF] to-[#9D4EDD] drop-shadow-[0_0_30px_rgba(0,206,209,0.5)]">SHIROA</h1>
-          <p className="text-gray-400 font-semibold mt-2">Everything for your sound</p>
-        </Link>
+    <div className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden">
+      {/* Background Glow Effects */}
+      <div className="absolute top-20 left-20 w-96 h-96 rounded-full blur-[120px] opacity-20" style={{ backgroundColor: 'var(--theme-icon-color)' }}></div>
+      <div className="absolute bottom-20 right-20 w-96 h-96 rounded-full blur-[120px] opacity-20" style={{ backgroundColor: 'var(--theme-accent)' }}></div>
 
-        {/* Form */}
-        <div className="bg-[#1e293b]/80 backdrop-blur-xl border-2 border-[#00CED1]/30 rounded-3xl p-8 shadow-[0_8px_32px_rgba(0,206,209,0.2)]">
-          <h2 className="text-3xl font-display font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#00CED1] to-[#5F9FFF] mb-2">
-            Welcome Back!
-          </h2>
-          <p className="text-gray-400 mb-8">We're excited to see you again</p>
+      {/* Logo */}
+      <Link href="/" className="absolute top-8 left-8 flex items-center gap-2 z-10">
+        <Image src="/logo.jpg" alt="SHIROA" width={32} height={32} className="rounded-lg" />
+        <span className="text-xl font-bold theme-text font-orbitron">SHIROA</span>
+      </Link>
 
-          {error && (
-            <div className="bg-red-500/20 border-2 border-red-500 rounded-xl p-4 mb-6">
-              <p className="text-red-400 text-sm font-semibold">{error}</p>
-            </div>
-          )}
+      {/* Main Card */}
+      <div className="max-w-md w-full relative z-10">
+        {/* Glassmorphism Card */}
+        <div className="theme-card backdrop-blur-xl bg-opacity-50 rounded-3xl p-8 shadow-2xl border-2">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <h1 className="text-4xl font-bold theme-text mb-2 font-orbitron">Welcome Back</h1>
+            <p className="theme-text-secondary">Sign in to continue to SHIROA</p>
+          </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label className="block text-white font-bold mb-2">
-                Email
-              </label>
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="space-y-5">
+            {error && (
+              <div className="bg-red-500/10 border border-red-500/50 text-red-500 px-4 py-3 rounded-xl text-sm backdrop-blur-sm">
+                {error}
+              </div>
+            )}
+
+            {/* Email Input */}
+            <div className="space-y-2">
+              <label className="text-sm theme-text-secondary font-medium">Email</label>
               <input
                 type="email"
+                required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-[#0f172a]/50 border-2 border-[#00CED1]/30 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#00CED1] focus:bg-[#0f172a] transition-all placeholder:text-gray-500"
+                className="w-full px-4 py-3 theme-card backdrop-blur-sm rounded-xl theme-text placeholder-gray-500 focus:outline-none focus:ring-2 transition-all"
+                style={{ '--tw-ring-color': 'var(--theme-icon-color)' } as any}
                 placeholder="you@example.com"
-                required
               />
             </div>
 
-            <div>
-              <label className="block text-white font-bold mb-2">
-                Password
-              </label>
+            {/* Password Input */}
+            <div className="space-y-2">
+              <label className="text-sm theme-text-secondary font-medium">Password</label>
               <input
                 type="password"
+                required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-[#0f172a]/50 border-2 border-[#00CED1]/30 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#00CED1] focus:bg-[#0f172a] transition-all placeholder:text-gray-500"
+                className="w-full px-4 py-3 theme-card backdrop-blur-sm rounded-xl theme-text placeholder-gray-500 focus:outline-none focus:ring-2 transition-all"
+                style={{ '--tw-ring-color': 'var(--theme-icon-color)' } as any}
                 placeholder="••••••••"
-                required
               />
             </div>
 
+            {/* Forgot Password */}
+            <div className="text-right">
+              <Link href="/forgot-password" className="text-sm theme-accent hover:opacity-80 transition-opacity">
+                Forgot password?
+              </Link>
+            </div>
+
+            {/* Submit Button */}
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-[#00CED1] to-[#5F9FFF] text-white py-4 rounded-full font-bold text-lg hover:shadow-[0_0_30px_rgba(0,206,209,0.5)] transition-all disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105"
+              className="w-full py-3 px-4 rounded-xl font-semibold transition-all shadow-lg hover:shadow-xl hover:scale-[1.02] text-white disabled:opacity-50"
+              style={{ background: `linear-gradient(135deg, var(--theme-icon-color), var(--theme-accent))` }}
             >
-              {loading ? "Logging in..." : "Login"}
+              {loading ? "Signing in..." : "Sign In"}
             </button>
           </form>
 
-          <div className="mt-6 text-center">
-            <p className="text-gray-400">
-              Don't have an account?{" "}
-              <Link href="/register" className="text-[#00CED1] hover:text-[#5F9FFF] font-bold transition-colors">
-                Sign up
+          {/* Divider */}
+          <div className="relative my-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t theme-border"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-4 theme-bg theme-text-secondary">or</span>
+            </div>
+          </div>
+
+          {/* Sign Up Link */}
+          <div className="text-center">
+            <p className="theme-text-secondary text-sm">
+              Don't have an account?{' '}
+              <Link href="/register" className="theme-accent font-semibold hover:opacity-80 transition-opacity">
+                Sign Up
               </Link>
             </p>
           </div>
         </div>
 
+        {/* Back to Home */}
         <div className="text-center mt-6">
-          <Link href="/" className="text-gray-400 hover:text-[#00CED1] font-semibold transition-colors">
+          <Link href="/" className="theme-text-secondary hover:theme-text transition-colors text-sm">
             ← Back to home
           </Link>
         </div>

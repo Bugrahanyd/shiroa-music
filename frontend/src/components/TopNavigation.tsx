@@ -39,23 +39,10 @@ export default function TopNavigation() {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-40 h-16 theme-bg backdrop-blur-md bg-opacity-95 shadow-lg">
+    <nav className="fixed top-0 left-0 right-0 z-40 h-16 theme-bg backdrop-blur-md bg-opacity-95 border-b theme-border">
       <div className="flex items-center justify-between h-full px-3 md:px-6 md:ml-16 lg:ml-64">
-        {/* Subtle gradient line at bottom */}
-        <div className={`absolute bottom-0 left-0 right-0 h-[2px] ${getGradientClass()} opacity-60`}></div>
-        
-        {/* Logo + Animated Text */}
-        <div className="flex items-center gap-2 md:gap-4">
-          <div className={`w-8 h-8 md:w-10 md:h-10 rounded-xl ${getGradientClass()} flex items-center justify-center shadow-lg`}>
-            <span className="text-white font-bold text-sm md:text-lg">S</span>
-          </div>
-          <div className="flex flex-col">
-            <span className="text-sm md:text-lg font-bold theme-text font-orbitron leading-none">SHIROA</span>
-            <div className={`hidden sm:block text-[10px] md:text-xs font-medium ${getGradientClass()} bg-clip-text text-transparent`}>
-              {t('tagline')}
-            </div>
-          </div>
-        </div>
+        {/* Empty space - logo is in sidebar */}
+        <div></div>
 
         {/* Right Side */}
         <div className="flex items-center gap-4">
