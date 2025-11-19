@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseGuards, Get } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Get, Param } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { StudioService } from './studio.service';
 import { AIProxyService } from './ai-proxy.service';
@@ -22,8 +22,14 @@ export class StudioController {
     mood: string;
     duration: number;
     tempo?: number;
+    lyrics?: string;
   }) {
     return this.studioService.composeMusic(params);
+  }
+
+  @Get('status/:trackId')
+  async getGenerationStatus(@Param('trackId') trackId: string) {
+    return this.aiProxyService.getGenerationStatus(trackId);
   }
 
   @Post('vocalize')

@@ -1,273 +1,122 @@
-# 🚀 SHIROA Deployment Guide
+# 🚀 SHIROA Deployment Rehberi
 
-## Frontend - Vercel
+## Vercel (Frontend)
+```bash
+# 1. Vercel CLI kurulumu
+npm i -g vercel
 
-### 1. Vercel'e Git
-https://vercel.com
+# 2. Frontend deploy
+cd frontend
+vercel --prod
 
-### 2. GitHub ile Giriş Yap
-- "Continue with GitHub" tıkla
-- Authorize et
-
-### 3. Yeni Proje Oluştur
-- "Add New..." → "Project"
-- Repository seç: `Bugrahanyd/shiroa-music`
-- "Import" tıkla
-
-### 4. Ayarları Yap
-```
-Framework Preset: Next.js
-Root Directory: frontend
-Build Command: npm run build
-Output Directory: .next
-Install Command: npm install
+# 3. Environment variables
+NEXT_PUBLIC_API_URL=https://your-backend.onrender.com
 ```
 
-### 5. Environment Variables Ekle
-```
-NEXT_PUBLIC_API_URL=https://your-backend-url.onrender.com
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_your_key
-```
+## Render (Backend + AI)
+```bash
+# 1. GitHub'a push
+git add .
+git commit -m "Deploy ready"
+git push origin main
 
-### 6. Deploy Et
-- "Deploy" butonuna tıkla
-- 2-3 dakika bekle
-- ✅ Frontend hazır!
+# 2. Render.com'da:
+- New Web Service
+- Connect GitHub repo
+- Use render.yaml configuration
 
-### 7. Domain
-- Otomatik domain: `shiroa-music.vercel.app`
-- Custom domain ekleyebilirsin (Settings → Domains)
-
----
-
-## Backend - Render
-
-### 1. Render'a Git
-https://render.com
-
-### 2. GitHub ile Giriş Yap
-- "Get Started" → "GitHub"
-- Authorize et
-
-### 3. Yeni Web Service Oluştur
-- "New +" → "Web Service"
-- Repository seç: `Bugrahanyd/shiroa-music`
-- "Connect" tıkla
-
-### 4. Ayarları Yap
-```
-Name: shiroa-backend
-Region: Frankfurt (EU Central)
-Branch: develop
-Root Directory: backend
-Runtime: Node
-Build Command: npm install && npm run build
-Start Command: npm run start:prod
-Instance Type: Free
+# 3. Environment variables:
+DATABASE_URL=postgresql://...
+JWT_SECRET=your-secret
+AI_SERVICE_URL=https://shiroa-ai.onrender.com
 ```
 
-### 5. Environment Variables Ekle
-```
-NODE_ENV=production
-PORT=3001
+## 🎯 Model Eğitimi Adımları
 
-# MongoDB
-MONGODB_URI=mongodb+srv://user:pass@cluster.mongodb.net/shiroa
+### 1. Veri Toplama (1-2 hafta)
+```bash
+# Telif haksız müzik indir
+mkdir training_data
+cd training_data
 
-# JWT
-JWT_SECRET=your_super_secret_key_change_this
-JWT_ACCESS_EXPIRES_IN=15m
-JWT_REFRESH_EXPIRES_IN=7d
+# Genre klasörleri oluştur
+mkdir electronic hip-hop rock pop jazz classical ambient trap house techno
 
-# Stripe
-STRIPE_SECRET_KEY=sk_test_your_key
-STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret
-
-# Frontend URL
-FRONTEND_URL=https://shiroa-music.vercel.app
-
-# Local Storage (AWS kapalı)
-USE_LOCAL_STORAGE=true
+# Her genre için 100+ track + metadata.json
 ```
 
-### 6. Deploy Et
-- "Create Web Service" tıkla
-- 5-10 dakika bekle
-- ✅ Backend hazır!
-
-### 7. Backend URL'i Al
-- `https://shiroa-backend.onrender.com`
-- Bu URL'i Vercel'deki `NEXT_PUBLIC_API_URL`'e ekle
-
----
-
-## Database - MongoDB Atlas (Ücretsiz)
-
-### 1. MongoDB Atlas'a Git
-https://www.mongodb.com/cloud/atlas/register
-
-### 2. Ücretsiz Cluster Oluştur
-- "Build a Database" → "Free" (M0)
-- Provider: AWS
-- Region: Frankfurt (eu-central-1)
-- Cluster Name: shiroa-cluster
-
-### 3. Database User Oluştur
-- Security → Database Access
-- "Add New Database User"
-- Username: `shiroa_user`
-- Password: Güçlü bir şifre oluştur
-- Role: "Read and write to any database"
-
-### 4. Network Access
-- Security → Network Access
-- "Add IP Address"
-- "Allow Access from Anywhere" (0.0.0.0/0)
-- Confirm
-
-### 5. Connection String Al
-- Database → Connect
-- "Connect your application"
-- Driver: Node.js
-- Connection string kopyala:
-```
-mongodb+srv://shiroa_user:<password>@shiroa-cluster.xxxxx.mongodb.net/shiroa?retryWrites=true&w=majority
+### 2. Veri Hazırlama
+```json
+// metadata.json örneği
+{
+  "genre": "electronic",
+  "mood": "energetic", 
+  "tempo": 128,
+  "key": "C major",
+  "duration": 30
+}
 ```
 
-### 6. Render'a Ekle
-- `<password>` yerine gerçek şifreyi yaz
-- Render'daki `MONGODB_URI` environment variable'ına ekle
+### 3. Model Eğitimi (GPU gerekli)
+```bash
+# Google Colab veya AWS/GCP kullan
+python train_model.py
 
----
-
-## Stripe Webhook (Production)
-
-### 1. Stripe Dashboard
-https://dashboard.stripe.com
-
-### 2. Webhook Endpoint Ekle
-- Developers → Webhooks
-- "Add endpoint"
-- Endpoint URL: `https://shiroa-backend.onrender.com/payment/webhook`
-- Events to send: `checkout.session.completed`
-- "Add endpoint"
-
-### 3. Webhook Secret Al
-- Webhook detaylarında "Signing secret" göreceksin
-- `whsec_...` ile başlayan secret'i kopyala
-- Render'daki `STRIPE_WEBHOOK_SECRET`'e ekle
-
----
-
-## Vercel'de Frontend Environment Variables Güncelle
-
-### 1. Vercel Dashboard
-- Project → Settings → Environment Variables
-
-### 2. Backend URL'i Güncelle
-```
-NEXT_PUBLIC_API_URL=https://shiroa-backend.onrender.com
+# Eğitim süresi: 2-7 gün (veri boyutuna göre)
+# GPU: RTX 4090 önerilen
+# RAM: 32GB+
 ```
 
-### 3. Redeploy
-- Deployments → Latest → "..." → "Redeploy"
+### 4. Model Deploy
+```bash
+# Eğitilmiş modeli Hugging Face'e yükle
+huggingface-cli upload shiroa/musicgen-custom ./shiroa_musicgen
 
----
+# main.py'da model path güncelle
+model = MusicgenForConditionalGeneration.from_pretrained("shiroa/musicgen-custom")
+```
 
-## ✅ Deployment Checklist
+## ⚡ Hızlı Test
 
-### Frontend (Vercel):
-- [ ] GitHub repository bağlandı
-- [ ] Root directory: `frontend`
-- [ ] Environment variables eklendi
-- [ ] Deploy başarılı
-- [ ] Site açılıyor: `https://shiroa-music.vercel.app`
+### Local Test:
+```bash
+# Backend
+cd backend && npm run dev
 
-### Backend (Render):
-- [ ] GitHub repository bağlandı
-- [ ] Root directory: `backend`
-- [ ] Environment variables eklendi (MongoDB, Stripe, JWT)
-- [ ] Deploy başarılı
-- [ ] Health check: `https://shiroa-backend.onrender.com`
+# AI Service  
+cd ai-services && python main.py
 
-### Database (MongoDB Atlas):
-- [ ] Cluster oluşturuldu
-- [ ] User oluşturuldu
-- [ ] Network access açıldı
-- [ ] Connection string alındı
-- [ ] Backend'e eklendi
+# Frontend
+cd frontend && npm run dev
+```
 
-### Stripe:
-- [ ] Webhook endpoint eklendi
-- [ ] Webhook secret alındı
-- [ ] Backend'e eklendi
+### Production Test:
+```bash
+curl https://your-ai-service.onrender.com/health
+curl https://your-backend.onrender.com/health
+```
 
----
+## 🎵 Eğitim Veri Kaynakları
 
-## 🔍 Test Et
+1. **Freesound.org** - 500,000+ free samples
+2. **Zapsplat.com** - Royalty-free music
+3. **YouTube Audio Library** - Google'ın ücretsiz müzikleri
+4. **Jamendo** - Creative Commons müzikler
+5. **Free Music Archive** - Açık lisanslı müzikler
 
-### 1. Frontend Test
-- https://shiroa-music.vercel.app
-- Ana sayfa açılıyor mu?
-- Dil değiştirme çalışıyor mu? (EN/TR)
-- Tracks sayfası açılıyor mu?
+## 💰 Maliyet Tahmini
 
-### 2. Backend Test
-- https://shiroa-backend.onrender.com
-- 404 veya "Cannot GET /" görmek normal
-- API endpoint test: `/tracks`, `/auth/login`
+### Eğitim:
+- GPU Sunucu: $200-500 (1 hafta)
+- Veri işleme: $50-100
+- Storage: $20-50
 
-### 3. Full Flow Test
-- Register yap
-- Onboarding'de tema seç
-- Dashboard'a git
-- Track'lere göz at
+### Operasyon:
+- Render AI Service: $25/ay
+- Render Backend: $7/ay  
+- Vercel Frontend: $0 (hobby)
+- Database: $7/ay
 
----
+**Toplam: ~$40/ay**
 
-## 🐛 Sorun Giderme
-
-### Frontend 500 Error:
-- Vercel logs kontrol et
-- Environment variables doğru mu?
-- Backend URL doğru mu?
-
-### Backend Crash:
-- Render logs kontrol et
-- MongoDB connection string doğru mu?
-- Environment variables eksik mi?
-
-### CORS Error:
-- Backend'de `FRONTEND_URL` doğru mu?
-- Render'da redeploy yap
-
-### Stripe Webhook Çalışmıyor:
-- Webhook URL doğru mu?
-- Webhook secret doğru mu?
-- Render logs'da webhook istekleri görünüyor mu?
-
----
-
-## 💰 Maliyet
-
-| Servis | Plan | Ücret |
-|--------|------|-------|
-| Vercel | Hobby | $0 |
-| Render | Free | $0 |
-| MongoDB Atlas | M0 | $0 |
-| Stripe | Test Mode | $0 |
-| **TOPLAM** | | **$0** ✅ |
-
-**Not:** Render free tier 15 dakika inactivity sonrası sleep mode'a girer. İlk istek 30-60 saniye sürebilir.
-
----
-
-## 🚀 Hazırsın!
-
-1. Vercel'de frontend deploy et
-2. Render'da backend deploy et
-3. MongoDB Atlas'ta database oluştur
-4. Environment variables'ları ayarla
-5. Test et!
-
-**Sorular olursa sor!** 🎉
+Deploy etmeye hazır mısın? 🚀
