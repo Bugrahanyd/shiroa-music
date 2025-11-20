@@ -109,6 +109,31 @@ class ApiClient {
   async downloadPurchase(purchaseId: string) {
     return this.request(`/download/purchase/${purchaseId}`);
   }
+
+  // Favorites
+  async addFavorite(trackId: string) {
+    return this.request(`/favorites/${trackId}`, {
+      method: "POST"
+    });
+  }
+
+  async removeFavorite(trackId: string) {
+    return this.request(`/favorites/${trackId}`, {
+      method: "DELETE"
+    });
+  }
+
+  async getFavorites() {
+    return this.request("/favorites");
+  }
+
+  async checkFavorite(trackId: string) {
+    return this.request(`/favorites/check/${trackId}`);
+  }
+
+  async getFavoriteCount(trackId: string) {
+    return this.request(`/favorites/count/${trackId}`);
+  }
 }
 
 export const api = new ApiClient();

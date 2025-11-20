@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Heart, Music } from 'lucide-react';
 import { useAuth } from '@/lib/auth-context';
 import { useRouter } from 'next/navigation';
+import { api } from '@/lib/api';
 import TrackCard from '@/components/TrackCard';
 
 export default function FavoritesPage() {
@@ -23,11 +24,11 @@ export default function FavoritesPage() {
   const loadFavorites = async () => {
     setLoading(true);
     try {
-      // TODO: API call to get favorites
-      // const data = await api.getFavorites();
-      setFavorites([]);
+      const data = await api.getFavorites();
+      setFavorites(data.map((fav: any) => fav.trackId));
     } catch (error) {
       console.error('Failed to load favorites:', error);
+      setFavorites([]);
     } finally {
       setLoading(false);
     }

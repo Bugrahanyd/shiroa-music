@@ -1,7 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import { Heart } from "lucide-react";
+import { api } from "@/lib/api";
+import { useAuth } from "@/lib/auth-context";
 import WaveformVisualizer from "./WaveformVisualizer";
 
 interface TrackCardProps {
@@ -15,16 +18,62 @@ interface TrackCardProps {
     key?: string;
     status?: string;
     isSold?: boolean;
+    audioUrl?: string;
+    favoriteCount?: number;
   };
 }
 
 export default function TrackCard({ track }: TrackCardProps) {
+  const { user } = useAuth();
   const [isFavorite, setIsFavorite] = useState(false);
+  const [favoriteCount, setFavoriteCount] = useState(track.favoriteCount || 0);
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const handleFavorite = (e: React.MouseEvent) => {
+  useEffect(() => {
+    if (user) {
+      checkFavoriteStatus();
+    }
+    loadFavoriteCount();
+  }, [user, track._id]);
+
+  const checkFavoriteStatus = async () => {
+    try {
+      const { isFavorite } = await api.checkFavorite(track._id);
+      setIsFavorite(isFavorite);
+    } catch (error) {
+      console.error('Failed to check favorite:', error);
+    }
+  };
+
+  const loadFavoriteCount = async () => {
+    try {
+      const { count } = await api.getFavoriteCount(track._id);
+      setFavoriteCount(count);
+    } catch (error) {
+      console.error('Failed to load favorite count:', error);
+    }
+  };
+
+  const handleFavorite = async (e: React.MouseEvent) => {
     e.preventDefault();
-    setIsFavorite(!isFavorite);
+    if (!user) {
+      alert('Please login to add favorites');
+      return;
+    }
+
+    try {
+      if (isFavorite) {
+        await api.removeFavorite(track._id);
+        setIsFavorite(false);
+        setFavoriteCount(prev => Math.max(0, prev - 1));
+      } else {
+        await api.addFavorite(track._id);
+        setIsFavorite(true);
+        setFavoriteCount(prev => prev + 1);
+      }
+    } catch (error) {
+      console.error('Failed to toggle favorite:', error);
+    }
   };
 
   const handlePlay = (e: React.MouseEvent) => {
@@ -58,13 +107,22 @@ export default function TrackCard({ track }: TrackCardProps) {
       {/* Favorite Button */}
       <button
         onClick={handleFavorite}
-        className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center hover:bg-black/70 transition-all"
+        className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full theme-card backdrop-blur-sm flex items-center justify-center hover:scale-110 transition-all"
         aria-label="Add to favorites"
       >
-        <span className={`text-xl transition-all ${isFavorite ? "text-red-500 scale-125" : "text-white/60"}`}>
-          {isFavorite ? "❤️" : "🤍"}
-        </span>
+        <Heart 
+          size={20} 
+          className={`transition-all ${isFavorite ? 'theme-icon' : 'theme-text-secondary'}`}
+          fill={isFavorite ? 'currentColor' : 'none'}
+        />
       </button>
+      
+      {/* Favorite Count */}
+      {favoriteCount > 0 && (
+        <div className="absolute top-16 right-4 z-20 px-2 py-1 rounded-full theme-card backdrop-blur-sm">
+          <span className="text-xs theme-text-secondary">{favoriteCount}</span>
+        </div>
+      )}
 
       {/* Play Button */}
       <button

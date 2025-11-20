@@ -77,20 +77,14 @@ export default function TopNavigation() {
               <span>{t('nav.tracks')}</span>
               <div className={`absolute bottom-0 left-0 right-0 h-0.5 ${getGradientClass()} scale-x-0 group-hover:scale-x-100 transition-transform`}></div>
             </Link>
-            <a 
-              href="/studio" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="px-4 py-2 rounded-lg theme-text-secondary hover:theme-text transition-all hover:scale-105 relative group"
-            >
-              <span className="flex items-center gap-1">
+            <div className="relative group">
+              <span className="px-4 py-2 rounded-lg theme-text-secondary opacity-50 cursor-not-allowed">
                 {t('nav.studio')}
-                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                </svg>
               </span>
-              <div className={`absolute bottom-0 left-0 right-0 h-0.5 ${getGradientClass()} scale-x-0 group-hover:scale-x-100 transition-transform`}></div>
-            </a>
+              <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 px-3 py-1 rounded-lg theme-card border theme-border opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap text-sm theme-text">
+                Coming Soon
+              </div>
+            </div>
           </div>
 
           {/* Language Switcher */}

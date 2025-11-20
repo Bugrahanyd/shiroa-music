@@ -84,44 +84,52 @@ export default function TracksPage() {
       </div>
 
       {/* Search & Filters */}
-      <div className="mb-8 space-y-4">
+      <div className="mb-8 theme-card rounded-3xl p-6">
+        <div className="flex items-center gap-2 mb-6">
+          <SlidersHorizontal className="theme-icon" size={24} />
+          <h2 className="text-xl font-bold theme-text">Search & Filter</h2>
+        </div>
+
         {/* Search Bar */}
-        <div className="relative max-w-2xl mx-auto">
+        <div className="relative mb-4">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 theme-text-secondary" size={20} />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search tracks, artists..."
-            className="w-full pl-12 pr-4 py-4 theme-card rounded-2xl theme-text focus:outline-none focus:ring-2 transition-all text-lg"
+            className="w-full pl-12 pr-4 py-3 theme-bg-secondary rounded-xl theme-text focus:outline-none focus:ring-2 transition-all"
             style={{ '--tw-ring-color': 'var(--theme-icon-color)' } as any}
           />
         </div>
 
         {/* Genre Filter */}
-        <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
-          {genres.map(genre => (
-            <button
-              key={genre}
-              onClick={() => setSelectedGenre(genre)}
-              className={`px-6 py-2 rounded-full whitespace-nowrap transition-all ${
-                selectedGenre === genre ? "theme-button" : "theme-button-outline"
-              }`}
-            >
-              {genre.charAt(0).toUpperCase() + genre.slice(1)}
-            </button>
-          ))}
+        <div className="mb-4">
+          <p className="text-sm theme-text-secondary mb-2">Genre</p>
+          <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+            {genres.map(genre => (
+              <button
+                key={genre}
+                onClick={() => setSelectedGenre(genre)}
+                className={`px-4 py-2 rounded-lg whitespace-nowrap transition-all text-sm ${
+                  selectedGenre === genre ? "theme-button" : "theme-button-outline"
+                }`}
+              >
+                {genre}
+              </button>
+            ))}
+          </div>
         </div>
 
-        {/* Sort */}
+        {/* Sort & Results */}
         <div className="flex items-center justify-between">
-          <p className="theme-text-secondary">
+          <p className="theme-text-secondary text-sm">
             {filteredTracks.length} tracks found
           </p>
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className="px-4 py-2 theme-card rounded-lg theme-text focus:outline-none"
+            className="px-4 py-2 theme-bg-secondary rounded-lg theme-text focus:outline-none text-sm"
           >
             <option value="newest">Newest First</option>
             <option value="price-low">Price: Low to High</option>
