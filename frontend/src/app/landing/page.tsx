@@ -1,13 +1,20 @@
 'use client';
 
-import Link from 'next/link';
-import { Music, Sparkles, Zap, Shield } from 'lucide-react';
-import { useTheme } from '@/lib/theme-context';
-import { useLanguage } from '@/lib/language-context';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/lib/auth-context';
 
 export default function LandingPage() {
-  const { theme } = useTheme();
-  const { t } = useLanguage();
+  const router = useRouter();
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (!user) {
+      router.push('/auth');
+    }
+  }, [user, router]);
+
+  if (!user) return null;
 
   const getGradientClass = () => {
     switch (theme) {

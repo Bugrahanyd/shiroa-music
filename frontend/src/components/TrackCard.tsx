@@ -78,7 +78,11 @@ export default function TrackCard({ track }: TrackCardProps) {
 
   const handlePlay = (e: React.MouseEvent) => {
     e.preventDefault();
-    const audio = new Audio('/demo-track.mp3');
+    if (!track.audioUrl) {
+      alert('Audio not available');
+      return;
+    }
+    const audio = new Audio(track.audioUrl);
     if (!isPlaying) {
       audio.play();
       setIsPlaying(true);

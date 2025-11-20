@@ -6,6 +6,7 @@ import { useParams } from "next/navigation";
 import { useLanguage } from "@/lib/language-context";
 import { api } from "@/lib/api";
 import { Play, Heart, Share2, Download, ArrowLeft } from "lucide-react";
+import AudioPlayer from "@/components/audio/AudioPlayer";
 
 export default function TrackDetailPage() {
   const params = useParams();
@@ -98,22 +99,14 @@ export default function TrackDetailPage() {
             </button>
           </div>
 
-          {/* Waveform Placeholder */}
-          <div className="theme-card rounded-2xl p-6">
-            <div className="flex items-center justify-center gap-1 h-24">
-              {[...Array(50)].map((_, i) => (
-                <div
-                  key={i}
-                  className="w-1 rounded-full transition-all"
-                  style={{
-                    height: `${Math.random() * 100}%`,
-                    backgroundColor: 'var(--theme-icon-color)',
-                    opacity: isPlaying ? 0.8 : 0.3
-                  }}
-                ></div>
-              ))}
-            </div>
-          </div>
+          {/* Audio Player */}
+          {track.audioUrl && (
+            <AudioPlayer 
+              src={track.audioUrl} 
+              title={track.title}
+              artist={track.artist}
+            />
+          )}
         </div>
 
         {/* Right: Info & Purchase */}
