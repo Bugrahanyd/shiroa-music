@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
+import { useLanguage } from '@/lib/language-context';
+import { Globe } from 'lucide-react';
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
@@ -13,6 +15,32 @@ export default function AuthPage() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { login, register } = useAuth();
+  const { language, setLanguage, t } = useLanguage();
+
+  const translations = {
+    en: {
+      signIn: 'Sign In',
+      signUp: 'Sign Up',
+      fullName: 'Full Name',
+      email: 'Email',
+      password: 'Password',
+      pleaseWait: 'Please wait...',
+      tagline: 'Everything for your sound',
+      subtitle: 'AI-Powered Music Production',
+    },
+    tr: {
+      signIn: 'Giriş Yap',
+      signUp: 'Kayıt Ol',
+      fullName: 'Ad Soyad',
+      email: 'E-posta',
+      password: 'Şifre',
+      pleaseWait: 'Lütfen bekleyin...',
+      tagline: 'Sesiniz için her şey',
+      subtitle: 'AI Destekli Müzik Prodüksiyonu',
+    },
+  };
+
+  const tr = translations[language as 'en' | 'tr'];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,7 +78,7 @@ export default function AuthPage() {
             SHIROA
           </h2>
           <p className="text-3xl text-white/80 mb-8 font-light">
-            AI-Powered Music Production
+            {tr.subtitle}
           </p>
           <div className="flex gap-8 text-white/60">
             <div>
@@ -76,6 +104,14 @@ export default function AuthPage() {
 
       {/* Right Side - Form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8 relative z-10" style={{ background: 'linear-gradient(135deg, rgba(0,0,0,0.8), rgba(30,20,50,0.9))' }}>
+        {/* Language Switcher */}
+        <button
+          onClick={() => setLanguage(language === 'en' ? 'tr' : 'en')}
+          className="absolute top-8 right-8 flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 transition-all"
+        >
+          <Globe size={18} className="text-white/60" />
+          <span className="text-white/60 font-medium text-sm uppercase">{language}</span>
+        </button>
         <div className="max-w-md w-full">
           {/* Logo */}
           <div className="mb-12">
@@ -85,7 +121,7 @@ export default function AuthPage() {
                 SHIROA
               </span>
             </h1>
-            <p className="text-white/60 text-lg">Everything for your sound</p>
+            <p className="text-white/60 text-lg">{tr.tagline}</p>
           </div>
 
           {/* Toggle */}
@@ -93,18 +129,18 @@ export default function AuthPage() {
             <button
               onClick={() => setIsLogin(true)}
               className={`flex-1 py-3 rounded-lg font-semibold transition-all ${
-                isLogin ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white' : 'text-white/60'
+                isLogin ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white bg-[length:200%_100%] animate-gradient-shift' : 'text-white/60'
               }`}
             >
-              Sign In
+              {tr.signIn}
             </button>
             <button
               onClick={() => setIsLogin(false)}
               className={`flex-1 py-3 rounded-lg font-semibold transition-all ${
-                !isLogin ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white' : 'text-white/60'
+                !isLogin ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white bg-[length:200%_100%] animate-gradient-shift' : 'text-white/60'
               }`}
             >
-              Sign Up
+              {tr.signUp}
             </button>
           </div>
 
@@ -118,7 +154,7 @@ export default function AuthPage() {
 
             {!isLogin && (
               <div>
-                <label className="text-sm text-white/60 font-medium block mb-2">Full Name</label>
+                <label className="text-sm text-white/60 font-medium block mb-2">{tr.fullName}</label>
                 <input
                   type="text"
                   required
@@ -131,7 +167,7 @@ export default function AuthPage() {
             )}
 
             <div>
-              <label className="text-sm text-white/60 font-medium block mb-2">Email</label>
+              <label className="text-sm text-white/60 font-medium block mb-2">{tr.email}</label>
               <input
                 type="email"
                 required
@@ -143,7 +179,7 @@ export default function AuthPage() {
             </div>
 
             <div>
-              <label className="text-sm text-white/60 font-medium block mb-2">Password</label>
+              <label className="text-sm text-white/60 font-medium block mb-2">{tr.password}</label>
               <input
                 type="password"
                 required
@@ -158,9 +194,9 @@ export default function AuthPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-4 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-xl font-bold text-white hover:shadow-2xl hover:shadow-purple-500/50 transition-all disabled:opacity-50"
+              className="w-full py-4 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-[length:200%_100%] animate-gradient-shift rounded-xl font-bold text-white hover:shadow-2xl hover:shadow-purple-500/50 transition-all disabled:opacity-50"
             >
-              {loading ? 'Please wait...' : isLogin ? 'Sign In' : 'Create Account'}
+              {loading ? tr.pleaseWait : isLogin ? tr.signIn : tr.signUp}
             </button>
           </form>
         </div>

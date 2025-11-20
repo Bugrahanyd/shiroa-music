@@ -241,7 +241,17 @@ button:active, a:active {
 }
 
 [data-theme="dark"] .animate-gradient-text {
-  background: linear-gradient(-45deg, #60a5fa, #8b5cf6, #6366f1, #3b82f6);
+  background: linear-gradient(-45deg, #94a3b8, #64748b, #475569, #cbd5e1);
+  background-size: 400% 400%;
+}
+
+[data-theme="light"] .animate-gradient-text {
+  background: linear-gradient(-45deg, #f59e0b, #ef4444, #ec4899, #8b5cf6);
+  background-size: 400% 400%;
+}
+
+[data-theme="sunset"] .animate-gradient-text {
+  background: linear-gradient(-45deg, #ff6b35, #ff8c42, #ffa07a, #ff6b9d, #9d4edd, #00ced1);
   background-size: 400% 400%;
 }
 

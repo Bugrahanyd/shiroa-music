@@ -5,21 +5,42 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/lib/auth-context";
 import { useLanguage } from "@/lib/language-context";
+import { useTheme } from "@/lib/theme-context";
 
 export default function Home() {
   const { user } = useAuth();
   const router = useRouter();
   const { t } = useLanguage();
+  const { theme } = useTheme();
 
   useEffect(() => {
     if (!user) {
-      router.push('/landing');
+      router.push('/auth');
     }
   }, [user, router]);
 
   if (!user) {
     return null;
   }
+
+  const getSoundGradient = () => {
+    switch (theme) {
+      case 'dark':
+        return 'from-[#94a3b8] via-[#64748b] to-[#cbd5e1]';
+      case 'light':
+        return 'from-[#f59e0b] via-[#ef4444] to-[#ec4899]';
+      case 'japanese':
+        return 'from-[#f472b6] via-[#ec4899] to-[#be185d]';
+      case 'neon':
+        return 'from-[#00f5ff] via-[#a855f7] to-[#8b5cf6]';
+      case 'sunset':
+        return 'from-[#ff6b35] via-[#ff8c42] to-[#ffa07a]';
+      default:
+        return 'from-[#00CED1] via-[#5F9FFF] to-[#9D4EDD]';
+    }
+  };
+
+
 
   return (
     <div className="min-h-screen">
@@ -28,7 +49,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-b from-[#00CED1]/5 to-transparent rounded-3xl blur-3xl"></div>
         <div className="relative z-10">
           <h2 className="text-6xl md:text-7xl font-[family-name:var(--font-orbitron)] font-black theme-text mb-6 leading-tight">
-{t('home.hero.title')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00CED1] via-[#5F9FFF] to-[#9D4EDD]">{t('home.hero.sound')}</span>
+{t('home.hero.title')} <span className={`text-transparent bg-clip-text bg-gradient-to-r ${getSoundGradient()}`}>{t('home.hero.sound')}</span>
           </h2>
           <p className="text-xl theme-text-secondary mb-12 max-w-2xl mx-auto">
 {t('home.hero.subtitle')}

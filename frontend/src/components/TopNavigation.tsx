@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/lib/auth-context';
 import { useTheme } from '@/lib/theme-context';
@@ -19,6 +19,23 @@ export default function TopNavigation() {
     { id: 2, title: 'Purchase completed', message: 'You bought "Dark Trap Beat"', time: '1h ago', read: false },
     { id: 3, title: 'New follower', message: 'ProducerX started following you', time: '2h ago', read: false },
   ]);
+
+  const notifRef = useRef<HTMLDivElement>(null);
+  const userMenuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (notifRef.current && !notifRef.current.contains(event.target as Node)) {
+        setShowNotifications(false);
+      }
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
+        setShowUserMenu(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const markAllAsRead = () => {
     setNotifications(notifications.map(n => ({ ...n, read: true })));
@@ -49,44 +66,14 @@ export default function TopNavigation() {
             className="w-10 h-10 rounded-lg shadow-lg" 
             style={{ imageRendering: 'crisp-edges' }}
           />
-          <div className="hidden sm:flex">
-            {['S', 'H', 'I', 'R', 'O', 'A'].map((letter, index) => (
-              <span
-                key={index}
-                className="text-2xl font-bold font-orbitron"
-                style={{
-                  color: ['#00CED1', '#5F9FFF', '#9D4EDD', '#FF6B9D', '#FFB347', '#00CED1'][index],
-                }}
-              >
-                {letter}
-              </span>
-            ))}
-          </div>
+          <h1 className="hidden sm:block text-2xl font-bold font-orbitron bg-clip-text text-transparent animate-gradient-text">
+            SHIROA
+          </h1>
         </Link>
 
         {/* Right Side */}
         <div className="flex items-center gap-4">
           
-          {/* Quick Navigation */}
-          <div className="hidden md:flex items-center gap-1">
-            <Link href="/" className="px-4 py-2 rounded-lg theme-text-secondary hover:theme-text transition-all hover:scale-105 relative group">
-              <span>{t('nav.home')}</span>
-              <div className={`absolute bottom-0 left-0 right-0 h-0.5 ${getGradientClass()} scale-x-0 group-hover:scale-x-100 transition-transform`}></div>
-            </Link>
-            <Link href="/tracks" className="px-4 py-2 rounded-lg theme-text-secondary hover:theme-text transition-all hover:scale-105 relative group">
-              <span>{t('nav.tracks')}</span>
-              <div className={`absolute bottom-0 left-0 right-0 h-0.5 ${getGradientClass()} scale-x-0 group-hover:scale-x-100 transition-transform`}></div>
-            </Link>
-            <div className="relative group">
-              <span className="px-4 py-2 rounded-lg theme-text-secondary opacity-50 cursor-not-allowed">
-                {t('nav.studio')}
-              </span>
-              <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 px-3 py-1 rounded-lg theme-card border theme-border opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap text-sm theme-text">
-                Coming Soon
-              </div>
-            </div>
-          </div>
-
           {/* Language Switcher */}
           <div className="relative">
             <button
@@ -103,7 +90,7 @@ export default function TopNavigation() {
           </div>
 
           {/* Notifications */}
-          <div className="relative">
+          <div className="relative" ref={notifRef}>
             <button 
               onClick={() => setShowNotifications(!showNotifications)}
               className="relative p-1.5 md:p-2 rounded-lg theme-hover transition-all hover:scale-110"
@@ -168,7 +155,7 @@ export default function TopNavigation() {
 
           {/* User Menu */}
           {user ? (
-            <div className="relative">
+            <div className="relative" ref={userMenuRef}>
               <button
                 onClick={() => setShowUserMenu(!showUserMenu)}
                 className="flex items-center gap-2 md:gap-3 px-2 md:px-3 py-2 rounded-xl theme-hover transition-all hover:scale-105"
@@ -199,22 +186,7 @@ export default function TopNavigation() {
                 </div>
               )}
             </div>
-          ) : (
-            <div className="flex items-center gap-2">
-              <Link
-                href="/login"
-                className={`px-3 md:px-5 py-2 rounded-lg ${getGradientClass()} bg-[length:200%_100%] animate-gradient-shift text-white font-medium shadow-lg hover:shadow-xl transition-all hover:scale-105 text-sm`}
-              >
-                {t('nav.login')}
-              </Link>
-              <Link
-                href="/register"
-                className={`px-3 md:px-5 py-2 rounded-lg ${getGradientClass()} bg-[length:200%_100%] animate-gradient-shift text-white font-medium shadow-lg hover:shadow-xl transition-all hover:scale-105 text-sm`}
-              >
-                {t('nav.signup')}
-              </Link>
-            </div>
-          )}
+          ) : null}
         </div>
       </div>
     </nav>

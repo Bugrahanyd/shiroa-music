@@ -9,12 +9,16 @@ export default function Footer() {
 
   const getThemeColor = () => {
     switch (theme) {
-      case 'japanese':
-        return '#FF6B9D';
-      case 'neon':
-        return '#00CED1';
+      case 'dark':
+        return '#64748b';
       case 'light':
-        return '#5F9FFF';
+        return '#ef4444';
+      case 'japanese':
+        return '#ec4899';
+      case 'neon':
+        return '#00f5ff';
+      case 'sunset':
+        return '#ff6b35';
       default:
         return '#9D4EDD';
     }
