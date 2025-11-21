@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
+import { useLanguage } from '@/lib/language-context';
 
 type FormMode = 'signin' | 'signup' | 'forgot' | 'code';
 
@@ -17,6 +18,7 @@ export default function GatePage() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { login, register } = useAuth();
+  const { language, setLanguage } = useLanguage();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,6 +46,27 @@ export default function GatePage() {
 
   return (
     <div className="min-h-screen relative overflow-hidden flex items-center justify-center p-4 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gray-900 via-[#0a0a0a] to-black">
+      {/* Language Switcher - Hydrabon Style */}
+      <div className="absolute top-8 right-8 z-50 flex items-center gap-3">
+        <button
+          onClick={() => setLanguage('en')}
+          className={`text-sm font-bold tracking-widest transition-colors ${
+            language === 'en' ? 'text-white' : 'text-white/40 hover:text-white'
+          }`}
+        >
+          EN
+        </button>
+        <div className="h-4 w-[1px] bg-white/20"></div>
+        <button
+          onClick={() => setLanguage('tr')}
+          className={`text-sm font-bold tracking-widest transition-colors ${
+            language === 'tr' ? 'text-white' : 'text-white/40 hover:text-white'
+          }`}
+        >
+          TR
+        </button>
+      </div>
+
       {/* Glow Layer */}
       <div className="absolute inset-0 bg-gradient-to-br from-purple-900/30 via-transparent to-cyan-900/30 animate-pulse" style={{ animationDuration: '8s' }}></div>
       
