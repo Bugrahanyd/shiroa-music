@@ -77,15 +77,9 @@ async function bootstrap() {
     })
   );
 
-  // CORS - Allow all Vercel domains
+  // CORS - Allow all origins
   app.enableCors({
-    origin: (origin, callback) => {
-      if (!origin || origin.includes('vercel.app') || origin.includes('localhost')) {
-        callback(null, true);
-      } else {
-        callback(new Error('CORS policy violation'));
-      }
-    },
+    origin: true,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     allowedHeaders: ['Content-Type', 'Authorization']
