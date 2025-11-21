@@ -62,6 +62,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.removeItem("refresh_token");
     document.cookie = 'accessToken=; path=/; max-age=0';
     setUser(null);
+    window.location.href = '/';
   };
 
   return (
