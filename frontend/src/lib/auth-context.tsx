@@ -45,6 +45,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const data = await api.login({ email, password });
     localStorage.setItem("access_token", data.access_token);
     localStorage.setItem("refresh_token", data.refresh_token);
+    document.cookie = `accessToken=${data.access_token}; path=/; max-age=86400`;
     setUser(data.user);
   };
 
@@ -52,12 +53,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const data = await api.register({ email, password, name });
     localStorage.setItem("access_token", data.access_token);
     localStorage.setItem("refresh_token", data.refresh_token);
+    document.cookie = `accessToken=${data.access_token}; path=/; max-age=86400`;
     setUser(data.user);
   };
 
   const logout = () => {
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
+    document.cookie = 'accessToken=; path=/; max-age=0';
     setUser(null);
   };
 
