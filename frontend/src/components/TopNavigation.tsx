@@ -55,15 +55,30 @@ export default function TopNavigation() {
     }
   };
 
+  const getLogoSrc = () => {
+    switch (theme) {
+      case 'light':
+        return '/gri.jpg';
+      case 'sunset':
+        return '/turuncu.jpg';
+      case 'neon':
+        return '/cyber.jpg';
+      case 'japanese':
+        return '/pembe.jpg';
+      default:
+        return '/logo.png';
+    }
+  };
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-40 h-16 theme-bg backdrop-blur-md bg-opacity-95 border-b theme-border">
       <div className="flex items-center justify-between h-full px-3 md:px-6">
         {/* Logo & SHIROA */}
         <Link href="/" className="flex items-center gap-2 hover:scale-105 transition-transform">
           <img 
-            src="/logo.png" 
+            src={getLogoSrc()} 
             alt="SHIROA" 
-            className="w-10 h-10 rounded-lg shadow-lg" 
+            className="w-10 h-10 rounded-lg shadow-lg transition-all duration-300" 
             style={{ imageRendering: 'crisp-edges' }}
           />
           <h1 className="hidden sm:block text-2xl font-bold font-orbitron theme-text">

@@ -6,9 +6,7 @@ import { AuthProvider } from "@/lib/auth-context";
 import { ThemeProvider } from "@/lib/theme-context";
 import { LanguageProvider } from "@/lib/language-context";
 import KeepAliveWrapper from "@/components/KeepAliveWrapper";
-import Sidebar from "@/components/Sidebar";
-import TopNavigation from "@/components/TopNavigation";
-import Footer from "@/components/Footer";
+import LayoutClient from "./layout-client";
 
 import "./globals.css";
 
@@ -54,12 +52,7 @@ export default function RootLayout({
           <ThemeProvider>
             <AuthProvider>
               <KeepAliveWrapper />
-              <TopNavigation />
-              <Sidebar />
-              <main className="mt-16 pb-20 md:pb-0 container mx-auto px-4 max-w-7xl">
-                {children}
-              </main>
-              <Footer />
+              <LayoutClient>{children}</LayoutClient>
             </AuthProvider>
           </ThemeProvider>
         </LanguageProvider>
