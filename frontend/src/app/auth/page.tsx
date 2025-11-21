@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
 import { useLanguage } from '@/lib/language-context';
-import { Globe } from 'lucide-react';
+
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
@@ -62,74 +62,25 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen flex">
-      {/* Left Side - Visual */}
-      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-gradient-to-br from-blue-900 via-purple-900 to-pink-900">
-        {/* Animated Background */}
-        <div className="absolute inset-0">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/30 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
-          <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-pink-500/30 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+    <div className="min-h-screen flex items-center justify-center p-8" style={{ background: 'linear-gradient(135deg, #0a0a0a, #1a1a2e)' }}>
+      <div className="max-w-md w-full">
+        {/* Logo */}
+        <div className="text-center mb-8">
+          <h1 className="text-6xl font-bold font-orbitron mb-2">
+            <span className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+              SHIROA
+            </span>
+          </h1>
+          <p className="text-white/60 text-lg">{tr.tagline}</p>
         </div>
 
-        {/* Content */}
-        <div className="relative z-10 flex flex-col items-center justify-center w-full p-12 text-center">
-          <h2 className="text-8xl font-black font-orbitron mb-6 text-white drop-shadow-2xl">
-            SHIROA
-          </h2>
-          <p className="text-3xl text-white/80 mb-8 font-light">
-            {tr.subtitle}
-          </p>
-          <div className="flex gap-8 text-white/60">
-            <div>
-              <div className="text-4xl font-bold text-white mb-2">1000+</div>
-              <div className="text-sm">Tracks</div>
-            </div>
-            <div>
-              <div className="text-4xl font-bold text-white mb-2">500+</div>
-              <div className="text-sm">Artists</div>
-            </div>
-            <div>
-              <div className="text-4xl font-bold text-white mb-2">100%</div>
-              <div className="text-sm">Exclusive</div>
-            </div>
-          </div>
-        </div>
-
-        {/* Floating Elements */}
-        <div className="absolute top-20 right-20 w-20 h-20 border-2 border-white/20 rounded-full animate-float"></div>
-        <div className="absolute bottom-40 left-20 w-32 h-32 border-2 border-white/20 rounded-full animate-float" style={{ animationDelay: '1.5s' }}></div>
-        <div className="absolute top-1/2 right-40 w-16 h-16 border-2 border-white/20 rounded-full animate-float" style={{ animationDelay: '0.5s' }}></div>
-      </div>
-
-      {/* Right Side - Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 relative z-10" style={{ background: 'linear-gradient(135deg, rgba(0,0,0,0.8), rgba(30,20,50,0.9))' }}>
-        {/* Language Switcher */}
-        <button
-          onClick={() => setLanguage(language === 'en' ? 'tr' : 'en')}
-          className="absolute top-8 right-8 flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 transition-all"
-        >
-          <Globe size={18} className="text-white/60" />
-          <span className="text-white/60 font-medium text-sm uppercase">{language}</span>
-        </button>
-        <div className="max-w-md w-full">
-          {/* Logo */}
-          <div className="mb-12">
-            <img src="/logo.png" alt="SHIROA" className="w-16 h-16 rounded-2xl mb-4" />
-            <h1 className="text-5xl font-bold font-orbitron mb-2">
-              <span className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-                SHIROA
-              </span>
-            </h1>
-            <p className="text-white/60 text-lg">{tr.tagline}</p>
-          </div>
-
+        <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl">
           {/* Toggle */}
           <div className="flex gap-2 mb-8 bg-white/5 p-1 rounded-xl">
             <button
               onClick={() => setIsLogin(true)}
               className={`flex-1 py-3 rounded-lg font-semibold transition-all ${
-                isLogin ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white bg-[length:200%_100%] animate-gradient-shift' : 'text-white/60'
+                isLogin ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white' : 'text-white/60'
               }`}
             >
               {tr.signIn}
@@ -137,7 +88,7 @@ export default function AuthPage() {
             <button
               onClick={() => setIsLogin(false)}
               className={`flex-1 py-3 rounded-lg font-semibold transition-all ${
-                !isLogin ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white bg-[length:200%_100%] animate-gradient-shift' : 'text-white/60'
+                !isLogin ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white' : 'text-white/60'
               }`}
             >
               {tr.signUp}
@@ -194,15 +145,13 @@ export default function AuthPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-4 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-[length:200%_100%] animate-gradient-shift rounded-xl font-bold text-white hover:shadow-2xl hover:shadow-purple-500/50 transition-all disabled:opacity-50"
+              className="w-full py-4 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-xl font-bold text-white hover:shadow-2xl transition-all disabled:opacity-50"
             >
               {loading ? tr.pleaseWait : isLogin ? tr.signIn : tr.signUp}
             </button>
           </form>
         </div>
       </div>
-
-
     </div>
   );
 }

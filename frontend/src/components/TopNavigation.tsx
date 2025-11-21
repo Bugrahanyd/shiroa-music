@@ -66,7 +66,7 @@ export default function TopNavigation() {
             className="w-10 h-10 rounded-lg shadow-lg" 
             style={{ imageRendering: 'crisp-edges' }}
           />
-          <h1 className="hidden sm:block text-2xl font-bold font-orbitron bg-clip-text text-transparent animate-gradient-text">
+          <h1 className="hidden sm:block text-2xl font-bold font-orbitron theme-text">
             SHIROA
           </h1>
         </Link>
