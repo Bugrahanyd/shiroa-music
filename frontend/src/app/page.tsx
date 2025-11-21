@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
-import { useLanguage } from '@/lib/language-context';
 
 type FormMode = 'signin' | 'signup' | 'forgot' | 'code';
 
@@ -18,7 +17,6 @@ export default function GatePage() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { login, register } = useAuth();
-  const { language, setLanguage, t } = useLanguage();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,16 +43,18 @@ export default function GatePage() {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden flex items-center justify-center p-4 bg-gradient-to-br from-black via-purple-950 to-black animate-pulse" style={{ animationDuration: '8s' }}>
+    <div className="min-h-screen relative overflow-hidden flex items-center justify-center p-4 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gray-900 via-[#0a0a0a] to-black">
+      {/* Glow Layer */}
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/30 via-transparent to-cyan-900/30 animate-pulse" style={{ animationDuration: '8s' }}></div>
       
       {/* Content */}
       <div className="relative z-10 w-full max-w-md">
         {/* Logo & Title */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-8 flex flex-col items-center gap-4">
           <img 
             src="/logo.png" 
             alt="SHIROA" 
-            className="w-40 h-40 mx-auto mb-6 rounded-2xl shadow-2xl shadow-purple-500/50"
+            className="w-40 h-40"
           />
           <h1 className="text-6xl font-black font-orbitron text-white">
             SHIROA
@@ -62,16 +62,8 @@ export default function GatePage() {
         </div>
 
         {/* Form Card - Glassmorphism */}
-        <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8 shadow-2xl relative">
-          {/* Language Switcher */}
-          <button
-            onClick={() => setLanguage(language === 'en' ? 'tr' : 'en')}
-            className="absolute top-4 right-4 text-white/60 hover:text-white text-sm font-semibold uppercase transition-colors"
-          >
-            {language === 'en' ? 'TR' : 'EN'}
-          </button>
-
-          <form onSubmit={handleSubmit} className="space-y-5 mt-4">
+        <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8 shadow-2xl">
+          <form onSubmit={handleSubmit} className="space-y-5">
             {error && (
               <div className="bg-red-500/10 border border-red-500 text-red-500 px-4 py-3 rounded-xl text-sm">
                 {error}
@@ -81,7 +73,7 @@ export default function GatePage() {
             {mode === 'signup' && (
               <div>
                 <label className="text-sm text-white/60 font-medium block mb-2">
-                  {t('auth.fullName')}
+                  Full Name
                 </label>
                 <input
                   type="text"
@@ -97,7 +89,7 @@ export default function GatePage() {
             {mode !== 'code' && (
               <div>
                 <label className="text-sm text-white/60 font-medium block mb-2">
-                  {t('auth.email')}
+                  Email
                 </label>
                 <input
                   type="email"
@@ -105,7 +97,7 @@ export default function GatePage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/40 focus:outline-none focus:border-purple-500 transition-all"
-                  placeholder="you@example.com"
+                  placeholder="name@example.com"
                 />
               </div>
             )}
@@ -113,7 +105,7 @@ export default function GatePage() {
             {mode === 'code' && (
               <div>
                 <label className="text-sm text-white/60 font-medium block mb-2">
-                  {t('auth.verificationCode')}
+                  Verification Code
                 </label>
                 <input
                   type="text"
@@ -129,7 +121,7 @@ export default function GatePage() {
             {(mode === 'signin' || mode === 'signup') && (
               <div>
                 <label className="text-sm text-white/60 font-medium block mb-2">
-                  {t('auth.password')}
+                  Password
                 </label>
                 <input
                   type="password"
@@ -153,7 +145,7 @@ export default function GatePage() {
                     className="w-4 h-4 rounded border-white/20 bg-white/5 text-purple-500 focus:ring-purple-500"
                   />
                   <span className="text-sm text-white/60">
-                    {t('auth.rememberMe')}
+                    Remember Me
                   </span>
                 </label>
                 <button
@@ -161,7 +153,7 @@ export default function GatePage() {
                   onClick={() => setMode('forgot')}
                   className="text-sm text-purple-400 hover:text-purple-300 transition-colors"
                 >
-                  {t('auth.forgotPassword')}
+                  Forgot Password?
                 </button>
               </div>
             )}
@@ -172,14 +164,14 @@ export default function GatePage() {
               className="w-full py-4 bg-gradient-to-r from-[#00CED1] to-[#ec4899] rounded-xl font-bold text-white hover:shadow-2xl hover:shadow-purple-500/50 transition-all disabled:opacity-50"
             >
               {loading
-                ? t('auth.pleaseWait')
+                ? 'Please wait...'
                 : mode === 'signin'
-                ? t('auth.signIn')
+                ? 'Enter SHIROA'
                 : mode === 'signup'
-                ? t('auth.signUp')
+                ? 'Sign Up'
                 : mode === 'forgot'
-                ? t('auth.sendCode')
-                : t('auth.verify')}
+                ? 'Send Code'
+                : 'Verify'}
             </button>
           </form>
 
@@ -187,23 +179,23 @@ export default function GatePage() {
           <div className="mt-6 text-center">
             {mode === 'signin' && (
               <p className="text-white/60 text-sm">
-                {t('auth.noAccount')}{' '}
+                Don't have an account?{' '}
                 <button
                   onClick={() => setMode('signup')}
                   className="text-purple-400 hover:text-purple-300 font-semibold transition-colors"
                 >
-                  {t('auth.signUp')}
+                  Sign Up
                 </button>
               </p>
             )}
             {mode === 'signup' && (
               <p className="text-white/60 text-sm">
-                {t('auth.haveAccount')}{' '}
+                Already have an account?{' '}
                 <button
                   onClick={() => setMode('signin')}
                   className="text-purple-400 hover:text-purple-300 font-semibold transition-colors"
                 >
-                  {t('auth.signIn')}
+                  Sign In
                 </button>
               </p>
             )}
@@ -212,7 +204,7 @@ export default function GatePage() {
                 onClick={() => setMode('signin')}
                 className="text-white/60 hover:text-white text-sm transition-colors"
               >
-                ← {t('auth.backToSignIn')}
+                ← Back to Sign In
               </button>
             )}
           </div>
@@ -227,7 +219,7 @@ export default function GatePage() {
             href="https://hydrabon.com" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="font-bold bg-gradient-to-r from-[#00CED1] to-[#ec4899] bg-clip-text text-transparent hover:opacity-80 transition-opacity"
+            className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 font-bold hover:scale-105 transition-transform inline-block"
           >
             HYDRABON
           </a>
