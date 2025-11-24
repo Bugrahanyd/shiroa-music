@@ -15,9 +15,15 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<Theme>("dark");
 
   useEffect(() => {
-    const saved = localStorage.getItem("shiroa-theme") as Theme;
-    if (saved) setTheme(saved);
-  }, []);
+    const isLoginPage = window.location.pathname === '/';
+    if (isLoginPage) {
+      setTheme("dark");
+      document.documentElement.setAttribute("data-theme", "dark");
+    } else {
+      const saved = localStorage.getItem("shiroa-theme") as Theme;
+      if (saved) setTheme(saved);
+    }
+  }, []);}
 
   const handleSetTheme = (newTheme: Theme) => {
     setTheme(newTheme);

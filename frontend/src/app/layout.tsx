@@ -42,7 +42,7 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body className={`${poppins.variable} ${orbitron.variable} font-sans antialiased theme-bg theme-text`}>
+      <body className={`${poppins.variable} ${orbitron.variable} font-sans antialiased theme-bg theme-text min-h-screen flex flex-col`}>
         <div className="animated-bg"></div>
         <div className="glow-orb glow-orb-1"></div>
         <div className="glow-orb glow-orb-2"></div>
@@ -52,7 +52,9 @@ export default function RootLayout({
           <ThemeProvider>
             <AuthProvider>
               <KeepAliveWrapper />
-              <LayoutClient>{children}</LayoutClient>
+              <div className="flex-grow flex flex-col">
+                <LayoutClient>{children}</LayoutClient>
+              </div>
             </AuthProvider>
           </ThemeProvider>
         </LanguageProvider>

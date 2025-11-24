@@ -30,7 +30,14 @@ export class AuthService {
     const user = await this.usersService.create(
       registerDto.email,
       registerDto.password,
-      registerDto.name
+      registerDto.name,
+      {
+        role: registerDto.role,
+        bio: registerDto.bio,
+        location: registerDto.location,
+        avatarUrl: registerDto.avatarUrl,
+        socialLinks: registerDto.socialLinks,
+      }
     );
 
     await this.emailService.sendVerificationEmail(user.email, user.verificationToken);

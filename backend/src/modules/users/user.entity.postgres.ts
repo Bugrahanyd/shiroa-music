@@ -3,7 +3,9 @@ import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateCol
 export enum UserRole {
   USER = "user",
   ADMIN = "admin",
-  PRODUCER = "producer"
+  PRODUCER = "producer",
+  ARTIST = "artist",
+  LISTENER = "listener"
 }
 
 @Entity("users")
@@ -44,6 +46,23 @@ export class User {
 
   @Column({ nullable: true })
   avatar: string;
+
+  @Column({ nullable: true })
+  avatarUrl: string;
+
+  @Column({ type: "text", nullable: true })
+  bio: string;
+
+  @Column({ nullable: true })
+  location: string;
+
+  @Column({ type: "json", nullable: true })
+  socialLinks: {
+    instagram?: string;
+    twitter?: string;
+    youtube?: string;
+    spotify?: string;
+  };
 
   @Column({ type: "decimal", precision: 10, scale: 2, default: 0 })
   creditBalance: number;

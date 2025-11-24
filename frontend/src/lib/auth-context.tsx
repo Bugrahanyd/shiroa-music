@@ -8,13 +8,30 @@ interface User {
   email: string;
   name: string;
   role: string;
+  avatarUrl?: string;
+  bio?: string;
+  location?: string;
+  socialLinks?: {
+    instagram?: string;
+    twitter?: string;
+    youtube?: string;
+    spotify?: string;
+  };
+}
+
+interface RegisterExtras {
+  role?: string;
+  bio?: string;
+  location?: string;
+  avatarUrl?: string;
+  socialLinks?: Record<string, string>;
 }
 
 interface AuthContextType {
   user: User | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
-  register: (email: string, password: string, name: string) => Promise<void>;
+  register: (email: string, password: string, name: string, extras?: RegisterExtras) => Promise<void>;
   logout: () => void;
 }
 
@@ -49,8 +66,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(data.user);
   };
 
-  const register = async (email: string, password: string, name: string) => {
-    const data = await api.register({ email, password, name });
+  const register = async (email: string, password: string, name: string, extras?: RegisterExtras) => {
+    const data = await api.register({ email, password, name, ...extras });
     localStorage.setItem("access_token", data.access_token);
     localStorage.setItem("refresh_token", data.refresh_token);
     document.cookie = `accessToken=${data.access_token}; path=/; max-age=86400`;
@@ -60,6 +77,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logout = () => {
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
+    localStorage.removeItem("shiroa-theme");
     document.cookie = 'accessToken=; path=/; max-age=0';
     setUser(null);
     window.location.href = '/';

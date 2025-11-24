@@ -41,7 +41,7 @@ export default function TrackCard({ track }: TrackCardProps) {
       const { isFavorite } = await api.checkFavorite(track._id);
       setIsFavorite(isFavorite);
     } catch (error) {
-      console.error('Failed to check favorite:', error);
+      // Silently fail for demo
     }
   };
 
@@ -50,7 +50,7 @@ export default function TrackCard({ track }: TrackCardProps) {
       const { count } = await api.getFavoriteCount(track._id);
       setFavoriteCount(count);
     } catch (error) {
-      console.error('Failed to load favorite count:', error);
+      // Silently fail for demo
     }
   };
 
@@ -72,7 +72,7 @@ export default function TrackCard({ track }: TrackCardProps) {
         setFavoriteCount(prev => prev + 1);
       }
     } catch (error) {
-      console.error('Failed to toggle favorite:', error);
+      // Silently fail for demo
     }
   };
 
@@ -111,7 +111,7 @@ export default function TrackCard({ track }: TrackCardProps) {
       {/* Favorite Button */}
       <button
         onClick={handleFavorite}
-        className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full theme-card backdrop-blur-sm flex items-center justify-center hover:scale-110 transition-all"
+        className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full theme-card backdrop-blur-sm flex items-center justify-center hover:scale-110 transition-all cursor-pointer"
         aria-label="Add to favorites"
       >
         <Heart 
@@ -131,7 +131,7 @@ export default function TrackCard({ track }: TrackCardProps) {
       {/* Play Button */}
       <button
         onClick={handlePlay}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 w-16 h-16 rounded-full bg-gradient-to-r from-[#00CED1] to-[#5F9FFF] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110 shadow-2xl"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 w-16 h-16 rounded-full bg-gradient-to-r from-[#00CED1] to-[#5F9FFF] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110 shadow-2xl cursor-pointer"
         aria-label="Preview track"
       >
         <span className="text-white text-2xl">{isPlaying ? "⏸" : "▶"}</span>

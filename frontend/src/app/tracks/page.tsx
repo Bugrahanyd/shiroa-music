@@ -32,17 +32,97 @@ export default function TracksPage() {
     setLoading(true);
     try {
       const data = await api.getTracks();
-      setTracks(data);
+      if (data && data.length > 0) {
+        setTracks(data);
+      } else {
+        throw new Error('No tracks from API');
+      }
     } catch (error) {
-      // Fallback demo tracks
-      setTracks([
-        { _id: "1", title: "Summer Vibes", artist: "DJ Producer", genre: "electronic", price: 299, bpm: 128, key: "C Major", status: "available", createdAt: new Date() },
-        { _id: "2", title: "Dark Trap Beat", artist: "Beat Maker", genre: "trap", price: 199, bpm: 140, key: "A Minor", status: "available", createdAt: new Date() },
-        { _id: "3", title: "Chill Lo-Fi", artist: "Lo-Fi Master", genre: "hip-hop", price: 149, bpm: 85, key: "G Major", status: "available", createdAt: new Date() },
-        { _id: "4", title: "Rock Anthem", artist: "Rock Star", genre: "rock", price: 399, bpm: 120, key: "E Major", status: "sold", createdAt: new Date() },
-        { _id: "5", title: "Pop Sensation", artist: "Pop Star", genre: "pop", price: 249, bpm: 110, key: "D Major", status: "available", createdAt: new Date() },
-        { _id: "6", title: "Jazz Fusion", artist: "Jazz Master", genre: "jazz", price: 349, bpm: 95, key: "F Major", status: "available", createdAt: new Date() },
-      ]);
+      // Demo tracks with working audio
+      const demoTracks = [
+        {
+          _id: 'demo1',
+          title: 'Neon Dreams',
+          artist: 'Hydrabon AI',
+          genre: 'Electronic',
+          price: 299,
+          bpm: 128,
+          key: 'C Minor',
+          status: 'available',
+          coverUrl: 'https://via.placeholder.com/400x400/5F259F/00CED1?text=Neon+Dreams',
+          audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+          createdAt: new Date(),
+          favoriteCount: 42
+        },
+        {
+          _id: 'demo2',
+          title: 'Sakura Flow',
+          artist: 'SHIROA',
+          genre: 'Ambient',
+          price: 249,
+          bpm: 90,
+          key: 'D Major',
+          status: 'available',
+          coverUrl: 'https://via.placeholder.com/400x400/FFB7C5/FF69B4?text=Sakura+Flow',
+          audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
+          createdAt: new Date(),
+          favoriteCount: 38
+        },
+        {
+          _id: 'demo3',
+          title: 'Cyber Pulse',
+          artist: 'Digital Dreams',
+          genre: 'Synthwave',
+          price: 349,
+          bpm: 140,
+          key: 'A Minor',
+          status: 'available',
+          coverUrl: 'https://via.placeholder.com/400x400/00CED1/FF00FF?text=Cyber+Pulse',
+          audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3',
+          createdAt: new Date(),
+          favoriteCount: 56
+        },
+        {
+          _id: 'demo4',
+          title: 'Sunset Boulevard',
+          artist: 'LA Vibes',
+          genre: 'Pop',
+          price: 199,
+          bpm: 115,
+          key: 'G Major',
+          status: 'sold',
+          coverUrl: 'https://via.placeholder.com/400x400/FF6B35/FFA500?text=Sunset+Blvd',
+          audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3',
+          createdAt: new Date(),
+          favoriteCount: 67
+        },
+      ];
+      
+      // Add test tracks for filtering
+      const genres = ["Electronic", "Hip Hop", "Rock", "Pop", "Jazz", "Trap", "Ambient", "Synthwave", "Acoustic"];
+      let counter = 1;
+      
+      genres.forEach(genre => {
+        for (let i = 0; i < 3; i++) {
+          demoTracks.push({
+            _id: `test${String(counter).padStart(4, '0')}`,
+            title: `test${String(counter).padStart(4, '0')}`,
+            artist: "Test Artist",
+            genre: genre,
+            price: Math.floor(Math.random() * 300) + 100,
+            bpm: Math.floor(Math.random() * 60) + 80,
+            key: ["C", "D", "E", "F", "G", "A", "B"][Math.floor(Math.random() * 7)] + " Major",
+            status: "available",
+            coverUrl: `https://via.placeholder.com/400x400/1a1a1a/00CED1?text=${genre}`,
+            audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+            createdAt: new Date(),
+            favoriteCount: Math.floor(Math.random() * 50)
+          });
+          counter++;
+        }
+      });
+      
+      setTracks(demoTracks);
     } finally {
       setLoading(false);
     }

@@ -34,7 +34,16 @@ class ApiClient {
   }
 
   // Auth
-  async register(data: { email: string; password: string; name: string }) {
+  async register(data: { 
+    email: string; 
+    password: string; 
+    name: string;
+    role?: string;
+    bio?: string;
+    location?: string;
+    avatarUrl?: string;
+    socialLinks?: Record<string, string>;
+  }) {
     return this.request("/auth/register", {
       method: "POST",
       body: JSON.stringify(data)
@@ -69,7 +78,16 @@ class ApiClient {
     return this.request(`/tracks/${id}`);
   }
 
-  async createTrack(data: any) {
+  async createTrack(data: {
+    title: string;
+    artist: string;
+    genre: string;
+    price: number;
+    bpm?: number;
+    key?: string;
+    audioUrl?: string;
+    coverUrl?: string;
+  }) {
     return this.request("/tracks", {
       method: "POST",
       body: JSON.stringify(data)

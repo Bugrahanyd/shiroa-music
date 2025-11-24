@@ -17,7 +17,7 @@ export default function LayoutClient({ children }: { children: React.ReactNode }
     <>
       <TopNavigation />
       <Sidebar />
-      <main className="mt-16 pb-20 md:pb-0 container mx-auto px-4 max-w-7xl">
+      <main className="flex-grow mt-16 pb-20 md:pb-0 container mx-auto px-4 max-w-7xl">
         {children}
       </main>
       <Footer />

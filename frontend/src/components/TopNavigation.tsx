@@ -72,35 +72,43 @@ export default function TopNavigation() {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-40 h-16 theme-bg backdrop-blur-md bg-opacity-95 border-b theme-border">
-      <div className="flex items-center justify-between h-full px-3 md:px-6">
-        {/* Logo & SHIROA */}
-        <Link href="/" className="flex items-center gap-2 hover:scale-105 transition-transform">
-          <img 
-            src={getLogoSrc()} 
-            alt="SHIROA" 
-            className="w-10 h-10 rounded-lg shadow-lg transition-all duration-300" 
-            style={{ imageRendering: 'crisp-edges' }}
-          />
-          <h1 className="hidden sm:block text-2xl font-bold font-orbitron theme-text">
-            SHIROA
-          </h1>
-        </Link>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+        <div className="flex items-center justify-between h-full">
+          {/* Logo & SHIROA */}
+          <Link href="/discover" className="flex items-center gap-2 hover:scale-105 transition-transform">
+            <div className="w-10 h-10 rounded-full overflow-hidden shadow-lg">
+              <img 
+                src={getLogoSrc()} 
+                alt="SHIROA" 
+                className="w-full h-full object-cover mix-blend-screen transition-all duration-300" 
+              />
+            </div>
+            <h1 className="hidden sm:block text-2xl font-bold font-orbitron theme-text">
+              SHIROA
+            </h1>
+          </Link>
 
         {/* Right Side */}
         <div className="flex items-center gap-4">
           
-          {/* Language Switcher */}
-          <div className="relative">
+          {/* Language Switcher - Minimalist */}
+          <div className="flex items-center gap-2 select-none">
             <button
-              onClick={() => setLanguage(language === 'en' ? 'tr' : 'en')}
-              className="flex items-center gap-1 md:gap-2 px-2 md:px-3 py-2 rounded-lg theme-hover transition-all hover:scale-105"
-              title={language === 'en' ? 'Türkçe' : 'English'}
+              onClick={() => setLanguage('en')}
+              className={`text-sm font-bold tracking-wider transition-colors cursor-pointer ${
+                language === 'en' ? 'theme-text' : 'theme-text-secondary hover:theme-text'
+              }`}
             >
-              <Globe size={16} className="md:hidden theme-text-secondary" />
-              <Globe size={18} className="hidden md:block theme-text-secondary" />
-              <span className="hidden lg:block theme-text-secondary font-medium text-sm uppercase">
-                {language}
-              </span>
+              EN
+            </button>
+            <div className="h-4 w-[1px] theme-border"></div>
+            <button
+              onClick={() => setLanguage('tr')}
+              className={`text-sm font-bold tracking-wider transition-colors cursor-pointer ${
+                language === 'tr' ? 'theme-text' : 'theme-text-secondary hover:theme-text'
+              }`}
+            >
+              TR
             </button>
           </div>
 
@@ -108,7 +116,7 @@ export default function TopNavigation() {
           <div className="relative" ref={notifRef}>
             <button 
               onClick={() => setShowNotifications(!showNotifications)}
-              className="relative p-1.5 md:p-2 rounded-lg theme-hover transition-all hover:scale-110"
+              className="relative p-1.5 md:p-2 rounded-lg theme-hover transition-all hover:scale-110 cursor-pointer"
             >
               <Bell size={18} className="md:hidden theme-text-secondary" />
               <Bell size={20} className="hidden md:block theme-text-secondary" />
@@ -117,55 +125,57 @@ export default function TopNavigation() {
               )}
             </button>
 
-            {showNotifications && (
-              <div className="absolute right-0 top-14 w-80 max-w-[calc(100vw-1rem)] theme-bg border-2 theme-border rounded-xl shadow-2xl animate-slide-in">
-                <div className="p-4 border-b theme-border flex items-center justify-between">
-                  <h3 className="font-bold theme-text">{t('notif.title')}</h3>
-                  {unreadCount > 0 && (
-                    <button 
-                      onClick={markAllAsRead}
-                      className="text-xs theme-accent hover:opacity-80 transition-opacity"
+            <div className={`absolute right-0 top-14 w-80 max-w-[calc(100vw-1rem)] theme-bg border-2 theme-border rounded-xl shadow-2xl transition-all duration-300 ease-in-out origin-top-right ${
+              showNotifications 
+                ? 'opacity-100 scale-100 visible translate-y-0' 
+                : 'opacity-0 scale-95 invisible -translate-y-2 pointer-events-none'
+            }`}>
+              <div className="p-4 border-b theme-border flex items-center justify-between">
+                <h3 className="font-bold theme-text">{t('notif.title')}</h3>
+                {unreadCount > 0 && (
+                  <button 
+                    onClick={markAllAsRead}
+                    className="text-xs theme-accent hover:opacity-80 transition-opacity"
+                  >
+                    {t('notif.markRead')}
+                  </button>
+                )}
+              </div>
+              <div className="max-h-96 overflow-y-auto">
+                {notifications.length > 0 ? (
+                  notifications.map((notif) => (
+                    <div 
+                      key={notif.id}
+                      className={`p-4 border-b theme-border hover:theme-bg-secondary transition-colors cursor-pointer ${
+                        !notif.read ? 'bg-opacity-50' : ''
+                      }`}
+                      onClick={() => {
+                        setNotifications(notifications.map(n => 
+                          n.id === notif.id ? { ...n, read: true } : n
+                        ));
+                        setUnreadCount(Math.max(0, unreadCount - 1));
+                      }}
                     >
-                      {t('notif.markRead')}
-                    </button>
-                  )}
-                </div>
-                <div className="max-h-96 overflow-y-auto">
-                  {notifications.length > 0 ? (
-                    notifications.map((notif) => (
-                      <div 
-                        key={notif.id}
-                        className={`p-4 border-b theme-border hover:theme-bg-secondary transition-colors cursor-pointer ${
-                          !notif.read ? 'bg-opacity-50' : ''
-                        }`}
-                        onClick={() => {
-                          setNotifications(notifications.map(n => 
-                            n.id === notif.id ? { ...n, read: true } : n
-                          ));
-                          setUnreadCount(Math.max(0, unreadCount - 1));
-                        }}
-                      >
-                        <div className="flex items-start gap-3">
-                          {!notif.read && (
-                            <div className="w-2 h-2 bg-gradient-to-r from-red-500 to-pink-500 rounded-full mt-2"></div>
-                          )}
-                          <div className="flex-1">
-                            <h4 className="font-semibold theme-text text-sm">{notif.title}</h4>
-                            <p className="theme-text-secondary text-xs mt-1">{notif.message}</p>
-                            <span className="theme-text-secondary text-xs mt-2 block">{notif.time}</span>
-                          </div>
+                      <div className="flex items-start gap-3">
+                        {!notif.read && (
+                          <div className="w-2 h-2 bg-gradient-to-r from-red-500 to-pink-500 rounded-full mt-2"></div>
+                        )}
+                        <div className="flex-1">
+                          <h4 className="font-semibold theme-text text-sm">{notif.title}</h4>
+                          <p className="theme-text-secondary text-xs mt-1">{notif.message}</p>
+                          <span className="theme-text-secondary text-xs mt-2 block">{notif.time}</span>
                         </div>
                       </div>
-                    ))
-                  ) : (
-                    <div className="p-8 text-center theme-text-secondary">
-                      <Bell size={32} className="mx-auto mb-2 opacity-50" />
-                      <p>{t('notif.empty')}</p>
                     </div>
-                  )}
-                </div>
+                  ))
+                ) : (
+                  <div className="p-8 text-center theme-text-secondary">
+                    <Bell size={32} className="mx-auto mb-2 opacity-50" />
+                    <p>{t('notif.empty')}</p>
+                  </div>
+                )}
               </div>
-            )}
+            </div>
           </div>
 
           {/* User Menu */}
@@ -173,7 +183,7 @@ export default function TopNavigation() {
             <div className="relative" ref={userMenuRef}>
               <button
                 onClick={() => setShowUserMenu(!showUserMenu)}
-                className="flex items-center gap-2 md:gap-3 px-2 md:px-3 py-2 rounded-xl theme-hover transition-all hover:scale-105"
+                className="flex items-center gap-2 md:gap-3 px-2 md:px-3 py-2 rounded-xl theme-hover transition-all hover:scale-105 cursor-pointer"
               >
                 <div className={`w-7 h-7 md:w-9 md:h-9 rounded-full ${getGradientClass()} flex items-center justify-center shadow-lg`}>
                   <User size={14} className="md:hidden text-white" />
@@ -182,26 +192,29 @@ export default function TopNavigation() {
                 <span className="hidden lg:block theme-text font-medium text-sm">{user.name}</span>
               </button>
 
-              {showUserMenu && (
-                <div className="absolute right-0 top-14 w-48 md:w-56 theme-bg border-2 theme-border rounded-xl shadow-2xl py-2 animate-slide-in">
-                  <Link href="/profile" className="block px-4 py-2 theme-hover theme-text">
-                    {t('nav.profile')}
-                  </Link>
-                  <Link href="/dashboard" className="block px-4 py-2 theme-hover theme-text">
-                    {t('nav.dashboard')}
-                  </Link>
-                  <hr className="my-2 theme-border" />
-                  <button
-                    onClick={logout}
-                    className="w-full text-left px-4 py-2 theme-hover theme-text flex items-center gap-2"
-                  >
-                    <LogOut size={16} />
-                    {t('nav.logout')}
-                  </button>
-                </div>
-              )}
+              <div className={`absolute right-0 top-14 w-48 md:w-56 theme-bg border-2 theme-border rounded-xl shadow-2xl py-2 transition-all duration-300 ease-in-out origin-top-right ${
+                showUserMenu 
+                  ? 'opacity-100 scale-100 visible translate-y-0' 
+                  : 'opacity-0 scale-95 invisible -translate-y-2 pointer-events-none'
+              }`}>
+                <Link href="/profile" className="block px-4 py-2 theme-hover theme-text">
+                  {t('nav.profile')}
+                </Link>
+                <Link href="/dashboard" className="block px-4 py-2 theme-hover theme-text">
+                  {t('nav.dashboard')}
+                </Link>
+                <hr className="my-2 theme-border" />
+                <button
+                  onClick={logout}
+                  className="w-full text-left px-4 py-2 theme-hover theme-text flex items-center gap-2 cursor-pointer"
+                >
+                  <LogOut size={16} />
+                  {t('nav.logout')}
+                </button>
+              </div>
             </div>
           ) : null}
+        </div>
         </div>
       </div>
     </nav>

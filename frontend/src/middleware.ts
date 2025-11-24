@@ -8,9 +8,9 @@ export function middleware(request: NextRequest) {
   // Public paths that don't require auth
   const publicPaths = ['/'];
 
-  // If user has token and tries to access root, redirect to tracks
+  // If user has token and tries to access root, redirect to discover
   if (token && pathname === '/') {
-    return NextResponse.redirect(new URL('/tracks', request.url));
+    return NextResponse.redirect(new URL('/discover', request.url));
   }
 
   // If user doesn't have token and tries to access protected route, redirect to root

@@ -27,7 +27,7 @@ export class UsersService {
     this.bucketName = this.configService.get('S3_BUCKET_NAME');
   }
 
-  async create(email: string, password: string, name: string): Promise<User> {
+  async create(email: string, password: string, name: string, extras?: any): Promise<User> {
     const hashedPassword = await bcrypt.hash(password, 10);
     const verificationToken = crypto.randomBytes(32).toString('hex');
     
@@ -36,7 +36,12 @@ export class UsersService {
       password: hashedPassword,
       name,
       verificationToken,
-      emailVerified: false
+      emailVerified: false,
+      ...(extras?.role && { role: extras.role }),
+      ...(extras?.bio && { bio: extras.bio }),
+      ...(extras?.location && { location: extras.location }),
+      ...(extras?.avatarUrl && { avatarUrl: extras.avatarUrl }),
+      ...(extras?.socialLinks && { socialLinks: extras.socialLinks }),
     });
     return this.userRepository.save(newUser);
   }

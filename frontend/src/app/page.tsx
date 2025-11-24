@@ -74,10 +74,10 @@ export default function GatePage() {
     try {
       if (mode === 'signin') {
         await login(email, password);
-        router.push('/tracks');
+        router.push('/discover');
       } else if (mode === 'signup') {
-        await register(email, password, name);
-        router.push('/tracks');
+        router.push('/register');
+        return;
       } else if (mode === 'forgot') {
         setMode('code');
       } else if (mode === 'code') {
@@ -93,7 +93,7 @@ export default function GatePage() {
   return (
     <div className="min-h-screen relative overflow-hidden flex items-center justify-center p-4 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gray-900 via-[#0a0a0a] to-black">
       {/* Language Switcher - Hydrabon Style */}
-      <div className="absolute top-8 right-8 z-50 flex items-center gap-3 select-none">
+      <div className="absolute top-4 right-4 md:top-8 md:right-8 z-50 flex items-center gap-2 md:gap-3 select-none">
         <button
           onClick={() => setLang('en')}
           className={`text-sm font-bold tracking-widest transition-colors ${
@@ -119,19 +119,19 @@ export default function GatePage() {
       {/* Content */}
       <div className="relative z-10 w-full max-w-md">
         {/* Logo & Title */}
-        <div className="text-center mb-8 flex flex-col items-center gap-4">
+        <div className="text-center mb-6 md:mb-8 flex flex-col items-center gap-3 md:gap-4">
           <img 
             src="/logo.png" 
             alt="SHIROA" 
-            className="w-40 h-40"
+            className="w-24 h-24 md:w-40 md:h-40"
           />
-          <h1 className="text-6xl font-black font-orbitron text-white">
+          <h1 className="text-4xl md:text-6xl font-black font-orbitron text-white">
             SHIROA
           </h1>
         </div>
 
         {/* Form Card - Glassmorphism */}
-        <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8 shadow-2xl">
+        <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 md:p-8 shadow-2xl">
           <form onSubmit={handleSubmit} className="space-y-5">
             {error && (
               <div className="bg-red-500/10 border border-red-500 text-red-500 px-4 py-3 rounded-xl text-sm">
@@ -281,8 +281,8 @@ export default function GatePage() {
       </div>
 
       {/* Footer - Powered by Hydrabon */}
-      <div className="absolute bottom-6 left-0 right-0 text-center">
-        <p className="text-white/40 text-sm">
+      <div className="absolute bottom-4 md:bottom-6 left-0 right-0 text-center px-4">
+        <p className="text-white/40 text-xs md:text-sm">
           {t.poweredBy}{' '}
           <a 
             href="https://hydrabon.com" 
