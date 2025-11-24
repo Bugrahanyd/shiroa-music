@@ -9,12 +9,13 @@ import { User, Mail, MapPin, FileText, Edit2, LogOut, Music, TrendingUp, Shoppin
 export default function ProfilePage() {
   const { user, logout } = useAuth();
   const router = useRouter();
-  const [editing, setEditing] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [formData, setFormData] = useState({
     name: user?.name || "",
     email: user?.email || "",
     bio: (user as any)?.bio || "",
-    location: (user as any)?.location || ""
+    location: (user as any)?.location || "",
+    avatarUrl: (user as any)?.avatarUrl || ""
   });
 
   if (!user) {
@@ -82,112 +83,117 @@ export default function ProfilePage() {
           </div>
         )}
 
-        {editing ? (
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm theme-text-secondary font-medium mb-2">Name</label>
-              <input
-                type="text"
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="w-full px-4 py-3 theme-card rounded-xl theme-text focus:outline-none focus:ring-2 transition-all"
-                style={{ '--tw-ring-color': 'var(--theme-icon-color)' } as any}
-              />
+        <div className="space-y-6">
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="flex items-center gap-3">
+              <User size={20} className="theme-text-secondary" />
+              <div>
+                <p className="theme-text-secondary text-sm">Name</p>
+                <p className="theme-text font-semibold">{user.name}</p>
+              </div>
             </div>
 
-            <div>
-              <label className="block text-sm theme-text-secondary font-medium mb-2">Email</label>
-              <input
-                type="email"
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="w-full px-4 py-3 theme-card rounded-xl theme-text focus:outline-none focus:ring-2 transition-all"
-                style={{ '--tw-ring-color': 'var(--theme-icon-color)' } as any}
-              />
+            <div className="flex items-center gap-3">
+              <Mail size={20} className="theme-text-secondary" />
+              <div>
+                <p className="theme-text-secondary text-sm">Email</p>
+                <p className="theme-text font-semibold">{user.email}</p>
+              </div>
             </div>
 
-            <div>
-              <label className="block text-sm theme-text-secondary font-medium mb-2">Location</label>
-              <input
-                type="text"
-                value={formData.location}
-                onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                className="w-full px-4 py-3 theme-card rounded-xl theme-text focus:outline-none focus:ring-2 transition-all"
-                placeholder="Istanbul, TR"
-                style={{ '--tw-ring-color': 'var(--theme-icon-color)' } as any}
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm theme-text-secondary font-medium mb-2">Bio</label>
-              <textarea
-                value={formData.bio}
-                onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
-                className="w-full px-4 py-3 theme-card rounded-xl theme-text focus:outline-none focus:ring-2 transition-all resize-none"
-                placeholder="Tell us about yourself..."
-                rows={4}
-                style={{ '--tw-ring-color': 'var(--theme-icon-color)' } as any}
-              />
-            </div>
-
-            <div className="flex gap-3 pt-4">
-              <button onClick={handleSave} className="theme-button px-6 py-3 rounded-xl font-semibold">
-                Save Changes
-              </button>
-              <button onClick={() => setEditing(false)} className="theme-button-outline px-6 py-3 rounded-xl font-semibold">
-                Cancel
-              </button>
-            </div>
-          </div>
-        ) : (
-          <div className="space-y-6">
-            <div className="grid md:grid-cols-2 gap-6">
+            {(user as any)?.location && (
               <div className="flex items-center gap-3">
-                <User size={20} className="theme-text-secondary" />
+                <MapPin size={20} className="theme-text-secondary" />
                 <div>
-                  <p className="theme-text-secondary text-sm">Name</p>
-                  <p className="theme-text font-semibold">{user.name}</p>
+                  <p className="theme-text-secondary text-sm">Location</p>
+                  <p className="theme-text font-semibold">{(user as any).location}</p>
                 </div>
               </div>
-
-              <div className="flex items-center gap-3">
-                <Mail size={20} className="theme-text-secondary" />
-                <div>
-                  <p className="theme-text-secondary text-sm">Email</p>
-                  <p className="theme-text font-semibold">{user.email}</p>
-                </div>
-              </div>
-
-              {(user as any)?.location && (
-                <div className="flex items-center gap-3">
-                  <MapPin size={20} className="theme-text-secondary" />
-                  <div>
-                    <p className="theme-text-secondary text-sm">Location</p>
-                    <p className="theme-text font-semibold">{(user as any).location}</p>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <div className="flex flex-wrap gap-3 pt-4">
-              <button onClick={() => setEditing(true)} className="theme-button px-6 py-3 rounded-xl font-semibold flex items-center gap-2 hover:scale-105 transition-transform cursor-pointer">
-                <Edit2 size={18} />
-                Edit Profile
-              </button>
-              <button
-                onClick={() => {
-                  logout();
-                  router.push("/");
-                }}
-                className="px-6 py-3 rounded-xl font-semibold bg-red-500 text-white hover:bg-red-600 transition-all flex items-center gap-2 hover:scale-105 cursor-pointer"
-              >
-                <LogOut size={18} />
-                Logout
-              </button>
-            </div>
+            )}
           </div>
-        )}
+
+          <div className="flex flex-wrap gap-3 pt-4">
+            <button onClick={() => setShowEditModal(true)} className="theme-button px-6 py-3 rounded-xl font-semibold flex items-center gap-2 hover:scale-105 transition-transform cursor-pointer">
+              <Edit2 size={18} />
+              Edit Profile
+            </button>
+            <button
+              onClick={() => {
+                logout();
+                router.push("/");
+              }}
+              className="px-6 py-3 rounded-xl font-semibold bg-red-500 text-white hover:bg-red-600 transition-all flex items-center gap-2 hover:scale-105 cursor-pointer"
+            >
+              <LogOut size={18} />
+              Logout
+            </button>
+          </div>
+        </div>
       </div>
+
+      {/* Edit Profile Modal */}
+      {showEditModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setShowEditModal(false)}></div>
+          <div className="relative theme-card rounded-3xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <h2 className="text-3xl font-bold theme-text mb-6 font-orbitron">Edit Profile</h2>
+            
+            <div className="space-y-6">
+              <div>
+                <label className="block text-sm theme-text-secondary font-medium mb-2">Profile Picture URL</label>
+                <input
+                  type="url"
+                  value={formData.avatarUrl}
+                  onChange={(e) => setFormData({ ...formData, avatarUrl: e.target.value })}
+                  className="w-full px-4 py-3 theme-bg-secondary rounded-xl theme-text focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+                  placeholder="https://example.com/avatar.jpg"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm theme-text-secondary font-medium mb-2">Name</label>
+                <input
+                  type="text"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  className="w-full px-4 py-3 theme-bg-secondary rounded-xl theme-text focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm theme-text-secondary font-medium mb-2">Location</label>
+                <input
+                  type="text"
+                  value={formData.location}
+                  onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                  className="w-full px-4 py-3 theme-bg-secondary rounded-xl theme-text focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+                  placeholder="Istanbul, Turkey"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm theme-text-secondary font-medium mb-2">Bio</label>
+                <textarea
+                  value={formData.bio}
+                  onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
+                  className="w-full px-4 py-3 theme-bg-secondary rounded-xl theme-text focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all resize-none"
+                  placeholder="Tell us about yourself..."
+                  rows={4}
+                />
+              </div>
+
+              <div className="flex gap-3 pt-4">
+                <button onClick={handleSave} className="flex-1 bg-gradient-to-r from-purple-500 to-cyan-500 text-white px-6 py-3 rounded-xl font-semibold hover:scale-105 transition-all">
+                  Save Changes
+                </button>
+                <button onClick={() => setShowEditModal(false)} className="px-6 py-3 theme-bg-secondary theme-text rounded-xl font-semibold hover:scale-105 transition-all">
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Quick Links */}
       <div className="grid md:grid-cols-3 gap-6">

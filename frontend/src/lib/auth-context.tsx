@@ -109,7 +109,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logout = () => {
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
-    localStorage.removeItem("shiroa-theme");
+    localStorage.removeItem("shiroa-demo-user");
+    localStorage.removeItem("shiroa-purchases");
+    localStorage.removeItem("shiroa-onboarding");
     document.cookie = 'accessToken=; path=/; max-age=0';
     setUser(null);
     window.location.href = '/';

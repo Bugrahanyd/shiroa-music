@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
 
@@ -65,9 +65,16 @@ export default function GatePage() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState('');
   const router = useRouter();
-  const { login, register } = useAuth();
+  const { user, loading, login, register } = useAuth();
   
   const t = translations[lang];
+
+  // Redirect authenticated users to discover
+  useEffect(() => {
+    if (user && !loading) {
+      router.push('/discover');
+    }
+  }, [user, loading, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -107,6 +114,15 @@ export default function GatePage() {
       setLoading(false);
     }
   };
+
+  // Show loading while checking auth
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gray-900 via-[#0a0a0a] to-black flex items-center justify-center">
+        <div className="text-white text-xl">Loading...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen relative overflow-hidden flex items-center justify-center p-4 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gray-900 via-[#0a0a0a] to-black">
