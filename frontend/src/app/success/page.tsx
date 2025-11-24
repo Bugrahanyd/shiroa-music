@@ -2,11 +2,23 @@
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 
 function SuccessContent() {
   const searchParams = useSearchParams();
   const sessionId = searchParams.get("session_id");
+  const trackId = searchParams.get("track_id");
+
+  useEffect(() => {
+    if (trackId) {
+      // Add to purchases
+      const purchases = JSON.parse(localStorage.getItem('shiroa-purchases') || '[]');
+      if (!purchases.includes(trackId)) {
+        purchases.push(trackId);
+        localStorage.setItem('shiroa-purchases', JSON.stringify(purchases));
+      }
+    }
+  }, [trackId]);
 
   return (
     <div className="min-h-screen bg-[#0C0C0C] flex items-center justify-center px-6">
@@ -27,10 +39,10 @@ function SuccessContent() {
 
         <div className="flex flex-col gap-4">
           <Link
-            href="/dashboard"
+            href="/purchases"
             className="bg-[#00CED1] text-[#0C0C0C] px-8 py-4 rounded-full font-bold text-lg hover:bg-[#5FE0E5] transition-colors"
           >
-            Go to Dashboard
+            View Purchases
           </Link>
           <Link
             href="/tracks"

@@ -79,7 +79,7 @@ export default function Sidebar() {
 
   const menuItems = [
     { icon: Home, label: t('nav.home'), href: '/discover' },
-    { icon: Heart, label: t('nav.favorites'), href: '/favorites' },
+    { icon: Heart, label: t('sidebar.favorites'), href: '/favorites' },
     { icon: Music, label: t('nav.tracks'), href: '/tracks' },
     { icon: ShoppingCart, label: t('nav.purchases'), href: '/purchases' },
     { icon: Mic, label: t('nav.studio'), href: '/studio', comingSoon: true }
@@ -160,45 +160,36 @@ export default function Sidebar() {
               {isOpen && <span className="text-sm theme-text-secondary font-medium">{t('sidebar.theme')}</span>}
             </div>
             
-            {/* Theme Grid - Fixed Size, No Layout Shift */}
-            <div className={`grid gap-2 ${!isOpen ? 'grid-cols-1' : 'grid-cols-2'}`}>
+            {/* Theme Grid - Smaller Cards */}
+            <div className={`grid gap-1 ${!isOpen ? 'grid-cols-1' : 'grid-cols-3'}`}>
               {themeStories.map((themeItem) => {
                 let hoverTimeout: NodeJS.Timeout;
                 
                 return (
-                  <div
-                    key={themeItem.id}
-                    className={`relative ${themeItem.id === 'sunset' && isOpen ? 'col-span-2' : ''}`}
-                  >
+                  <div key={themeItem.id} className="relative">
                     <button
                       type="button"
                       onClick={(e) => {
                         e.preventDefault();
-                        e.stopPropagation();
+                        clearTimeout(hoverTimeout);
                         setTheme(themeItem.id);
                       }}
                       onMouseEnter={() => {
                         hoverTimeout = setTimeout(() => {
                           setActiveStory(themeItem.id);
-                        }, 800);
+                        }, 1000);
                       }}
                       onMouseLeave={() => {
                         clearTimeout(hoverTimeout);
                         setActiveStory(null);
                       }}
-                      className={`w-full h-12 p-3 rounded-xl border transition-colors duration-200 cursor-pointer ${
+                      className={`w-full h-8 rounded-lg border transition-colors duration-200 cursor-pointer ${
                         theme === themeItem.id 
-                          ? 'border-white/40 shadow-lg ring-2 ring-white/20' 
-                          : 'border-white/10 hover:border-white/20'
+                          ? 'border-white/60 ring-1 ring-white/30' 
+                          : 'border-white/20 hover:border-white/40'
                       } ${themeItem.color}`}
                       title={themeItem.name}
-                    >
-                      {isOpen && (
-                        <span className="text-xs font-bold text-white drop-shadow-lg">
-                          {themeItem.name}
-                        </span>
-                      )}
-                    </button>
+                    />
                   </div>
                 );
               })}

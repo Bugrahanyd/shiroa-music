@@ -83,7 +83,7 @@ export default function DiscoverPage() {
           <div className="mb-16">
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold font-orbitron theme-text mb-8 leading-tight">
               <span className="block">{content.title}</span>
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 animate-pulse">
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400 animate-pulse">
                 {content.sound}
               </span>
             </h1>

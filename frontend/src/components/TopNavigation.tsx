@@ -87,7 +87,14 @@ export default function TopNavigation() {
               className={`w-full h-full object-cover transition-all duration-500 ${getLogoClass()}`}
             />
           </div>
-          <h1 className="text-2xl font-bold font-orbitron text-white">
+          <h1 className={`text-2xl font-bold font-orbitron bg-gradient-to-r bg-clip-text text-transparent transition-all duration-500 ${
+            theme === 'light' ? 'from-gray-800 to-blue-600' :
+            theme === 'dark' ? 'from-purple-400 to-cyan-400' :
+            theme === 'neon' ? 'from-cyan-300 to-purple-400' :
+            theme === 'sunset' ? 'from-orange-400 to-pink-400' :
+            theme === 'japanese' ? 'from-pink-300 to-purple-300' :
+            'from-purple-400 to-cyan-400'
+          }`}>
             SHIROA
           </h1>
         </Link>

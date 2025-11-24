@@ -49,7 +49,7 @@ export default function TrackCard({ track }: TrackCardProps) {
 
   const checkFavoriteStatus = async () => {
     // Demo mode - use localStorage
-    const favorites = JSON.parse(localStorage.getItem('shiroa-favorites') || '[]');
+    const favorites = JSON.parse(localStorage.getItem('shiroa_favorites') || '[]');
     setIsFavorite(favorites.includes(track._id));
   };
 
@@ -66,16 +66,16 @@ export default function TrackCard({ track }: TrackCardProps) {
     }
 
     // Demo mode - use localStorage
-    const favorites = JSON.parse(localStorage.getItem('shiroa-favorites') || '[]');
+    const favorites = JSON.parse(localStorage.getItem('shiroa_favorites') || '[]');
     
     if (isFavorite) {
       const newFavorites = favorites.filter((id: string) => id !== track._id);
-      localStorage.setItem('shiroa-favorites', JSON.stringify(newFavorites));
+      localStorage.setItem('shiroa_favorites', JSON.stringify(newFavorites));
       setIsFavorite(false);
       setFavoriteCount(prev => Math.max(0, prev - 1));
     } else {
       favorites.push(track._id);
-      localStorage.setItem('shiroa-favorites', JSON.stringify(favorites));
+      localStorage.setItem('shiroa_favorites', JSON.stringify(favorites));
       setIsFavorite(true);
       setFavoriteCount(prev => prev + 1);
     }
