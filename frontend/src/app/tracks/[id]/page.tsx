@@ -18,23 +18,28 @@ export default function TrackDetailPage() {
   useEffect(() => {
     const fetchTrack = async () => {
       try {
-        const data = await api.getTrack(params.id as string);
-        setTrack(data);
+        const response = await fetch(`/api/tracks/${params.id}`);
+        if (response.ok) {
+          const data = await response.json();
+          setTrack(data);
+        } else {
+          throw new Error('Track not found');
+        }
       } catch (error) {
         // Fallback demo track
         setTrack({
           _id: params.id,
-          title: "Summer Vibes",
-          artist: "DJ Producer",
-          genre: "electronic",
-          mood: ["uplifting", "energetic"],
+          title: "Neon Nights",
+          artist: "Cyber Dreams",
+          genre: "Electronic",
           bpm: 128,
           key: "C Major",
-          duration: 180,
-          price: 299,
-          tags: ["electronic", "dance", "summer"],
+          duration: 272,
+          price: 89,
+          audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+          tags: ["synthwave", "neon", "electronic"],
           status: "available",
-          description: "A high-energy electronic track perfect for summer projects and uplifting content."
+          description: "A high-energy electronic track perfect for cyberpunk and futuristic content."
         });
       } finally {
         setLoading(false);

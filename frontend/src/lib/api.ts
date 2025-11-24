@@ -116,7 +116,7 @@ class APIClient {
     try {
       return await this.request<any>(`/tracks/${id}`);
     } catch (error) {
-      console.error('Track API failed:', error);
+
       // Fallback: Find in demo data
       return FALLBACK_TRACKS.find(track => track._id === id) || null;
     }
@@ -151,7 +151,7 @@ class APIClient {
       const response = await this.request<{ favorites: any[] }>('/favorites');
       return response.favorites;
     } catch (error) {
-      console.error('Favorites API failed:', error);
+
       // Fallback: Use localStorage
       const localFavorites = JSON.parse(localStorage.getItem('shiroa_favorites') || '[]');
       return FALLBACK_TRACKS.filter(track => localFavorites.includes(track._id));
