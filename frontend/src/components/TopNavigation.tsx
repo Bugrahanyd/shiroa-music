@@ -39,10 +39,13 @@ export default function TopNavigation() {
   const getLogoSrc = () => {
     switch (theme) {
       case 'light':
-      case 'sunset':
         return '/gri.jpg';
+      case 'dark':
+        return '/logo.png';
       case 'neon':
         return '/cyber.jpg';
+      case 'sunset':
+        return '/turuncu.jpg';
       case 'japanese':
         return '/pembe.jpg';
       default:
@@ -53,10 +56,15 @@ export default function TopNavigation() {
   const getLogoClass = () => {
     switch (theme) {
       case 'light':
+        return 'mix-blend-multiply opacity-90 hover:opacity-100';
       case 'sunset':
-        return 'mix-blend-multiply';
+        return 'mix-blend-soft-light opacity-95 hover:opacity-100';
+      case 'neon':
+        return 'mix-blend-screen opacity-90 hover:opacity-100 brightness-110';
+      case 'japanese':
+        return 'mix-blend-overlay opacity-95 hover:opacity-100';
       default:
-        return 'mix-blend-screen';
+        return 'mix-blend-normal opacity-90 hover:opacity-100';
     }
   };
 
@@ -76,11 +84,19 @@ export default function TopNavigation() {
             <img 
               src={getLogoSrc()} 
               alt="SHIROA" 
-              className={`w-full h-full object-cover transition-all duration-300 ${getLogoClass()}`}
+              className={`w-full h-full object-cover transition-all duration-500 ${getLogoClass()}`}
             />
           </div>
-          <h1 className="text-2xl font-bold font-orbitron theme-text">
-            SHIROA
+          <h1 className="text-2xl font-bold font-orbitron">
+            <span className="theme-text">SHIR</span>
+            <span className={`transition-all duration-500 ${
+              theme === 'light' ? 'text-gray-600' :
+              theme === 'dark' ? 'text-purple-400' :
+              theme === 'neon' ? 'text-cyan-400' :
+              theme === 'sunset' ? 'text-orange-400' :
+              theme === 'japanese' ? 'text-pink-400' :
+              'text-purple-400'
+            }`}>OA</span>
           </h1>
         </Link>
 

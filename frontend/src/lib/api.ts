@@ -2,6 +2,7 @@
 // Centralized data management with automatic fallbacks
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+const IS_DEMO_MODE = process.env.NODE_ENV === 'production' || !API_BASE_URL.includes('localhost');
 
 // Fallback Data - High Quality Demo Content
 const FALLBACK_TRACKS = [
@@ -33,6 +34,11 @@ class APIClient {
   }
 
   private async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
+    // Skip API calls in demo mode
+    if (IS_DEMO_MODE) {
+      throw new Error('API not available');
+    }
+
     const url = `${API_BASE_URL}${endpoint}`;
     const config: RequestInit = {
       ...options,
@@ -45,7 +51,7 @@ class APIClient {
     const response = await fetch(url, config);
     
     if (!response.ok) {
-      throw new Error(`API Error: ${response.status} ${response.statusText}`);
+      throw new Error(`API Error: ${response.status}`);
     }
 
     return response.json();
@@ -121,7 +127,7 @@ class APIClient {
       const response = await this.request<{ tracks: any[] }>(`/tracks${queryString}`);
       return response.tracks;
     } catch (error) {
-      console.error('Tracks API failed, using fallback data:', error);
+      console.error('Failed to fetch tracks from API, using sample data:', error);
       return FALLBACK_TRACKS;
     }
   }
