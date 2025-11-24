@@ -96,17 +96,18 @@ export default function ThemeStories({ onComplete }: ThemeStoriesProps) {
 
       {/* Story Content - Fixed Size Container */}
       <div className="relative w-full max-w-md mx-4">
-        <div className={`relative overflow-hidden bg-gradient-to-br ${current.colors} rounded-3xl p-12 text-center shadow-2xl border border-white/20 w-full h-auto`}>
-          <div className="text-8xl mb-6">{current.icon}</div>
-          <h2 className="text-4xl font-display font-black text-white mb-4">{current.name}</h2>
-          <p className="text-white/80 text-lg mb-8">{current.story}</p>
-          
-          <button
-            onClick={handleSelect}
-            className="w-full bg-white text-black px-8 py-4 rounded-full font-bold text-lg transition-opacity duration-200 hover:opacity-90 active:opacity-80 mb-4"
-          >
-            Choose This Theme
-          </button>
+        <div className="relative group overflow-hidden rounded-3xl shadow-2xl border border-white/20 w-full h-auto">
+          <div className={`bg-gradient-to-br ${current.colors} p-12 text-center transition-transform duration-500 group-hover:scale-110`}>
+            <div className="text-8xl mb-6">{current.icon}</div>
+            <h2 className="text-4xl font-display font-black text-white mb-4">{current.name}</h2>
+            <p className="text-white/80 text-lg mb-8">{current.story}</p>
+            
+            <button
+              onClick={handleSelect}
+              className="w-full bg-white text-black px-8 py-4 rounded-full font-bold text-lg transition-opacity duration-200 hover:opacity-90 active:opacity-80 mb-4"
+            >
+              Choose This Theme
+            </button>
 
           {/* Navigation */}
           <div className="flex items-center justify-between mt-8">
