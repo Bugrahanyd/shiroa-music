@@ -1,13 +1,12 @@
-"use client";
+'use client';
 
-import SocialFeed from "@/components/SocialFeed";
+import ComingSoon from '@/components/ComingSoon';
 
 export default function CommunityPage() {
   return (
-    <div className="min-h-screen py-12">
-      <div className="container mx-auto px-6 max-w-4xl">
-        <SocialFeed />
-      </div>
-    </div>
+    <ComingSoon 
+      title="Community Coming Soon"
+      description="Connect with producers, share your work, and collaborate with artists worldwide. Our community platform is launching soon."
+    />
   );
 }

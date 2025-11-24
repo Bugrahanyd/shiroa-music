@@ -34,27 +34,7 @@ class APIClient {
   }
 
   private async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-    // Skip API calls in demo mode
-    if (IS_DEMO_MODE) {
-      throw new Error('API not available');
-    }
-
-    const url = `${API_BASE_URL}${endpoint}`;
-    const config: RequestInit = {
-      ...options,
-      headers: {
-        ...this.getHeaders(),
-        ...options.headers
-      }
-    };
-
-    const response = await fetch(url, config);
-    
-    if (!response.ok) {
-      throw new Error(`API Error: ${response.status}`);
-    }
-
-    return response.json();
+    throw new Error('API not available - MVP Demo Mode');
   }
 
   // Authentication
