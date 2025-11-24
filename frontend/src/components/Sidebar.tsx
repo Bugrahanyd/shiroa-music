@@ -185,7 +185,7 @@ export default function Sidebar() {
                     </span>
                   )}
                 </button>
-              ))
+              ))}
             </div>
           </div>
         </div>
