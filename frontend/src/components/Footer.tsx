@@ -6,10 +6,10 @@ export default function Footer() {
   const { theme } = useTheme();
 
   return (
-    <footer className="border-t theme-border mt-20">
+    <footer className="border-t theme-border mt-auto bg-black/20 backdrop-blur-sm">
       <div className="container mx-auto px-6 py-8 text-center theme-text-secondary">
-        <p>&copy; 2026 SHIROA. Everything for your sound.</p>
-        <p className="text-sm mt-2">
+        <p className="mb-2">&copy; 2026 SHIROA. Everything for your sound.</p>
+        <p className="text-sm">
           Powered by{" "}
           <a 
             href="https://hydrabon.com" 

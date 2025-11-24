@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
-export type Theme = "dark" | "warm" | "cool" | "neon" | "classic" | "sakura";
+export type Theme = "dark" | "light" | "japanese" | "neon" | "sunset";
 
 interface ThemeContextType {
   theme: Theme;
@@ -21,7 +21,9 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       document.documentElement.setAttribute("data-theme", "dark");
     } else {
       const saved = localStorage.getItem("shiroa-theme") as Theme;
-      if (saved) setTheme(saved);
+      if (saved) {
+        setTheme(saved);
+      }
     }
   }, []);
 
@@ -44,6 +46,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
 export function useTheme() {
   const context = useContext(ThemeContext);
-  if (!context) throw new Error("useTheme must be used within ThemeProvider");
+  if (!context) {
+    throw new Error("useTheme must be used within ThemeProvider");
+  }
   return context;
 }

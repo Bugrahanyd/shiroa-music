@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useAuth } from '@/lib/auth-context';
 import { useTheme } from '@/lib/theme-context';
 import { useLanguage } from '@/lib/language-context';
-import { Bell, User, LogOut, Home, Music, Heart, ShoppingCart, Search } from 'lucide-react';
+import { Bell, User, LogOut } from 'lucide-react';
 
 export default function TopNavigation() {
   const { user, logout } = useAuth();
@@ -74,69 +74,26 @@ export default function TopNavigation() {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-40 h-16 theme-bg backdrop-blur-md bg-opacity-95 border-b theme-border">
-      {/* WIDER LAYOUT - NO MAX WIDTH RESTRICTION */}
       <div className="w-full px-6 lg:px-12 flex items-center justify-between h-full">
         
-        {/* LEFT SIDE - Logo & Navigation */}
-        <div className="flex items-center gap-8">
-          {/* Logo & SHIROA */}
-          <Link href="/discover" className="flex items-center gap-3 hover:scale-105 transition-transform">
-            <div className="w-10 h-10 rounded-xl overflow-hidden shadow-lg">
-              <img 
-                src={getLogoSrc()} 
-                alt="SHIROA" 
-                className="w-full h-full object-cover mix-blend-difference transition-all duration-300" 
-              />
-            </div>
-            <h1 className="hidden sm:block text-2xl font-bold font-orbitron theme-text">
-              SHIROA
-            </h1>
-          </Link>
-
-          {/* MAIN NAVIGATION MENU - WITH LANGUAGE SUPPORT */}
-          <div className="hidden lg:flex items-center gap-6">
-            <Link 
-              href="/discover" 
-              className="flex items-center gap-2 px-3 py-2 rounded-lg theme-hover transition-all hover:scale-105"
-            >
-              <Home size={18} className="theme-icon" />
-              <span className="theme-text font-medium">{t('nav.home')}</span>
-            </Link>
-            
-            <Link 
-              href="/tracks" 
-              className="flex items-center gap-2 px-3 py-2 rounded-lg theme-hover transition-all hover:scale-105"
-            >
-              <Music size={18} className="theme-icon" />
-              <span className="theme-text font-medium">{t('nav.tracks')}</span>
-            </Link>
-
-            {user && (
-              <>
-                <Link 
-                  href="/favorites" 
-                  className="flex items-center gap-2 px-3 py-2 rounded-lg theme-hover transition-all hover:scale-105"
-                >
-                  <Heart size={18} className="theme-icon" />
-                  <span className="theme-text font-medium">{t('nav.favorites') || 'Favorites'}</span>
-                </Link>
-                
-                <Link 
-                  href="/purchases" 
-                  className="flex items-center gap-2 px-3 py-2 rounded-lg theme-hover transition-all hover:scale-105"
-                >
-                  <ShoppingCart size={18} className="theme-icon" />
-                  <span className="theme-text font-medium">{t('nav.purchases')}</span>
-                </Link>
-              </>
-            )}
+        {/* LEFT SIDE - Logo Only */}
+        <Link href="/discover" className="flex items-center gap-3 hover:scale-105 transition-transform">
+          <div className="w-10 h-10 rounded-xl overflow-hidden shadow-lg">
+            <img 
+              src={getLogoSrc()} 
+              alt="SHIROA" 
+              className="w-full h-full object-cover mix-blend-difference transition-all duration-300" 
+            />
           </div>
-        </div>
+          <h1 className="hidden sm:block text-2xl font-bold font-orbitron theme-text">
+            SHIROA
+          </h1>
+        </Link>
 
         {/* RIGHT SIDE - Language, Notifications, User */}
         <div className="flex items-center gap-6">
           
-          {/* Language Switcher - Enhanced */}
+          {/* Language Switcher */}
           <div className="flex items-center gap-3 px-3 py-2 rounded-lg theme-hover">
             <button
               onClick={() => setLanguage('en')}
@@ -230,8 +187,8 @@ export default function TopNavigation() {
             </div>
           )}
 
-          {/* User Menu or Login */}
-          {user ? (
+          {/* User Menu */}
+          {user && (
             <div className="relative" ref={userMenuRef}>
               <button
                 onClick={() => setShowUserMenu(!showUserMenu)}
@@ -263,21 +220,6 @@ export default function TopNavigation() {
                   {t('nav.logout')}
                 </button>
               </div>
-            </div>
-          ) : (
-            <div className="flex items-center gap-3">
-              <Link 
-                href="/" 
-                className="px-4 py-2 theme-hover rounded-lg theme-text font-medium transition-all hover:scale-105"
-              >
-                {t('nav.login')}
-              </Link>
-              <Link 
-                href="/register" 
-                className={`px-6 py-2 rounded-lg text-white font-medium transition-all hover:scale-105 ${getGradientClass()}`}
-              >
-                {t('nav.signup')}
-              </Link>
             </div>
           )}
         </div>

@@ -1,125 +1,264 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-
-import { useTheme, Theme } from "@/lib/theme-context";
-
-const themes = [
-  { 
-    id: "dark" as Theme, 
-    gradient: "from-[#0a1628] via-[#1a2f4a] to-[#0a1628]",
-    icon: "🌊"
-  },
-  { 
-    id: "warm" as Theme, 
-    gradient: "from-[#2d1b1b] via-[#4a2c2c] to-[#2d1b1b]",
-    icon: "🌅"
-  },
-  { 
-    id: "cool" as Theme, 
-    gradient: "from-[#1a2332] via-[#2d3f5a] to-[#1a2332]",
-    icon: "❄️"
-  },
-  { 
-    id: "neon" as Theme, 
-    gradient: "from-[#1a0033] via-[#330066] to-[#1a0033]",
-    icon: "🌃"
-  },
-  { 
-    id: "classic" as Theme, 
-    gradient: "from-[#0a0a0a] via-[#1a1a1a] to-[#0a0a0a]",
-    icon: "⚫"
-  },
-  { 
-    id: "sakura" as Theme, 
-    gradient: "from-[#2d1b2e] via-[#4a2f4d] to-[#2d1b2e]",
-    icon: "🌸"
-  }
-];
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useLanguage } from '@/lib/language-context';
+import { ChevronRight, ChevronLeft, Calendar, MapPin, Briefcase, Target, Sparkles } from 'lucide-react';
 
 export default function OnboardingPage() {
-
-  const { setTheme } = useTheme();
   const router = useRouter();
-  const [selectedTheme, setSelectedTheme] = useState<Theme | null>(null);
+  const { t } = useLanguage();
+  const [step, setStep] = useState(1);
+  const [formData, setFormData] = useState({
+    age: '',
+    location: '',
+    role: '',
+    purpose: ''
+  });
 
-  const handleContinue = () => {
-    if (selectedTheme) {
-      setTheme(selectedTheme);
-      localStorage.setItem("onboarding-completed", "true");
-    }
-    router.push("/dashboard");
+  const roles = [
+    { id: 'producer', label: 'Producer', icon: '🎵', desc: 'Create and sell beats' },
+    { id: 'artist', label: 'Artist', icon: '🎤', desc: 'Find tracks for projects' },
+    { id: 'listener', label: 'Listener', icon: '🎧', desc: 'Discover new music' },
+    { id: 'label', label: 'Label Manager', icon: '🏢', desc: 'Manage artist catalog' }
+  ];
+
+  const purposes = [
+    { id: 'sell', label: 'Sell Music', icon: '💰', desc: 'Monetize my creations' },
+    { id: 'buy', label: 'Buy Music', icon: '🛒', desc: 'License exclusive tracks' },
+    { id: 'discover', label: 'Discover', icon: '🔍', desc: 'Explore new sounds' },
+    { id: 'network', label: 'Network', icon: '🤝', desc: 'Connect with creators' }
+  ];
+
+  const handleFinish = () => {
+    // Save onboarding data
+    localStorage.setItem('shiroa-onboarding', JSON.stringify({
+      ...formData,
+      completedAt: new Date().toISOString()
+    }));
+    
+    // Show completion message
+    const completionToast = document.createElement('div');
+    completionToast.innerHTML = `
+      <div style="
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: linear-gradient(135deg, #10B981, #059669);
+        color: white;
+        padding: 24px 32px;
+        border-radius: 16px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        z-index: 9999;
+        font-weight: bold;
+        text-align: center;
+        animation: slideIn 0.3s ease-out;
+      ">
+        <div style="font-size: 48px; margin-bottom: 16px;">🎉</div>
+        <div style="font-size: 24px; margin-bottom: 8px;">Welcome to SHIROA!</div>
+        <div style="font-size: 16px; opacity: 0.9;">Your profile is now complete</div>
+      </div>
+      <style>
+        @keyframes slideIn {
+          from { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
+          to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+      </style>
+    `;
+    document.body.appendChild(completionToast);
+    
+    setTimeout(() => {
+      if (completionToast.parentNode) {
+        completionToast.parentNode.removeChild(completionToast);
+      }
+      router.push('/discover');
+    }, 2500);
   };
 
-  const handleSkip = () => {
-    localStorage.setItem("onboarding-completed", "true");
-    router.push("/dashboard");
+  const nextStep = () => {
+    if (step < 4) setStep(step + 1);
+  };
+
+  const prevStep = () => {
+    if (step > 1) setStep(step - 1);
+  };
+
+  const isStepValid = () => {
+    switch (step) {
+      case 1: return formData.age && parseInt(formData.age) >= 13;
+      case 2: return formData.location.trim().length > 0;
+      case 3: return formData.role;
+      case 4: return formData.purpose;
+      default: return false;
+    }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-6 py-12">
-      <div className="max-w-6xl w-full">
+    <div className="min-h-screen theme-bg flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Background Effects */}
+      <div className="absolute inset-0 opacity-30">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-500 rounded-full mix-blend-multiply filter blur-xl animate-pulse animation-delay-2000"></div>
+      </div>
+
+      <div className="max-w-2xl w-full relative z-10">
+        {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-5xl font-[family-name:var(--font-orbitron)] font-black text-white mb-4">
-Choose Your Creative Atmosphere
-          </h1>
-          <p className="text-xl text-white/60">
-Select a theme that resonates with your creative spirit. You can change it anytime.
-          </p>
+          <div className="flex items-center justify-center gap-3 mb-6">
+            <Sparkles className="w-12 h-12 text-purple-400" />
+            <h1 className="text-5xl font-bold theme-text font-orbitron">
+              {t('onboard.welcome')}
+            </h1>
+          </div>
+          <p className="theme-text-secondary text-xl">Let's personalize your experience</p>
+          <p className="theme-text-secondary text-sm mt-2">Step {step} of 4</p>
+          
+          {/* Progress Bar */}
+          <div className="w-full bg-white/10 rounded-full h-3 mt-6 overflow-hidden">
+            <div 
+              className="bg-gradient-to-r from-purple-500 to-cyan-500 h-3 rounded-full transition-all duration-500 ease-out"
+              style={{ width: `${(step / 4) * 100}%` }}
+            ></div>
+          </div>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          {themes.map((theme) => (
-            <button
-              key={theme.id}
-              onClick={() => setSelectedTheme(theme.id)}
-              className={`group relative bg-gradient-to-br ${theme.gradient} rounded-3xl p-8 transition-all duration-300 hover:scale-105 ${
-                selectedTheme === theme.id
-                  ? "ring-4 ring-white scale-105"
-                  : "ring-1 ring-white/20"
-              }`}
-            >
-              <div className="text-6xl mb-4 group-hover:scale-110 transition-transform">
-                {theme.icon}
+        <div className="glass-card rounded-3xl p-10 min-h-[500px] flex flex-col justify-center">
+          {/* Step 1: Age */}
+          {step === 1 && (
+            <div className="text-center">
+              <Calendar size={80} className="mx-auto mb-8 text-purple-400" />
+              <h2 className="text-4xl font-bold theme-text mb-4 font-orbitron">{t('onboard.age')}</h2>
+              <p className="theme-text-secondary mb-12 text-lg">Help us personalize your music recommendations</p>
+              
+              <div className="max-w-xs mx-auto">
+                <input
+                  type="number"
+                  min="13"
+                  max="100"
+                  value={formData.age}
+                  onChange={(e) => setFormData({ ...formData, age: e.target.value })}
+                  className="w-full px-8 py-6 text-3xl text-center theme-bg-secondary rounded-2xl theme-text focus:outline-none focus:ring-4 focus:ring-purple-500/50 transition-all"
+                  placeholder="25"
+                />
+                <p className="text-sm theme-text-secondary mt-4">Must be 13 or older</p>
               </div>
+            </div>
+          )}
 
-              <h3 className="text-2xl font-[family-name:var(--font-orbitron)] font-bold text-white mb-3">
-{theme.id === 'dark' ? 'Midnight Ocean' : theme.id === 'warm' ? 'Sunset Boulevard' : theme.id === 'cool' ? 'Arctic Aurora' : theme.id === 'neon' ? 'Tokyo Nights' : theme.id === 'classic' ? 'Timeless Elegance' : 'Sakura Dreams'}
-              </h3>
+          {/* Step 2: Location */}
+          {step === 2 && (
+            <div className="text-center">
+              <MapPin size={80} className="mx-auto mb-8 text-cyan-400" />
+              <h2 className="text-4xl font-bold theme-text mb-4 font-orbitron">{t('onboard.location')}</h2>
+              <p className="theme-text-secondary mb-12 text-lg">Where are you creating from?</p>
+              
+              <div className="max-w-md mx-auto">
+                <input
+                  type="text"
+                  value={formData.location}
+                  onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                  className="w-full px-8 py-6 text-xl text-center theme-bg-secondary rounded-2xl theme-text focus:outline-none focus:ring-4 focus:ring-cyan-500/50 transition-all"
+                  placeholder="Istanbul, Turkey"
+                />
+              </div>
+            </div>
+          )}
 
-              <p className="text-white/80 text-sm leading-relaxed mb-4">
-{theme.id === 'dark' ? 'Dive into the depths of creativity...' : theme.id === 'warm' ? 'Feel the warmth of golden hour...' : theme.id === 'cool' ? 'Experience the serene beauty...' : theme.id === 'neon' ? 'Step into the electric pulse...' : theme.id === 'classic' ? 'Embrace the sophistication...' : 'Float through cherry blossom gardens...'}
-              </p>
+          {/* Step 3: Role */}
+          {step === 3 && (
+            <div className="text-center">
+              <Briefcase size={80} className="mx-auto mb-8 text-pink-400" />
+              <h2 className="text-4xl font-bold theme-text mb-4 font-orbitron">{t('onboard.role')}</h2>
+              <p className="theme-text-secondary mb-12 text-lg">What best describes you?</p>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {roles.map((role) => (
+                  <button
+                    key={role.id}
+                    onClick={() => setFormData({ ...formData, role: role.id })}
+                    className={`p-8 rounded-2xl border-2 transition-all hover:scale-105 text-center ${
+                      formData.role === role.id
+                        ? 'border-purple-500 theme-bg-secondary shadow-lg shadow-purple-500/25'
+                        : 'border-transparent theme-hover'
+                    }`}
+                  >
+                    <div className="text-5xl mb-4">{role.icon}</div>
+                    <h3 className="theme-text font-bold text-xl mb-2">{role.label}</h3>
+                    <p className="theme-text-secondary text-sm">{role.desc}</p>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
 
-              <p className="text-white/60 text-xs font-semibold">
-{theme.id === 'dark' ? 'Professional • Focused • Mysterious' : theme.id === 'warm' ? 'Energetic • Passionate • Creative' : theme.id === 'cool' ? 'Clear • Calm • Inspiring' : theme.id === 'neon' ? 'Bold • Modern • Electric' : theme.id === 'classic' ? 'Minimal • Elegant • Timeless' : 'Peaceful • Delicate • Harmonious'}
-              </p>
-
-              {selectedTheme === theme.id && (
-                <div className="absolute top-4 right-4 w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <svg className="w-5 h-5 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                  </svg>
-                </div>
-              )}
-            </button>
-          ))}
+          {/* Step 4: Purpose */}
+          {step === 4 && (
+            <div className="text-center">
+              <Target size={80} className="mx-auto mb-8 text-orange-400" />
+              <h2 className="text-4xl font-bold theme-text mb-4 font-orbitron">{t('onboard.purpose')}</h2>
+              <p className="theme-text-secondary mb-12 text-lg">What's your main goal on SHIROA?</p>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {purposes.map((purpose) => (
+                  <button
+                    key={purpose.id}
+                    onClick={() => setFormData({ ...formData, purpose: purpose.id })}
+                    className={`p-8 rounded-2xl border-2 transition-all hover:scale-105 text-center ${
+                      formData.purpose === purpose.id
+                        ? 'border-orange-500 theme-bg-secondary shadow-lg shadow-orange-500/25'
+                        : 'border-transparent theme-hover'
+                    }`}
+                  >
+                    <div className="text-5xl mb-4">{purpose.icon}</div>
+                    <h3 className="theme-text font-bold text-xl mb-2">{purpose.label}</h3>
+                    <p className="theme-text-secondary text-sm">{purpose.desc}</p>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
-        <div className="flex items-center justify-center gap-4">
+        {/* Navigation */}
+        <div className="flex justify-between mt-8">
           <button
-            onClick={handleSkip}
-            className="px-8 py-4 border-2 border-white/20 text-white/60 rounded-full font-semibold hover:border-white/40 hover:text-white transition-all"
+            onClick={prevStep}
+            disabled={step === 1}
+            className="flex items-center gap-2 px-8 py-4 theme-button-outline rounded-xl font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 transition-all"
           >
-Skip for now
+            <ChevronLeft size={20} />
+            Back
           </button>
+
+          {step === 4 ? (
+            <button
+              onClick={handleFinish}
+              disabled={!isStepValid()}
+              className="flex items-center gap-2 px-10 py-4 bg-gradient-to-r from-purple-500 to-cyan-500 text-white rounded-xl font-semibold disabled:opacity-50 hover:scale-105 transition-all shadow-lg"
+            >
+              {t('onboard.finish')}
+              <Sparkles size={20} />
+            </button>
+          ) : (
+            <button
+              onClick={nextStep}
+              disabled={!isStepValid()}
+              className="flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-500 to-cyan-500 text-white rounded-xl font-semibold disabled:opacity-50 hover:scale-105 transition-all"
+            >
+              {t('onboard.next')}
+              <ChevronRight size={20} />
+            </button>
+          )}
+        </div>
+
+        {/* Skip Option */}
+        <div className="text-center mt-6">
           <button
-            onClick={handleContinue}
-            disabled={!selectedTheme}
-            className="px-8 py-4 bg-white text-black rounded-full font-semibold hover:bg-white/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={() => router.push('/discover')}
+            className="theme-text-secondary hover:theme-text text-sm transition-colors underline"
           >
-Continue
+            Skip for now
           </button>
         </div>
       </div>
