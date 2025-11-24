@@ -2,22 +2,8 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
-  const token = request.cookies.get('accessToken')?.value;
-  const { pathname } = request.nextUrl;
-
-  // Public paths that don't require auth
-  const publicPaths = ['/'];
-
-  // If user has token and tries to access root, redirect to discover
-  if (token && pathname === '/') {
-    return NextResponse.redirect(new URL('/discover', request.url));
-  }
-
-  // If user doesn't have token and tries to access protected route, redirect to root
-  if (!token && !publicPaths.includes(pathname)) {
-    return NextResponse.redirect(new URL('/', request.url));
-  }
-
+  // For MVP demo, disable middleware redirects to prevent issues
+  // Let client-side auth handle routing
   return NextResponse.next();
 }
 

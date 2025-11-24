@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useAuth } from '@/lib/auth-context';
 import { useTheme } from '@/lib/theme-context';
 import { useLanguage } from '@/lib/language-context';
-import { Bell, User, LogOut } from 'lucide-react';
+import { Bell, User, LogOut, Settings, CreditCard } from 'lucide-react';
 
 export default function TopNavigation() {
   const { user, logout } = useAuth();
@@ -13,7 +13,6 @@ export default function TopNavigation() {
   const { language, setLanguage, t } = useLanguage();
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
-  const [unreadCount, setUnreadCount] = useState(3);
   const [notifications, setNotifications] = useState([
     { id: 1, title: 'New track uploaded', message: 'Your track "Summer Vibes" is now live', time: '5m ago', read: false },
     { id: 2, title: 'Purchase completed', message: 'You bought "Dark Trap Beat"', time: '1h ago', read: false },
@@ -37,32 +36,11 @@ export default function TopNavigation() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const markAllAsRead = () => {
-    setNotifications(notifications.map(n => ({ ...n, read: true })));
-    setUnreadCount(0);
-  };
-
-  const getGradientClass = () => {
-    switch (theme) {
-      case 'japanese':
-        return 'bg-gradient-to-r from-pink-400 via-purple-400 to-pink-600';
-      case 'neon':
-        return 'bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500';
-      case 'sunset':
-        return 'bg-gradient-to-r from-orange-400 via-pink-500 to-purple-600';
-      case 'dark':
-        return 'bg-gradient-to-r from-gray-400 via-blue-500 to-purple-600';
-      default:
-        return 'bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500';
-    }
-  };
-
   const getLogoSrc = () => {
     switch (theme) {
       case 'light':
-        return '/gri.jpg';
       case 'sunset':
-        return '/turuncu.jpg';
+        return '/gri.jpg';
       case 'neon':
         return '/cyber.jpg';
       case 'japanese':
@@ -72,32 +50,50 @@ export default function TopNavigation() {
     }
   };
 
+  const getLogoFilter = () => {
+    switch (theme) {
+      case 'light':
+        return 'brightness(0.2) contrast(1.2)';
+      case 'sunset':
+        return 'brightness(0.4) saturate(1.5)';
+      default:
+        return 'none';
+    }
+  };
+
+  const markAllAsRead = () => {
+    setNotifications(notifications.map(n => ({ ...n, read: true })));
+  };
+
+  const unreadCount = notifications.filter(n => !n.read).length;
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-40 h-16 theme-bg backdrop-blur-md bg-opacity-95 border-b theme-border">
-      <div className="w-full px-6 lg:px-12 flex items-center justify-between h-full">
+      <div className="w-full px-6 lg:px-12 flex items-center justify-between h-full max-w-7xl mx-auto">
         
-        {/* LEFT SIDE - Logo Only */}
-        <Link href="/discover" className="flex items-center gap-3 hover:scale-105 transition-transform">
+        {/* LEFT SIDE - Logo & Brand */}
+        <Link href="/discover" className="flex items-center gap-4 hover:opacity-80 transition-opacity">
           <div className="w-10 h-10 rounded-xl overflow-hidden shadow-lg">
             <img 
               src={getLogoSrc()} 
               alt="SHIROA" 
-              className="w-full h-full object-cover mix-blend-difference transition-all duration-300" 
+              className="w-full h-full object-cover transition-all duration-300"
+              style={{ filter: getLogoFilter() }}
             />
           </div>
-          <h1 className="hidden sm:block text-2xl font-bold font-orbitron theme-text">
+          <h1 className="text-2xl font-bold font-orbitron theme-text">
             SHIROA
           </h1>
         </Link>
 
-        {/* RIGHT SIDE - Language, Notifications, User */}
+        {/* RIGHT SIDE - Controls */}
         <div className="flex items-center gap-6">
           
           {/* Language Switcher */}
-          <div className="flex items-center gap-3 px-3 py-2 rounded-lg theme-hover">
+          <div className="flex items-center gap-1 px-3 py-2 rounded-lg theme-hover">
             <button
               onClick={() => setLanguage('en')}
-              className={`px-3 py-1 rounded-md text-sm font-bold tracking-wider transition-all cursor-pointer ${
+              className={`px-3 py-1 rounded-md text-sm font-bold tracking-wider transition-all ${
                 language === 'en' 
                   ? 'theme-accent bg-white/10' 
                   : 'theme-text-secondary hover:theme-text'
@@ -108,7 +104,7 @@ export default function TopNavigation() {
             <div className="h-4 w-[1px] bg-white/20"></div>
             <button
               onClick={() => setLanguage('tr')}
-              className={`px-3 py-1 rounded-md text-sm font-bold tracking-wider transition-all cursor-pointer ${
+              className={`px-3 py-1 rounded-md text-sm font-bold tracking-wider transition-all ${
                 language === 'tr' 
                   ? 'theme-accent bg-white/10' 
                   : 'theme-text-secondary hover:theme-text'
@@ -123,7 +119,7 @@ export default function TopNavigation() {
             <div className="relative" ref={notifRef}>
               <button 
                 onClick={() => setShowNotifications(!showNotifications)}
-                className="relative p-2 rounded-lg theme-hover transition-all hover:scale-110 cursor-pointer"
+                className="relative p-2 rounded-lg theme-hover transition-all hover:scale-110"
               >
                 <Bell size={20} className="theme-text-secondary" />
                 {unreadCount > 0 && (
@@ -133,93 +129,119 @@ export default function TopNavigation() {
                 )}
               </button>
 
-              <div className={`absolute right-0 top-14 w-80 max-w-[calc(100vw-2rem)] theme-bg border-2 theme-border rounded-xl shadow-2xl transition-all duration-300 ease-in-out origin-top-right ${
-                showNotifications 
-                  ? 'opacity-100 scale-100 visible translate-y-0' 
-                  : 'opacity-0 scale-95 invisible -translate-y-2 pointer-events-none'
-              }`}>
-                <div className="p-4 border-b theme-border flex items-center justify-between">
-                  <h3 className="font-bold theme-text">{t('notif.title')}</h3>
-                  {unreadCount > 0 && (
-                    <button 
-                      onClick={markAllAsRead}
-                      className="text-xs theme-accent hover:opacity-80 transition-opacity"
-                    >
-                      {t('notif.markRead')}
-                    </button>
-                  )}
-                </div>
-                <div className="max-h-96 overflow-y-auto">
-                  {notifications.length > 0 ? (
-                    notifications.map((notif) => (
-                      <div 
-                        key={notif.id}
-                        className={`p-4 border-b theme-border hover:theme-bg-secondary transition-colors cursor-pointer ${
-                          !notif.read ? 'bg-opacity-50' : ''
-                        }`}
-                        onClick={() => {
-                          setNotifications(notifications.map(n => 
-                            n.id === notif.id ? { ...n, read: true } : n
-                          ));
-                          setUnreadCount(Math.max(0, unreadCount - 1));
-                        }}
+              {showNotifications && (
+                <div className="absolute right-0 top-14 w-80 theme-bg border-2 theme-border rounded-xl shadow-2xl z-50">
+                  <div className="p-4 border-b theme-border flex items-center justify-between">
+                    <h3 className="font-bold theme-text">{t('notif.title')}</h3>
+                    {unreadCount > 0 && (
+                      <button 
+                        onClick={markAllAsRead}
+                        className="text-xs theme-accent hover:opacity-80 transition-opacity"
                       >
-                        <div className="flex items-start gap-3">
-                          {!notif.read && (
-                            <div className="w-2 h-2 bg-gradient-to-r from-red-500 to-pink-500 rounded-full mt-2"></div>
-                          )}
-                          <div className="flex-1">
-                            <h4 className="font-semibold theme-text text-sm">{notif.title}</h4>
-                            <p className="theme-text-secondary text-xs mt-1">{notif.message}</p>
-                            <span className="theme-text-secondary text-xs mt-2 block">{notif.time}</span>
+                        {t('notif.markRead')}
+                      </button>
+                    )}
+                  </div>
+                  <div className="max-h-96 overflow-y-auto">
+                    {notifications.length > 0 ? (
+                      notifications.map((notif) => (
+                        <div 
+                          key={notif.id}
+                          className={`p-4 border-b theme-border hover:theme-bg-secondary transition-colors ${
+                            !notif.read ? 'bg-opacity-50' : ''
+                          }`}
+                        >
+                          <div className="flex items-start gap-3">
+                            {!notif.read && (
+                              <div className="w-2 h-2 bg-red-500 rounded-full mt-2 flex-shrink-0"></div>
+                            )}
+                            <div className="flex-1">
+                              <h4 className="font-semibold theme-text text-sm">{notif.title}</h4>
+                              <p className="theme-text-secondary text-xs mt-1">{notif.message}</p>
+                              <span className="theme-text-secondary text-xs mt-2 block">{notif.time}</span>
+                            </div>
                           </div>
                         </div>
+                      ))
+                    ) : (
+                      <div className="p-8 text-center theme-text-secondary">
+                        <Bell size={32} className="mx-auto mb-2 opacity-50" />
+                        <p>{t('notif.empty')}</p>
                       </div>
-                    ))
-                  ) : (
-                    <div className="p-8 text-center theme-text-secondary">
-                      <Bell size={32} className="mx-auto mb-2 opacity-50" />
-                      <p>{t('notif.empty')}</p>
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           )}
 
           {/* User Menu */}
-          {user && (
+          {user ? (
             <div className="relative" ref={userMenuRef}>
               <button
                 onClick={() => setShowUserMenu(!showUserMenu)}
-                className="flex items-center gap-3 px-3 py-2 rounded-xl theme-hover transition-all hover:scale-105 cursor-pointer"
+                className="flex items-center gap-3 px-3 py-2 rounded-xl theme-hover transition-all hover:scale-105"
               >
-                <div className={`w-9 h-9 rounded-full ${getGradientClass()} flex items-center justify-center shadow-lg`}>
+                <div className="w-9 h-9 rounded-full bg-gradient-to-r from-purple-500 to-cyan-500 flex items-center justify-center shadow-lg">
                   <User size={18} className="text-white" />
                 </div>
                 <span className="hidden xl:block theme-text font-medium">{user.name}</span>
               </button>
 
-              <div className={`absolute right-0 top-14 w-56 theme-bg border-2 theme-border rounded-xl shadow-2xl py-2 transition-all duration-300 ease-in-out origin-top-right ${
-                showUserMenu 
-                  ? 'opacity-100 scale-100 visible translate-y-0' 
-                  : 'opacity-0 scale-95 invisible -translate-y-2 pointer-events-none'
-              }`}>
-                <Link href="/profile" className="block px-4 py-3 theme-hover theme-text font-medium">
-                  {t('nav.profile')}
-                </Link>
-                <Link href="/dashboard" className="block px-4 py-3 theme-hover theme-text font-medium">
-                  {t('nav.dashboard')}
-                </Link>
-                <hr className="my-2 theme-border" />
-                <button
-                  onClick={logout}
-                  className="w-full text-left px-4 py-3 theme-hover theme-text flex items-center gap-2 cursor-pointer font-medium"
-                >
-                  <LogOut size={16} />
-                  {t('nav.logout')}
-                </button>
-              </div>
+              {showUserMenu && (
+                <div className="absolute right-0 top-14 w-56 theme-bg border-2 theme-border rounded-xl shadow-2xl py-2 z-50">
+                  <Link 
+                    href="/profile" 
+                    className="flex items-center gap-3 px-4 py-3 theme-hover theme-text font-medium"
+                    onClick={() => setShowUserMenu(false)}
+                  >
+                    <User size={16} />
+                    {t('nav.profile')}
+                  </Link>
+                  <Link 
+                    href="/purchases" 
+                    className="flex items-center gap-3 px-4 py-3 theme-hover theme-text font-medium"
+                    onClick={() => setShowUserMenu(false)}
+                  >
+                    <CreditCard size={16} />
+                    {t('nav.purchases')}
+                  </Link>
+                  <Link 
+                    href="/settings" 
+                    className="flex items-center gap-3 px-4 py-3 theme-hover theme-text font-medium"
+                    onClick={() => setShowUserMenu(false)}
+                  >
+                    <Settings size={16} />
+                    Settings
+                  </Link>
+                  <hr className="my-2 theme-border" />
+                  <button
+                    onClick={() => {
+                      logout();
+                      setShowUserMenu(false);
+                    }}
+                    className="w-full text-left px-4 py-3 theme-hover theme-text flex items-center gap-3 font-medium"
+                  >
+                    <LogOut size={16} />
+                    {t('nav.logout')}
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="flex items-center gap-3">
+              <Link 
+                href="/" 
+                className="px-4 py-2 theme-text-secondary hover:theme-text transition-colors font-medium"
+              >
+                {t('nav.login')}
+              </Link>
+              <Link 
+                href="/" 
+                className="px-4 py-2 bg-gradient-to-r from-purple-500 to-cyan-500 text-white rounded-lg font-medium hover:scale-105 transition-transform"
+              >
+                {t('nav.signup')}
+              </Link>
             </div>
           )}
         </div>

@@ -43,7 +43,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const token = localStorage.getItem("access_token");
-    if (token) {
+    const demoUser = localStorage.getItem("shiroa-demo-user");
+    
+    if (token && demoUser) {
+      // Load demo user from localStorage
+      try {
+        setUser(JSON.parse(demoUser));
+        setLoading(false);
+      } catch (error) {
+        console.log('Demo user parse error, clearing session');
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("shiroa-demo-user");
+        setUser(null);
+        setLoading(false);
+      }
+    } else if (token) {
+      // Try API call for real users
       api.getProfile()
         .then((data) => setUser(data))
         .catch((error) => {

@@ -71,8 +71,13 @@ export default function GatePage() {
 
   // Redirect authenticated users to discover
   useEffect(() => {
-    if (user && !loading) {
-      router.push('/discover');
+    if (!loading) {
+      const token = localStorage.getItem('access_token');
+      const demoUser = localStorage.getItem('shiroa-demo-user');
+      
+      if ((user || (token && demoUser))) {
+        router.replace('/discover');
+      }
     }
   }, [user, loading, router]);
 

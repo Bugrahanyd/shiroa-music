@@ -76,6 +76,58 @@ const translations = {
     'home.cta.subtitle': 'Browse our catalog of exclusive tracks and elevate your content.',
     'home.cta.button': 'Browse Tracks',
     'home.cta.free': 'No credit card required • Free to start',
+    
+    // About
+    'about.title': 'About SHIROA',
+    'about.mission': 'Our Mission',
+    'about.vision': 'Our Vision', 
+    'about.values': 'Our Values',
+    
+    // Onboarding
+    'onboard.welcome': 'Welcome',
+    'onboard.age': 'How old are you?',
+    'onboard.location': 'Where are you from?',
+    'onboard.role': 'What describes you best?',
+    'onboard.purpose': 'What\'s your main goal?',
+    'onboard.next': 'Next',
+    'onboard.finish': 'Finish Setup',
+    
+    // Tracks Page
+    'tracks.title': 'Music Catalog',
+    'tracks.subtitle': 'Discover exclusive tracks with full commercial rights',
+    'tracks.loading': 'Loading tracks...',
+    'tracks.error': 'Connection Error',
+    'tracks.retry': 'Try Again',
+    'tracks.noResults': 'No Tracks Found',
+    'tracks.noResultsDesc': 'No tracks match your search criteria. Try adjusting your filters.',
+    'tracks.clearFilters': 'Clear Filters',
+    'tracks.showing': 'Showing {count} of {total} tracks',
+    'tracks.searchPlaceholder': 'Search tracks, artists, or genres...',
+    
+    // Filters
+    'filter.title': 'Filters',
+    'filter.genre': 'Genre',
+    'filter.priceRange': 'Price Range',
+    'filter.sortBy': 'Sort By',
+    'filter.clear': 'Clear Filters',
+    'filter.all': 'All',
+    'filter.newest': 'Newest',
+    'filter.priceAsc': 'Price: Low-High',
+    'filter.priceDesc': 'Price: High-Low',
+    'filter.alphabetical': 'Alphabetical',
+    
+    // Purchase
+    'purchase.loginRequired': 'Authentication Required',
+    'purchase.loginDesc': 'Please log in to purchase tracks',
+    'purchase.goLogin': 'Go to Login',
+    'purchase.processing': 'Processing...',
+    'purchase.buyNow': 'Buy Now',
+    'purchase.owned': 'Owned',
+    'purchase.unavailable': 'Payment service is currently unavailable. Please try again later.',
+    
+    // Theme Stories
+    'theme.story': 'Theme Story',
+    'theme.close': 'Close',
   },
   tr: {
     // Navigation
@@ -142,6 +194,58 @@ const translations = {
     'home.cta.subtitle': 'Özel parça kataloğumuza göz atın ve içeriğinizi yükseltin.',
     'home.cta.button': 'Parçalara Göz At',
     'home.cta.free': 'Kredi kartı gerekmez • Ücretsiz başlayın',
+    
+    // About
+    'about.title': 'SHIROA Hakkında',
+    'about.mission': 'Misyonumuz',
+    'about.vision': 'Vizyonumuz',
+    'about.values': 'Değerlerimiz',
+    
+    // Onboarding
+    'onboard.welcome': 'Hoş Geldiniz',
+    'onboard.age': 'Kaç yaşındasınız?',
+    'onboard.location': 'Nerelisiniz?',
+    'onboard.role': 'Sizi en iyi hangisi tanımlar?',
+    'onboard.purpose': 'Ana hedefiniz nedir?',
+    'onboard.next': 'İleri',
+    'onboard.finish': 'Kurulumu Tamamla',
+    
+    // Tracks Page
+    'tracks.title': 'Müzik Kataloğu',
+    'tracks.subtitle': 'Tam ticari haklarla özel parçaları keşfedin',
+    'tracks.loading': 'Parçalar yükleniy or...',
+    'tracks.error': 'Bağlantı Hatası',
+    'tracks.retry': 'Tekrar Dene',
+    'tracks.noResults': 'Parça Bulunamadı',
+    'tracks.noResultsDesc': 'Arama kriterlerinize uygun parça bulunamadı. Filtreleri değiştirmeyi deneyin.',
+    'tracks.clearFilters': 'Filtreleri Temizle',
+    'tracks.showing': '{total} parçadan {count} tanesi gösteriliyor',
+    'tracks.searchPlaceholder': 'Parça, sanatçı veya tür ara...',
+    
+    // Filters
+    'filter.title': 'Filtreler',
+    'filter.genre': 'Tür',
+    'filter.priceRange': 'Fiyat Aralığı',
+    'filter.sortBy': 'Sıralama',
+    'filter.clear': 'Filtreleri Temizle',
+    'filter.all': 'Tümü',
+    'filter.newest': 'En Yeni',
+    'filter.priceAsc': 'Fiyat: Düşük-Yüksek',
+    'filter.priceDesc': 'Fiyat: Yüksek-Düşük',
+    'filter.alphabetical': 'Alfabetik',
+    
+    // Purchase
+    'purchase.loginRequired': 'Kimlik Doğrulama Gerekli',
+    'purchase.loginDesc': 'Parça satın almak için giriş yapın',
+    'purchase.goLogin': 'Girişe Git',
+    'purchase.processing': 'İşleniyor...',
+    'purchase.buyNow': 'Satın Al',
+    'purchase.owned': 'Sahip Olunan',
+    'purchase.unavailable': 'Ödeme servisi şu anda kullanılamıyor. Lütfen daha sonra tekrar deneyin.',
+    
+    // Theme Stories
+    'theme.story': 'Tema Hikayesi',
+    'theme.close': 'Kapat',
   },
 };
 
