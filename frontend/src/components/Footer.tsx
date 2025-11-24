@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 'use client';
 
 import { useTheme } from '@/lib/theme-context';
@@ -7,26 +5,9 @@ import { useTheme } from '@/lib/theme-context';
 export default function Footer() {
   const { theme } = useTheme();
 
-  const getThemeColor = () => {
-    switch (theme) {
-      case 'dark':
-        return '#64748b';
-      case 'light':
-        return '#ef4444';
-      case 'japanese':
-        return '#ec4899';
-      case 'neon':
-        return '#00f5ff';
-      case 'sunset':
-        return '#ff6b35';
-      default:
-        return '#9D4EDD';
-    }
-  };
-
   return (
-    <footer className="border-t border-[#00CED1]/20 mt-20">
-      <div className="container mx-auto px-6 py-8 text-center text-gray-500">
+    <footer className="border-t theme-border mt-20">
+      <div className="container mx-auto px-6 py-8 text-center theme-text-secondary">
         <p>&copy; 2026 SHIROA. Everything for your sound.</p>
         <p className="text-sm mt-2">
           Powered by{" "}
@@ -34,12 +15,7 @@ export default function Footer() {
             href="https://hydrabon.com" 
             target="_blank" 
             rel="noopener noreferrer" 
-            className="inline-block font-bold bg-clip-text text-transparent hover:scale-110 transition-transform duration-300"
-            style={{
-              backgroundImage: `linear-gradient(to right, ${getThemeColor()}, #FF8C00, ${getThemeColor()})`,
-              backgroundSize: '200% 100%',
-              animation: 'gradient-shift 3s ease infinite'
-            }}
+            className="inline-block font-bold bg-clip-text text-transparent hover:scale-110 transition-transform duration-300 bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500"
           >
             HYDRABON
           </a>

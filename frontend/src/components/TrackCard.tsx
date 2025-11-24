@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Heart } from "lucide-react";
+import { Heart, ShoppingCart, Check } from "lucide-react";
 import { api } from "@/lib/api";
 import { useAuth } from "@/lib/auth-context";
+import { useRouter } from "next/navigation";
 import WaveformVisualizer from "./WaveformVisualizer";
 
 interface TrackCardProps {
@@ -25,16 +26,26 @@ interface TrackCardProps {
 
 export default function TrackCard({ track }: TrackCardProps) {
   const { user } = useAuth();
+  const router = useRouter();
   const [isFavorite, setIsFavorite] = useState(false);
   const [favoriteCount, setFavoriteCount] = useState(track.favoriteCount || 0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [isPurchased, setIsPurchased] = useState(false);
 
   useEffect(() => {
     if (user) {
       checkFavoriteStatus();
     }
     loadFavoriteCount();
+    checkPurchaseStatus();
   }, [user, track._id]);
+
+  const checkPurchaseStatus = () => {
+    const purchases = JSON.parse(localStorage.getItem('shiroa-purchases') || '[]');
+    setIsPurchased(purchases.includes(track._id));
+  };
 
   const checkFavoriteStatus = async () => {
     try {
@@ -91,6 +102,39 @@ export default function TrackCard({ track }: TrackCardProps) {
       audio.pause();
       setIsPlaying(false);
     }
+  };
+
+  const handlePurchase = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (!user) {
+      alert('Please login to purchase tracks');
+      return;
+    }
+
+    if (isPurchased) {
+      router.push('/purchases');
+      return;
+    }
+
+    setIsProcessing(true);
+    
+    // Simulate payment processing
+    setTimeout(() => {
+      setIsProcessing(false);
+      setShowSuccess(true);
+      
+      // Add to localStorage purchases
+      const purchases = JSON.parse(localStorage.getItem('shiroa-purchases') || '[]');
+      purchases.push(track._id);
+      localStorage.setItem('shiroa-purchases', JSON.stringify(purchases));
+      setIsPurchased(true);
+      
+      // Hide success message and redirect
+      setTimeout(() => {
+        setShowSuccess(false);
+        router.push('/purchases');
+      }, 2000);
+    }, 2000);
   };
 
   const isSold = track.status === "sold" || track.isSold;
@@ -161,7 +205,7 @@ export default function TrackCard({ track }: TrackCardProps) {
         )}
       </div>
 
-      {/* Price */}
+      {/* Price & Purchase */}
       <div className="flex items-center justify-between relative z-10">
         <span className="text-3xl font-black theme-text">
           ${track.price}
@@ -170,12 +214,48 @@ export default function TrackCard({ track }: TrackCardProps) {
           <span className="bg-red-500/20 text-red-400 px-4 py-1 rounded-full text-sm font-bold border border-red-500/50">
             SOLD
           </span>
+        ) : isPurchased ? (
+          <button
+            onClick={handlePurchase}
+            className="bg-green-500/20 text-green-400 px-4 py-1 rounded-full text-sm font-bold border border-green-500/50 hover:scale-105 transition-all flex items-center gap-2"
+          >
+            <Check size={16} />
+            OWNED
+          </button>
         ) : (
-          <span className="bg-green-500/20 text-green-400 px-4 py-1 rounded-full text-sm font-bold border border-green-500/50">
-            AVAILABLE
-          </span>
+          <button
+            onClick={handlePurchase}
+            disabled={isProcessing}
+            className="bg-blue-500/20 text-blue-400 px-4 py-1 rounded-full text-sm font-bold border border-blue-500/50 hover:scale-105 transition-all flex items-center gap-2 disabled:opacity-50"
+          >
+            {isProcessing ? (
+              <>
+                <div className="w-4 h-4 border-2 border-blue-400 border-t-transparent rounded-full animate-spin"></div>
+                PROCESSING
+              </>
+            ) : (
+              <>
+                <ShoppingCart size={16} />
+                BUY NOW
+              </>
+            )}
+          </button>
         )}
       </div>
+
+      {/* Success Modal */}
+      {showSuccess && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div className="bg-green-500/20 border border-green-500/50 rounded-2xl p-8 text-center max-w-md mx-4">
+            <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Check size={32} className="text-white" />
+            </div>
+            <h3 className="text-2xl font-bold text-green-400 mb-2">Payment Successful!</h3>
+            <p className="text-green-300 mb-4">(Demo Mode)</p>
+            <p className="theme-text-secondary">Redirecting to your purchases...</p>
+          </div>
+        </div>
+      )}
     </Link>
   );
 }
