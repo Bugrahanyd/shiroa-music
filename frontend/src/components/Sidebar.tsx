@@ -162,35 +162,46 @@ export default function Sidebar() {
             
             {/* Theme Grid - Fixed Size, No Layout Shift */}
             <div className={`grid gap-2 ${!isOpen ? 'grid-cols-1' : 'grid-cols-2'}`}>
-              {themeStories.map((themeItem) => (
-                <div
-                  key={themeItem.id}
-                  className={`relative overflow-hidden ${themeItem.id === 'sunset' && isOpen ? 'col-span-2' : ''}`}
-                >
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      setTheme(themeItem.id);
-                    }}
-                    onMouseEnter={() => setActiveStory(themeItem.id)}
-                    onMouseLeave={() => setActiveStory(null)}
-                    className={`w-full h-12 p-3 rounded-xl border transition-colors duration-200 relative cursor-pointer ${
-                      theme === themeItem.id 
-                        ? 'border-white/40 shadow-lg ring-2 ring-white/20' 
-                        : 'border-white/10 hover:border-white/20'
-                    } ${themeItem.color}`}
-                    title={themeItem.name}
+              {themeStories.map((themeItem) => {
+                let hoverTimeout: NodeJS.Timeout;
+                
+                return (
+                  <div
+                    key={themeItem.id}
+                    className={`relative ${themeItem.id === 'sunset' && isOpen ? 'col-span-2' : ''}`}
                   >
-                    {isOpen && (
-                      <span className="text-xs font-bold text-white drop-shadow-lg">
-                        {themeItem.name}
-                      </span>
-                    )}
-                  </button>
-                </div>
-              ))}
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setTheme(themeItem.id);
+                      }}
+                      onMouseEnter={() => {
+                        hoverTimeout = setTimeout(() => {
+                          setActiveStory(themeItem.id);
+                        }, 800);
+                      }}
+                      onMouseLeave={() => {
+                        clearTimeout(hoverTimeout);
+                        setActiveStory(null);
+                      }}
+                      className={`w-full h-12 p-3 rounded-xl border transition-colors duration-200 cursor-pointer ${
+                        theme === themeItem.id 
+                          ? 'border-white/40 shadow-lg ring-2 ring-white/20' 
+                          : 'border-white/10 hover:border-white/20'
+                      } ${themeItem.color}`}
+                      title={themeItem.name}
+                    >
+                      {isOpen && (
+                        <span className="text-xs font-bold text-white drop-shadow-lg">
+                          {themeItem.name}
+                        </span>
+                      )}
+                    </button>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
