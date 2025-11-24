@@ -70,7 +70,7 @@ const themeStories: ThemeStory[] = [
 export default function Sidebar() {
   const [isPinned, setIsPinned] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-  const [activeStory, setActiveStory] = useState<string | null>(null);
+
   const { user } = useAuth();
   const { theme, setTheme } = useTheme();
   const { t, language } = useLanguage();
@@ -162,82 +162,25 @@ export default function Sidebar() {
             
             {/* Theme Grid - Smaller Cards */}
             <div className={`grid gap-1 ${!isOpen ? 'grid-cols-1' : 'grid-cols-3'}`}>
-              {themeStories.map((themeItem) => {
-                let hoverTimeout: NodeJS.Timeout;
-                
-                return (
-                  <div key={themeItem.id} className="relative">
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        clearTimeout(hoverTimeout);
-                        setTheme(themeItem.id);
-                      }}
-                      onMouseEnter={() => {
-                        hoverTimeout = setTimeout(() => {
-                          setActiveStory(themeItem.id);
-                        }, 1000);
-                      }}
-                      onMouseLeave={() => {
-                        clearTimeout(hoverTimeout);
-                        setActiveStory(null);
-                      }}
-                      className={`w-full h-8 rounded-lg border transition-colors duration-200 cursor-pointer ${
-                        theme === themeItem.id 
-                          ? 'border-white/60 ring-1 ring-white/30' 
-                          : 'border-white/20 hover:border-white/40'
-                      } ${themeItem.color}`}
-                      title={themeItem.name}
-                    />
-                  </div>
-                );
-              })}
+              {themeStories.map((themeItem) => (
+                <button
+                  key={themeItem.id}
+                  type="button"
+                  onClick={() => setTheme(themeItem.id)}
+                  className={`w-full h-8 rounded-lg border transition-colors duration-200 cursor-pointer ${
+                    theme === themeItem.id 
+                      ? 'border-white/60 ring-1 ring-white/30' 
+                      : 'border-white/20 hover:border-white/40'
+                  } ${themeItem.color}`}
+                  title={themeItem.name}
+                />
+              ))}
             </div>
           </div>
         </div>
       </div>
 
-      {/* Theme Story Modal - Fixed Center */}
-      {activeStory && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className="glass-card border border-white/20 p-8 max-w-4xl w-full max-h-[80vh] overflow-y-auto shadow-2xl rounded-3xl">
-            {(() => {
-              const story = themeStories.find(t => t.id === activeStory);
-              if (!story) return null;
-              
-              return (
-                <>
-                  <div className="flex items-center gap-6 mb-8">
-                    <div className={`w-20 h-20 rounded-2xl ${story.color} shadow-xl`}></div>
-                    <div>
-                      <h3 className="text-4xl font-bold theme-text font-orbitron mb-2">
-                        {story.name}
-                      </h3>
-                      <p className="theme-text-secondary text-lg">
-                        {language === 'tr' ? 'Tema Hikayesi' : 'Theme Story'}
-                      </p>
-                    </div>
-                  </div>
-                  
-                  <div className="prose prose-lg max-w-none">
-                    <p className="theme-text-secondary text-lg leading-relaxed text-justify">
-                      {story.stories[language]}
-                    </p>
-                  </div>
-                  
-                  <button 
-                    onClick={() => setActiveStory(null)}
-                    className="mt-8 px-8 py-3 bg-gradient-to-r from-purple-500 to-cyan-500 text-white rounded-xl font-bold hover:scale-105 transition-all shadow-lg"
-                  >
-                    {language === 'tr' ? 'Kapat' : 'Close'}
-                  </button>
-                </>
-              );
-            })()}
-          </div>
-        </div>
-      )}
+
 
       {/* Mobile Bottom Navigation */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 theme-bg border-t-2 theme-border backdrop-blur-md bg-opacity-95">

@@ -108,9 +108,24 @@ export default function TrackCard({ track }: TrackCardProps) {
 
     setIsProcessing(true);
     
-    // MVP Demo - Direct to success page
-    const successUrl = `/success?session_id=demo_${track._id}&track_id=${track._id}`;
-    window.location.href = successUrl;
+    try {
+      const response = await fetch('/api/payment/create-checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          trackId: track._id,
+          trackTitle: track.title,
+          trackArtist: track.artist,
+          price: track.price
+        })
+      });
+
+      const { url } = await response.json();
+      window.location.href = url;
+    } catch (error) {
+      setIsProcessing(false);
+      alert('Payment failed. Please try again.');
+    }
   };
 
   const isSold = track.status === "sold" || track.isSold;

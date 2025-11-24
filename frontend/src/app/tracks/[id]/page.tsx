@@ -191,9 +191,23 @@ export default function TrackDetailPage() {
               </button>
             ) : (
               <button
-                onClick={() => {
-                  const successUrl = `/success?session_id=demo_${track._id}&track_id=${track._id}`;
-                  window.location.href = successUrl;
+                onClick={async () => {
+                  try {
+                    const response = await fetch('/api/payment/create-checkout', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({
+                        trackId: track._id,
+                        trackTitle: track.title,
+                        trackArtist: track.artist,
+                        price: track.price
+                      })
+                    });
+                    const { url } = await response.json();
+                    window.location.href = url;
+                  } catch (error) {
+                    alert('Payment failed. Please try again.');
+                  }
                 }}
                 className="w-full bg-white text-black py-4 rounded-full font-bold text-lg hover:bg-white/90 transition-all flex items-center justify-center gap-2"
               >
