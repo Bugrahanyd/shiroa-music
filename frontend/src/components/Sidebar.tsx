@@ -160,31 +160,36 @@ export default function Sidebar() {
               {isOpen && <span className="text-sm theme-text-secondary font-medium">{t('sidebar.theme')}</span>}
             </div>
             
-            {/* Theme Grid - Stable, No Scaling */}
+            {/* Theme Grid - Fixed Size, No Layout Shift */}
             <div className={`grid gap-2 ${!isOpen ? 'grid-cols-1' : 'grid-cols-2'}`}>
               {themeStories.map((themeItem) => (
-                <button
+                <div
                   key={themeItem.id}
-                  type="button"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setTheme(themeItem.id);
-                  }}
-                  onMouseEnter={() => setActiveStory(themeItem.id)}
-                  onMouseLeave={() => setActiveStory(null)}
-                  className={`p-3 rounded-xl border transition-all relative cursor-pointer ${
-                    theme === themeItem.id 
-                      ? 'border-white/40 shadow-lg ring-2 ring-white/20' 
-                      : 'border-white/10 hover:border-white/20'
-                  } ${themeItem.color} ${themeItem.id === 'sunset' && isOpen ? 'col-span-2' : ''}`}
-                  title={themeItem.name}
+                  className={`relative overflow-hidden ${themeItem.id === 'sunset' && isOpen ? 'col-span-2' : ''}`}
                 >
-                  {isOpen && (
-                    <span className="text-xs font-bold text-white drop-shadow-lg">
-                      {themeItem.name}
-                    </span>
-                  )}
-                </button>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setTheme(themeItem.id);
+                    }}
+                    onMouseEnter={() => setActiveStory(themeItem.id)}
+                    onMouseLeave={() => setActiveStory(null)}
+                    className={`w-full h-12 p-3 rounded-xl border transition-colors duration-200 relative cursor-pointer ${
+                      theme === themeItem.id 
+                        ? 'border-white/40 shadow-lg ring-2 ring-white/20' 
+                        : 'border-white/10 hover:border-white/20'
+                    } ${themeItem.color}`}
+                    title={themeItem.name}
+                  >
+                    {isOpen && (
+                      <span className="text-xs font-bold text-white drop-shadow-lg">
+                        {themeItem.name}
+                      </span>
+                    )}
+                  </button>
+                </div>
               ))}
             </div>
           </div>

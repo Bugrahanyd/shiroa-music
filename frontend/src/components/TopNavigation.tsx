@@ -87,16 +87,8 @@ export default function TopNavigation() {
               className={`w-full h-full object-cover transition-all duration-500 ${getLogoClass()}`}
             />
           </div>
-          <h1 className="text-2xl font-bold font-orbitron">
-            <span className="theme-text">SHIR</span>
-            <span className={`transition-all duration-500 ${
-              theme === 'light' ? 'text-gray-600' :
-              theme === 'dark' ? 'text-purple-400' :
-              theme === 'neon' ? 'text-cyan-400' :
-              theme === 'sunset' ? 'text-orange-400' :
-              theme === 'japanese' ? 'text-pink-400' :
-              'text-purple-400'
-            }`}>OA</span>
+          <h1 className="text-2xl font-bold font-orbitron text-white">
+            SHIROA
           </h1>
         </Link>
 

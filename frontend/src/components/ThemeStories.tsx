@@ -94,43 +94,39 @@ export default function ThemeStories({ onComplete }: ThemeStoriesProps) {
         />
       </div>
 
-      {/* Story Content */}
+      {/* Story Content - Fixed Size Container */}
       <div className="relative w-full max-w-md mx-4">
-        <div className={`relative group overflow-hidden bg-gradient-to-br ${current.colors} rounded-3xl p-12 text-center shadow-2xl border border-white/20 transition-transform duration-300 hover:scale-105`}>
-          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
-          <div className="relative z-10">
-            <div className="text-8xl mb-6 transition-transform duration-300 group-hover:scale-110">{current.icon}</div>
-            <h2 className="text-4xl font-display font-black text-white mb-4">{current.name}</h2>
-            <p className="text-white/80 text-lg mb-8">{current.story}</p>
-            
-            <button
-              onClick={handleSelect}
-              className="w-full bg-white text-black px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl active:scale-95 mb-4"
-            >
-              Choose This Theme
-            </button>
-          </div>
+        <div className={`relative overflow-hidden bg-gradient-to-br ${current.colors} rounded-3xl p-12 text-center shadow-2xl border border-white/20 w-full h-auto`}>
+          <div className="text-8xl mb-6">{current.icon}</div>
+          <h2 className="text-4xl font-display font-black text-white mb-4">{current.name}</h2>
+          <p className="text-white/80 text-lg mb-8">{current.story}</p>
+          
+          <button
+            onClick={handleSelect}
+            className="w-full bg-white text-black px-8 py-4 rounded-full font-bold text-lg transition-opacity duration-200 hover:opacity-90 active:opacity-80 mb-4"
+          >
+            Choose This Theme
+          </button>
 
-            {/* Navigation */}
-            <div className="flex items-center justify-between mt-8">
-              <button
-                onClick={handlePrev}
-                disabled={currentIndex === 0}
-                className="text-white/60 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-300 hover:scale-110 active:scale-95"
-              >
-                ← Previous
-              </button>
-              <div className="text-white/60 text-sm">
-                {currentIndex + 1} / {themeStories.length}
-              </div>
-              <button
-                onClick={handleNext}
-                disabled={currentIndex === themeStories.length - 1}
-                className="text-white/60 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-300 hover:scale-110 active:scale-95"
-              >
-                Next →
-              </button>
+          {/* Navigation */}
+          <div className="flex items-center justify-between mt-8">
+            <button
+              onClick={handlePrev}
+              disabled={currentIndex === 0}
+              className="text-white/60 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-colors duration-200"
+            >
+              ← Previous
+            </button>
+            <div className="text-white/60 text-sm">
+              {currentIndex + 1} / {themeStories.length}
             </div>
+            <button
+              onClick={handleNext}
+              disabled={currentIndex === themeStories.length - 1}
+              className="text-white/60 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-colors duration-200"
+            >
+              Next →
+            </button>
           </div>
         </div>
       </div>
