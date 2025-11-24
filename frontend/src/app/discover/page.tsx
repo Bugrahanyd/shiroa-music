@@ -3,15 +3,75 @@
 import Link from 'next/link';
 import { useAuth } from '@/lib/auth-context';
 import { useLanguage } from '@/lib/language-context';
-import { Shield, Sparkles, Zap, Play, ArrowRight, Music, Users, TrendingUp } from 'lucide-react';
+import { Shield, Sparkles, Zap, Play, ArrowRight, Music, Users, TrendingUp, Star } from 'lucide-react';
 
 export default function DiscoverPage() {
   const { user } = useAuth();
   const { t, language } = useLanguage();
 
-  const heroTitle = language === 'tr' ? 'Sesiniz için her şey' : 'Everything for your sound';
-  const browseText = language === 'tr' ? 'Kataloğa Göz At' : 'Browse Catalog';
-  const howItWorksText = language === 'tr' ? 'Nasıl Çalışır' : 'How It Works';
+  const heroContent = {
+    en: {
+      title: "Everything for your",
+      sound: "sound",
+      subtitle: "Discover and license high-quality music tracks with full commercial rights. One track, one owner, unlimited possibilities.",
+      browse: "Browse Catalog",
+      howItWorks: "How It Works"
+    },
+    tr: {
+      title: "Sesiniz için",
+      sound: "her şey", 
+      subtitle: "Tam ticari haklarla yüksek kaliteli müzik parçalarını keşfedin ve lisanslayın. Bir parça, bir sahip, sınırsız olasılıklar.",
+      browse: "Kataloğa Göz At",
+      howItWorks: "Nasıl Çalışır"
+    }
+  };
+
+  const features = {
+    en: [
+      {
+        icon: Shield,
+        title: "True Exclusivity",
+        desc: "Each track is sold only once. Complete ownership with full commercial rights and no recurring fees."
+      },
+      {
+        icon: Sparkles,
+        title: "AI-Powered Creation",
+        desc: "Advanced artificial intelligence tools for composition, arrangement, and professional music production."
+      },
+      {
+        icon: Zap,
+        title: "Instant Delivery",
+        desc: "Secure checkout with immediate access to high-quality files and lifetime license certificates."
+      }
+    ],
+    tr: [
+      {
+        icon: Shield,
+        title: "Gerçek Münhasırlık",
+        desc: "Her parça sadece bir kez satılır. Tam ticari haklarla tamamen sahiplik ve tekrarlayan ücret yok."
+      },
+      {
+        icon: Sparkles,
+        title: "AI Destekli Yaratım",
+        desc: "Kompozisyon, düzenleme ve profesyonel müzik prodüksiyonu için gelişmiş yapay zeka araçları."
+      },
+      {
+        icon: Zap,
+        title: "Anında Teslimat",
+        desc: "Yüksek kaliteli dosyalara ve ömür boyu lisans sertifikalarına anında erişimle güvenli ödeme."
+      }
+    ]
+  };
+
+  const stats = [
+    { icon: Music, label: language === 'tr' ? 'Parça' : 'Tracks', value: '10K+', color: 'text-blue-400' },
+    { icon: Users, label: language === 'tr' ? 'Sanatçı' : 'Artists', value: '5K+', color: 'text-purple-400' },
+    { icon: TrendingUp, label: language === 'tr' ? 'İndirme' : 'Downloads', value: '50K+', color: 'text-pink-400' },
+    { icon: Star, label: language === 'tr' ? 'Puan' : 'Rating', value: '4.9', color: 'text-cyan-400' }
+  ];
+
+  const content = heroContent[language];
+  const currentFeatures = features[language];
 
   return (
     <div className="min-h-screen pt-20">
@@ -21,25 +81,24 @@ export default function DiscoverPage() {
           
           {/* Main Title - Single Line Responsive */}
           <div className="mb-16">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold font-orbitron theme-text mb-8 leading-tight">
-              <span className="whitespace-nowrap">{heroTitle}</span>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold font-orbitron theme-text mb-8 leading-tight">
+              <span className="block">{content.title}</span>
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 animate-pulse">
+                {content.sound}
+              </span>
             </h1>
             
-            <p className="text-lg md:text-xl theme-text-secondary max-w-3xl mx-auto leading-relaxed">
-              {language === 'tr' 
-                ? 'Yapay zeka destekli müzik üretimi ve özel lisanslama platformu'
-                : 'AI-powered music production and exclusive licensing platform'
-              }
-            </p>
+            <div className="relative max-w-4xl mx-auto">
+              <div className="absolute inset-0 bg-black/20 backdrop-blur-sm rounded-2xl"></div>
+              <p className="relative text-lg md:text-xl theme-text-secondary leading-relaxed p-6">
+                {content.subtitle}
+              </p>
+            </div>
           </div>
 
           {/* Stats Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-16 max-w-4xl mx-auto">
-            {[
-              { icon: Music, label: language === 'tr' ? 'Parça' : 'Tracks', value: '10K+', color: 'text-blue-400' },
-              { icon: Users, label: language === 'tr' ? 'Sanatçı' : 'Artists', value: '5K+', color: 'text-purple-400' },
-              { icon: TrendingUp, label: language === 'tr' ? 'İndirme' : 'Downloads', value: '50K+', color: 'text-pink-400' }
-            ].map((stat, i) => (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16 max-w-4xl mx-auto">
+            {stats.map((stat, i) => (
               <div key={i} className="glass-card p-6 rounded-2xl hover:scale-105 transition-all">
                 <stat.icon className={`w-8 h-8 mx-auto mb-3 ${stat.color}`} />
                 <div className="text-2xl md:text-3xl font-bold theme-text">{stat.value}</div>
@@ -55,7 +114,7 @@ export default function DiscoverPage() {
               className="px-8 md:px-12 py-4 md:py-5 rounded-2xl bg-gradient-to-r from-purple-500 via-pink-500 to-cyan-500 text-white font-bold text-lg md:text-xl shadow-2xl hover:shadow-3xl transition-all hover:scale-105 flex items-center justify-center gap-3"
             >
               <Play size={24} />
-              {browseText}
+              {content.browse}
             </Link>
             
             <Link
@@ -63,7 +122,7 @@ export default function DiscoverPage() {
               className="px-8 md:px-12 py-4 md:py-5 rounded-2xl glass-card theme-text font-bold text-lg md:text-xl hover:scale-105 transition-all border border-white/20 flex items-center justify-center gap-3"
             >
               <ArrowRight size={24} />
-              {howItWorksText}
+              {content.howItWorks}
             </Link>
           </div>
         </div>
@@ -77,53 +136,19 @@ export default function DiscoverPage() {
           </h2>
           
           <div className="grid md:grid-cols-3 gap-8">
-            {/* True Exclusivity */}
-            <div className="glass-card p-8 md:p-10 rounded-3xl hover:scale-105 transition-all duration-300 group text-center">
-              <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-gradient-to-r from-purple-500 via-pink-500 to-cyan-500 flex items-center justify-center mx-auto mb-6 md:mb-8 group-hover:scale-110 transition-transform">
-                <Shield className="text-white" size={32} />
+            {currentFeatures.map((feature, index) => (
+              <div key={index} className="glass-card p-8 md:p-10 rounded-3xl hover:scale-105 transition-all duration-300 group text-center">
+                <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-gradient-to-r from-purple-500 via-pink-500 to-cyan-500 flex items-center justify-center mx-auto mb-6 md:mb-8 group-hover:scale-110 transition-transform">
+                  <feature.icon className="text-white" size={32} />
+                </div>
+                <h3 className="text-xl md:text-2xl font-bold theme-text mb-4 md:mb-6 font-orbitron">
+                  {feature.title}
+                </h3>
+                <p className="theme-text-secondary leading-relaxed">
+                  {feature.desc}
+                </p>
               </div>
-              <h3 className="text-xl md:text-2xl font-bold theme-text mb-4 md:mb-6 font-orbitron">
-                {language === 'tr' ? 'Gerçek Özellik' : 'True Exclusivity'}
-              </h3>
-              <p className="theme-text-secondary leading-relaxed">
-                {language === 'tr' 
-                  ? 'Her parça sadece bir kez satılır. Tamamen size özel müzik deneyimi.'
-                  : 'Each track is sold only once. Completely exclusive music experience for you.'
-                }
-              </p>
-            </div>
-
-            {/* AI Powered Creation */}
-            <div className="glass-card p-8 md:p-10 rounded-3xl hover:scale-105 transition-all duration-300 group text-center">
-              <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-gradient-to-r from-purple-500 via-pink-500 to-cyan-500 flex items-center justify-center mx-auto mb-6 md:mb-8 group-hover:scale-110 transition-transform">
-                <Sparkles className="text-white" size={32} />
-              </div>
-              <h3 className="text-xl md:text-2xl font-bold theme-text mb-4 md:mb-6 font-orbitron">
-                {language === 'tr' ? 'AI Destekli' : 'AI Powered'}
-              </h3>
-              <p className="theme-text-secondary leading-relaxed">
-                {language === 'tr'
-                  ? 'Yapay zeka teknolojisi ile üretilen yüksek kaliteli müzik parçaları.'
-                  : 'High-quality music tracks produced with artificial intelligence technology.'
-                }
-              </p>
-            </div>
-
-            {/* Instant Delivery */}
-            <div className="glass-card p-8 md:p-10 rounded-3xl hover:scale-105 transition-all duration-300 group text-center">
-              <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-gradient-to-r from-purple-500 via-pink-500 to-cyan-500 flex items-center justify-center mx-auto mb-6 md:mb-8 group-hover:scale-110 transition-transform">
-                <Zap className="text-white" size={32} />
-              </div>
-              <h3 className="text-xl md:text-2xl font-bold theme-text mb-4 md:mb-6 font-orbitron">
-                {language === 'tr' ? 'Anında Teslimat' : 'Instant Delivery'}
-              </h3>
-              <p className="theme-text-secondary leading-relaxed">
-                {language === 'tr'
-                  ? 'Satın aldığınız müzikleri anında indirin ve kullanmaya başlayın.'
-                  : 'Download and start using your purchased music instantly.'
-                }
-              </p>
-            </div>
+            ))}
           </div>
         </div>
       </div>

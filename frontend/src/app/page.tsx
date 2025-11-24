@@ -61,9 +61,9 @@ export default function GatePage() {
   const [password, setPassword] = useState('');
   const [code, setCode] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
-  const [error, setError] = useState('');
   const [formLoading, setFormLoading] = useState(false);
   const [success, setSuccess] = useState('');
+  
   const router = useRouter();
   const { user, loading, login, register } = useAuth();
   
@@ -71,19 +71,30 @@ export default function GatePage() {
 
   // Redirect authenticated users to discover
   useEffect(() => {
-    if (!loading) {
-      const token = localStorage.getItem('access_token');
-      const demoUser = localStorage.getItem('shiroa-demo-user');
-      
-      if ((user || (token && demoUser))) {
-        router.replace('/discover');
-      }
+    if (!loading && user) {
+      router.replace('/discover');
     }
   }, [user, loading, router]);
 
+  // Show loading while checking auth
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gray-900 via-[#0a0a0a] to-black flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <div className="text-white text-xl font-orbitron">Loading...</div>
+        </div>
+      </div>
+    );
+  }
+
+  // Don't render if user is authenticated (will redirect)
+  if (user) {
+    return null;
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
     setSuccess('');
     setFormLoading(true);
 
@@ -91,43 +102,26 @@ export default function GatePage() {
       if (mode === 'signin') {
         await login(email, password);
         setSuccess('Login Successful!');
-        setTimeout(() => router.push('/discover'), 1000);
+        setTimeout(() => router.replace('/discover'), 1000);
       } else if (mode === 'signup') {
         await register(email, password, name);
         setSuccess('Account Created Successfully!');
-        setTimeout(() => router.push('/onboarding'), 1000);
+        setTimeout(() => router.replace('/onboarding'), 1000);
       } else if (mode === 'forgot') {
         setMode('code');
+        setFormLoading(false);
+        return;
       } else if (mode === 'code') {
         setSuccess('Password Reset Successful!');
         setTimeout(() => setMode('signin'), 1500);
       }
-    } catch (err: any) {
-      // FAIL-SAFE: Never leave users stranded
-      console.log('Backend error, using demo mode:', err.message);
-      setSuccess(mode === 'signin' ? 'Login Successful! (Demo Mode)' : 'Account Created! (Demo Mode)');
-      
-      // Force success after 1.5 seconds
-      setTimeout(() => {
-        if (mode === 'signin') {
-          router.push('/discover');
-        } else {
-          router.push('/onboarding');
-        }
-      }, 1500);
+    } catch (error) {
+      console.error('Form submission error:', error);
+      // Auth context handles all errors with fallbacks
     } finally {
       setFormLoading(false);
     }
   };
-
-  // Show loading while checking auth
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gray-900 via-[#0a0a0a] to-black flex items-center justify-center">
-        <div className="text-white text-xl">Loading...</div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen relative overflow-hidden flex items-center justify-center p-4 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gray-900 via-[#0a0a0a] to-black">
@@ -177,12 +171,6 @@ export default function GatePage() {
         {/* Glassmorphism Form Card */}
         <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-8 shadow-2xl">
           <form onSubmit={handleSubmit} className="space-y-6">
-            {error && (
-              <div className="bg-red-500/20 border border-red-500/50 text-red-300 px-4 py-3 rounded-xl text-sm text-center">
-                {error}
-              </div>
-            )}
-
             {success && (
               <div className="bg-green-500/20 border border-green-500/50 text-green-300 px-4 py-3 rounded-xl text-sm text-center font-semibold">
                 ✅ {success}
@@ -344,32 +332,6 @@ export default function GatePage() {
           </a>
         </p>
       </div>
-
-      <style jsx>{`
-        @keyframes blob {
-          0% {
-            transform: translate(0px, 0px) scale(1);
-          }
-          33% {
-            transform: translate(30px, -50px) scale(1.1);
-          }
-          66% {
-            transform: translate(-20px, 20px) scale(0.9);
-          }
-          100% {
-            transform: translate(0px, 0px) scale(1);
-          }
-        }
-        .animate-blob {
-          animation: blob 7s infinite;
-        }
-        .animation-delay-2000 {
-          animation-delay: 2s;
-        }
-        .animation-delay-4000 {
-          animation-delay: 4s;
-        }
-      `}</style>
     </div>
   );
 }

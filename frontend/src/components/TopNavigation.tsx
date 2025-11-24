@@ -50,14 +50,13 @@ export default function TopNavigation() {
     }
   };
 
-  const getLogoFilter = () => {
+  const getLogoClass = () => {
     switch (theme) {
       case 'light':
-        return 'brightness(0.2) contrast(1.2)';
       case 'sunset':
-        return 'brightness(0.4) saturate(1.5)';
+        return 'mix-blend-multiply';
       default:
-        return 'none';
+        return 'mix-blend-screen';
     }
   };
 
@@ -77,8 +76,7 @@ export default function TopNavigation() {
             <img 
               src={getLogoSrc()} 
               alt="SHIROA" 
-              className="w-full h-full object-cover transition-all duration-300"
-              style={{ filter: getLogoFilter() }}
+              className={`w-full h-full object-cover transition-all duration-300 ${getLogoClass()}`}
             />
           </div>
           <h1 className="text-2xl font-bold font-orbitron theme-text">

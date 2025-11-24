@@ -165,10 +165,14 @@ export default function Sidebar() {
               {themeStories.map((themeItem) => (
                 <button
                   key={themeItem.id}
-                  onClick={() => setTheme(themeItem.id)}
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setTheme(themeItem.id);
+                  }}
                   onMouseEnter={() => setActiveStory(themeItem.id)}
                   onMouseLeave={() => setActiveStory(null)}
-                  className={`p-3 rounded-xl border transition-all relative ${
+                  className={`p-3 rounded-xl border transition-all relative cursor-pointer ${
                     theme === themeItem.id 
                       ? 'border-white/40 shadow-lg ring-2 ring-white/20' 
                       : 'border-white/10 hover:border-white/20'
@@ -181,7 +185,7 @@ export default function Sidebar() {
                     </span>
                   )}
                 </button>
-              ))}
+              ))
             </div>
           </div>
         </div>
