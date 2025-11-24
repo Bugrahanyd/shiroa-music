@@ -32,14 +32,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return;
       }
 
-      // Try to get user profile
+      // Check for demo user first
+      const demoUser = localStorage.getItem("shiroa_demo_user");
+      if (demoUser) {
+        setUser(JSON.parse(demoUser));
+        setLoading(false);
+        return;
+      }
+
+      // Try to get user profile from API
       const userData = await api.getProfile();
       setUser(userData);
       
     } catch (error) {
       console.error("Auth initialization failed:", error);
-      // Clear invalid tokens
+      // Clear invalid tokens and set loading false
       clearAuthData();
+      setUser(null);
     } finally {
       setLoading(false);
     }
