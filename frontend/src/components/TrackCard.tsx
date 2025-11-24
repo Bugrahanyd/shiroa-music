@@ -100,41 +100,7 @@ export default function TrackCard({ track }: TrackCardProps) {
 
   const handlePurchase = async (e: React.MouseEvent) => {
     e.preventDefault();
-    if (!user) {
-      // Show proper login prompt
-      const loginPrompt = document.createElement('div');
-      loginPrompt.innerHTML = `
-        <div style="
-          position: fixed;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          background: rgba(0,0,0,0.9);
-          color: white;
-          padding: 24px 32px;
-          border-radius: 16px;
-          box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-          z-index: 9999;
-          text-align: center;
-          border: 1px solid rgba(255,255,255,0.2);
-        ">
-          <h3 style="margin-bottom: 16px; font-size: 20px;">Authentication Required</h3>
-          <p style="margin-bottom: 20px; opacity: 0.8;">Please log in to purchase tracks</p>
-          <button onclick="window.location.href='/'; this.parentElement.remove();" 
-                  style="background: linear-gradient(135deg, #8b5cf6, #06b6d4); color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: bold;">
-            Go to Login
-          </button>
-        </div>
-      `;
-      document.body.appendChild(loginPrompt);
-      setTimeout(() => {
-        if (loginPrompt.parentNode) {
-          loginPrompt.parentNode.removeChild(loginPrompt);
-        }
-      }, 5000);
-      return;
-    }
-
+    
     if (isPurchased) {
       router.push('/purchases');
       return;
@@ -142,61 +108,9 @@ export default function TrackCard({ track }: TrackCardProps) {
 
     setIsProcessing(true);
     
-    try {
-      // Create Stripe checkout session
-      const response = await fetch('/api/payment/create-checkout', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('access_token')}`
-        },
-        body: JSON.stringify({
-          trackId: track._id,
-          trackTitle: track.title,
-          trackArtist: track.artist,
-          price: track.price
-        })
-      });
-
-      if (response.ok) {
-        const { url } = await response.json();
-        // Redirect to Stripe Checkout
-        window.location.href = url;
-      } else {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Payment service unavailable');
-      }
-    } catch (error) {
-      console.error('Payment failed:', error);
-      setIsProcessing(false);
-      
-      // Show proper error message
-      const errorToast = document.createElement('div');
-      errorToast.innerHTML = `
-        <div style="
-          position: fixed;
-          top: 20px;
-          right: 20px;
-          background: rgba(239, 68, 68, 0.9);
-          color: white;
-          padding: 16px 24px;
-          border-radius: 12px;
-          box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-          z-index: 9999;
-          font-weight: bold;
-          border: 1px solid rgba(255,255,255,0.2);
-        ">
-          ⚠️ Payment service is currently unavailable. Please try again later.
-        </div>
-      `;
-      document.body.appendChild(errorToast);
-      
-      setTimeout(() => {
-        if (errorToast.parentNode) {
-          errorToast.parentNode.removeChild(errorToast);
-        }
-      }, 5000);
-    }
+    // MVP Demo - Direct to success page
+    const successUrl = `/success?session_id=demo_${track._id}&track_id=${track._id}`;
+    window.location.href = successUrl;
   };
 
   const isSold = track.status === "sold" || track.isSold;

@@ -191,13 +191,9 @@ export default function TrackDetailPage() {
               </button>
             ) : (
               <button
-                onClick={async () => {
-                  try {
-                    const { url } = await api.createCheckout(track._id);
-                    window.location.href = url;
-                  } catch (error) {
-                    alert("Please login to purchase");
-                  }
+                onClick={() => {
+                  const successUrl = `/success?session_id=demo_${track._id}&track_id=${track._id}`;
+                  window.location.href = successUrl;
                 }}
                 className="w-full bg-white text-black py-4 rounded-full font-bold text-lg hover:bg-white/90 transition-all flex items-center justify-center gap-2"
               >
