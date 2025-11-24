@@ -219,14 +219,6 @@ export default function TopNavigation() {
                     <CreditCard size={16} />
                     {t('nav.purchases')}
                   </Link>
-                  <Link 
-                    href="/settings" 
-                    className="flex items-center gap-3 px-4 py-3 theme-hover theme-text font-medium"
-                    onClick={() => setShowUserMenu(false)}
-                  >
-                    <Settings size={16} />
-                    Settings
-                  </Link>
                   <hr className="my-2 theme-border" />
                   <button
                     onClick={() => {
