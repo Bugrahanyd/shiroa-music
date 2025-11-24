@@ -20,11 +20,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // Initialize auth state on mount
   useEffect(() => {
-    initializeAuth();
-  }, []);
-
-  const initializeAuth = async () => {
-    try {
+    let mounted = true;
+    
+    const init = async () => {
+      if (!mounted) return;
+      
       const token = localStorage.getItem("access_token");
       
       if (!token) {
@@ -34,25 +34,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       // Check for demo user first
       const demoUser = localStorage.getItem("shiroa_demo_user");
-      if (demoUser) {
+      if (demoUser && mounted) {
         setUser(JSON.parse(demoUser));
         setLoading(false);
         return;
       }
 
-      // Try to get user profile from API
-      const userData = await api.getProfile();
-      setUser(userData);
-      
-    } catch (error) {
-      console.error("Auth initialization failed:", error);
-      // Clear invalid tokens and set loading false
-      clearAuthData();
-      setUser(null);
-    } finally {
-      setLoading(false);
-    }
-  };
+      // Skip API call in production/demo mode
+      if (mounted) {
+        setLoading(false);
+      }
+    };
+    
+    init();
+    
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+
 
   const login = async (email: string, password: string): Promise<void> => {
     try {
