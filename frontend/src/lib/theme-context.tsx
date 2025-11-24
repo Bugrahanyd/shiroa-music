@@ -23,7 +23,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       const saved = localStorage.getItem("shiroa-theme") as Theme;
       if (saved) setTheme(saved);
     }
-  }, []);}
+  }, []);
 
   const handleSetTheme = (newTheme: Theme) => {
     setTheme(newTheme);

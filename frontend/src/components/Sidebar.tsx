@@ -56,7 +56,7 @@ export default function Sidebar() {
       storyEn: 'Witness the magic of Los Angeles golden hour. Warm hues paint the sky as day meets night, palm silhouettes dance in the breeze. Every color tells a story, every gradient sings a song.',
       storyTr: 'Los Angeles altın saatinin büyüsüne tanık olun. Gün geceyle buluşurken sıcak tonlar gökyüzünü boyar, palmiye siluetleri esintide dans eder. Her renk bir hikaye anlatır, her geçiş bir şarkı söyler.'
     },
-  ];}
+  ];
 
   const menuItems = [
     { icon: Compass, label: 'Home', href: '/discover' },
