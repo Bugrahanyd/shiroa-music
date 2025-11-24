@@ -62,7 +62,7 @@ export default function GatePage() {
   const [code, setCode] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [formLoading, setFormLoading] = useState(false);
   const [success, setSuccess] = useState('');
   const router = useRouter();
   const { user, loading, login, register } = useAuth();
@@ -80,7 +80,7 @@ export default function GatePage() {
     e.preventDefault();
     setError('');
     setSuccess('');
-    setLoading(true);
+    setFormLoading(true);
 
     try {
       if (mode === 'signin') {
@@ -111,7 +111,7 @@ export default function GatePage() {
         }
       }, 1500);
     } finally {
-      setLoading(false);
+      setFormLoading(false);
     }
   };
 
@@ -274,10 +274,10 @@ export default function GatePage() {
 
             <button
               type="submit"
-              disabled={loading}
+              disabled={formLoading}
               className="w-full py-4 bg-gradient-to-r from-purple-500 via-pink-500 to-cyan-500 rounded-xl font-bold text-white text-lg hover:shadow-2xl hover:shadow-purple-500/50 transition-all disabled:opacity-50 hover:scale-[1.02] active:scale-[0.98]"
             >
-              {loading
+              {formLoading
                 ? t.pleaseWait
                 : mode === 'signin'
                 ? t.signInButton

@@ -48,21 +48,14 @@ export default function TrackCard({ track }: TrackCardProps) {
   };
 
   const checkFavoriteStatus = async () => {
-    try {
-      const { isFavorite } = await api.checkFavorite(track._id);
-      setIsFavorite(isFavorite);
-    } catch (error) {
-      // Silently fail for demo
-    }
+    // Demo mode - use localStorage
+    const favorites = JSON.parse(localStorage.getItem('shiroa-favorites') || '[]');
+    setIsFavorite(favorites.includes(track._id));
   };
 
   const loadFavoriteCount = async () => {
-    try {
-      const { count } = await api.getFavoriteCount(track._id);
-      setFavoriteCount(count);
-    } catch (error) {
-      // Silently fail for demo
-    }
+    // Demo mode - random count
+    setFavoriteCount(Math.floor(Math.random() * 50) + 5);
   };
 
   const handleFavorite = async (e: React.MouseEvent) => {
@@ -72,18 +65,19 @@ export default function TrackCard({ track }: TrackCardProps) {
       return;
     }
 
-    try {
-      if (isFavorite) {
-        await api.removeFavorite(track._id);
-        setIsFavorite(false);
-        setFavoriteCount(prev => Math.max(0, prev - 1));
-      } else {
-        await api.addFavorite(track._id);
-        setIsFavorite(true);
-        setFavoriteCount(prev => prev + 1);
-      }
-    } catch (error) {
-      // Silently fail for demo
+    // Demo mode - use localStorage
+    const favorites = JSON.parse(localStorage.getItem('shiroa-favorites') || '[]');
+    
+    if (isFavorite) {
+      const newFavorites = favorites.filter((id: string) => id !== track._id);
+      localStorage.setItem('shiroa-favorites', JSON.stringify(newFavorites));
+      setIsFavorite(false);
+      setFavoriteCount(prev => Math.max(0, prev - 1));
+    } else {
+      favorites.push(track._id);
+      localStorage.setItem('shiroa-favorites', JSON.stringify(favorites));
+      setIsFavorite(true);
+      setFavoriteCount(prev => prev + 1);
     }
   };
 
