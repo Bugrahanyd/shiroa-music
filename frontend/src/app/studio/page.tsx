@@ -1,13 +1,35 @@
-"use client";
-
 'use client';
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Sparkles, Music, Sliders, Play, Pause, SkipBack, SkipForward, Volume2 } from "lucide-react";
+import AIGenerator from "@/components/AIGenerator";
 
 export default function StudioPage() {
   const [isPlaying, setIsPlaying] = useState(false);
-  const [showAIGenerator, setShowAIGenerator] = useState(false);
+  const [currentTrack, setCurrentTrack] = useState<any>(null);
+  const [audioUrl, setAudioUrl] = useState('');
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  const handleGenerate = (url: string, metadata: any) => {
+    setAudioUrl(url);
+    setCurrentTrack(metadata);
+    if (audioRef.current) {
+      audioRef.current.src = url;
+      audioRef.current.play();
+      setIsPlaying(true);
+    }
+  };
+
+  const togglePlay = () => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-black text-white overflow-hidden">
@@ -53,57 +75,32 @@ export default function StudioPage() {
       {/* Main Content */}
       <div className="relative z-10 flex h-[calc(100vh-73px)]">
         {/* Left Panel - AI Generator */}
-        <div className="w-80 border-r border-white/10 backdrop-blur-xl bg-black/30 p-6 overflow-y-auto">
-          <div className="flex items-center gap-2 mb-6">
-            <Sparkles className="text-cyan-400" size={20} />
-            <h2 className="text-lg font-bold">AI Generator</h2>
-          </div>
-
-          <div className="space-y-4">
-            <div>
-              <label className="text-sm text-white/60 mb-2 block">Prompt</label>
-              <textarea 
-                className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-sm focus:border-cyan-500 focus:outline-none resize-none"
-                rows={4}
-                placeholder="Describe your music..."
-              />
-            </div>
-
-            <div>
-              <label className="text-sm text-white/60 mb-2 block">Genre</label>
-              <select className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-sm focus:border-cyan-500 focus:outline-none">
-                <option>Electronic</option>
-                <option>Hip Hop</option>
-                <option>Rock</option>
-                <option>Jazz</option>
-                <option>Classical</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="text-sm text-white/60 mb-2 block">Duration (seconds)</label>
-              <input 
-                type="number" 
-                className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-sm focus:border-cyan-500 focus:outline-none"
-                defaultValue={30}
-              />
-            </div>
-
-            <button className="w-full py-3 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-lg font-semibold hover:shadow-lg hover:shadow-cyan-500/50 transition-all">
-              Generate Music
-            </button>
-          </div>
+        <div className="w-96 border-r border-white/10 backdrop-blur-xl bg-black/30 p-6 overflow-y-auto">
+          <AIGenerator onGenerate={handleGenerate} />
         </div>
 
         {/* Center - Waveform Area */}
         <div className="flex-1 flex flex-col">
           <div className="flex-1 p-8 flex items-center justify-center">
-            <div className="text-center">
-              <Music className="mx-auto mb-4 text-cyan-400" size={64} />
-              <h3 className="text-xl font-bold mb-2">No track loaded</h3>
-              <p className="text-white/60">Generate music with AI or upload a track</p>
-            </div>
+            {currentTrack ? (
+              <div className="text-center">
+                <div className="w-full max-w-2xl">
+                  <div className="h-32 bg-gradient-to-r from-purple-500/20 to-cyan-500/20 rounded-xl mb-4 flex items-center justify-center">
+                    <Music className="text-cyan-400 animate-pulse" size={64} />
+                  </div>
+                  <h3 className="text-xl font-bold mb-2">{currentTrack.genre || 'Generated Track'}</h3>
+                  <p className="text-white/60">{currentTrack.mood || 'AI Generated Music'}</p>
+                </div>
+              </div>
+            ) : (
+              <div className="text-center">
+                <Music className="mx-auto mb-4 text-cyan-400" size={64} />
+                <h3 className="text-xl font-bold mb-2">No track loaded</h3>
+                <p className="text-white/60">Generate music with AI</p>
+              </div>
+            )}
           </div>
+          <audio ref={audioRef} />
 
           {/* Transport Controls */}
           <div className="border-t border-white/10 backdrop-blur-xl bg-black/50 p-6">
@@ -122,8 +119,9 @@ export default function StudioPage() {
                 <SkipBack size={20} />
               </button>
               <button 
-                onClick={() => setIsPlaying(!isPlaying)}
-                className="p-4 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full hover:shadow-lg hover:shadow-cyan-500/50 transition-all"
+                onClick={togglePlay}
+                disabled={!audioUrl}
+                className="p-4 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full hover:shadow-lg hover:shadow-cyan-500/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isPlaying ? <Pause size={24} /> : <Play size={24} />}
               </button>

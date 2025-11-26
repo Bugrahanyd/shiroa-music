@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException, ConflictException } from "@nestjs/common";
+import { Injectable, UnauthorizedException, ConflictException, BadRequestException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { ConfigService } from "@nestjs/config";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -22,6 +22,9 @@ export class AuthService {
   ) {}
 
   async register(registerDto: RegisterDto) {
+    // Şifre güvenlik kontrolü
+    this.validatePassword(registerDto.password);
+
     const existingUser = await this.usersService.findByEmail(registerDto.email);
     if (existingUser) {
       throw new ConflictException("Email already exists");
@@ -120,5 +123,16 @@ export class AuthService {
       access_token: accessToken,
       refresh_token: refreshToken
     };
+  }
+
+  private validatePassword(password: string): void {
+    // Minimum 12 karakter, en az 1 büyük, 1 küçük, 1 rakam, 1 özel karakter
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/;
+    
+    if (!passwordRegex.test(password)) {
+      throw new BadRequestException(
+        'Password must be at least 12 characters with uppercase, lowercase, number and special character'
+      );
+    }
   }
 }

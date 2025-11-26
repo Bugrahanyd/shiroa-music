@@ -3,7 +3,7 @@ import { ValidationPipe } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { AppModule } from "./app.module";
 import helmet from 'helmet';
-// import rateLimit from 'express-rate-limit'; // Rate limit'i geçici olarak kapattık
+import rateLimit from 'express-rate-limit';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 import { LoggerService } from './common/logger.service';
@@ -28,18 +28,42 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   const port = configService.get<number>("PORT") || 3001;
 
-  // Güvenlik başlıkları (Helmet) - Biraz gevşettik
+  // Güvenlik başlıkları (Helmet)
   app.use(helmet({
-    contentSecurityPolicy: false, // CSP bazen sorun çıkarabilir, MVP için kapattık
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        scriptSrc: ["'self'"],
+        imgSrc: ["'self'", "data:", "https:"],
+      },
+    },
     crossOriginEmbedderPolicy: false,
-    crossOriginResourcePolicy: { policy: "cross-origin" }
+    crossOriginResourcePolicy: { policy: "cross-origin" },
+    hsts: {
+      maxAge: 31536000,
+      includeSubDomains: true,
+      preload: true
+    }
   }));
   
-  /* // RATE LIMIT'I GEÇİCİ OLARAK KAPATIYORUZ
-  // Çünkü giriş yapmaya çalışırken seni engelliyor olabilir.
-  const generalLimiter = rateLimit({ ... });
+  // Rate limiting - DDoS koruması
+  const generalLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 dakika
+    max: 100, // 100 request per IP
+    message: 'Too many requests, please try again later',
+    standardHeaders: true,
+    legacyHeaders: false,
+  });
   app.use(generalLimiter);
-  */
+
+  // AI endpoints için strict limit (pahalı işlemler)
+  const aiLimiter = rateLimit({
+    windowMs: 60 * 60 * 1000, // 1 saat
+    max: 10, // 10 AI generation per hour
+    message: 'AI generation limit reached. Please try again later.',
+  });
+  app.use('/ai/', aiLimiter);
   
   app.useGlobalPipes(
     new ValidationPipe({
@@ -53,9 +77,23 @@ async function bootstrap() {
     })
   );
 
-  // CORS - KESİN ÇÖZÜM (Her yerden gelen isteği kabul et)
+  // CORS - Production güvenlik
+  const allowedOrigins = [
+    'http://localhost:3000',
+    'https://shiroa.vercel.app',
+    'https://shiroa.com',
+    'https://www.shiroa.com',
+  ];
+
   app.enableCors({
-    origin: true, // Gelen isteğin origin'ini otomatik kabul et (Ayna gibi yansıtır)
+    origin: (origin, callback) => {
+      // Development: origin undefined olabilir (Postman, curl)
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
     allowedHeaders: 'Content-Type, Accept, Authorization',

@@ -1,19 +1,12 @@
-import { IsEmail, IsString, MinLength, MaxLength, IsOptional, IsEnum, IsObject } from "class-validator";
-
-enum UserRole {
-  USER = "user",
-  ARTIST = "artist",
-  LISTENER = "listener",
-  PRODUCER = "producer"
-}
+import { IsEmail, IsString, MinLength, MaxLength, IsOptional, IsEnum } from 'class-validator';
 
 export class RegisterDto {
   @IsEmail()
   email: string;
 
   @IsString()
-  @MinLength(6)
-  @MaxLength(50)
+  @MinLength(12)
+  @MaxLength(128)
   password: string;
 
   @IsString()
@@ -22,29 +15,21 @@ export class RegisterDto {
   name: string;
 
   @IsOptional()
+  @IsEnum(['producer', 'buyer', 'both'])
+  role?: string;
+
+  @IsOptional()
   @IsString()
-  @MaxLength(500)
   bio?: string;
 
   @IsOptional()
   @IsString()
-  @MaxLength(100)
   location?: string;
-
-  @IsOptional()
-  @IsEnum(UserRole)
-  role?: UserRole;
 
   @IsOptional()
   @IsString()
   avatarUrl?: string;
 
   @IsOptional()
-  @IsObject()
-  socialLinks?: {
-    instagram?: string;
-    twitter?: string;
-    youtube?: string;
-    spotify?: string;
-  };
+  socialLinks?: any;
 }

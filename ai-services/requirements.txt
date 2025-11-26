@@ -1,0 +1,43 @@
+# SHIROA AI Services - Python Dependencies
+# Tümü ücretsiz ve açık kaynak!
+
+# Core
+torch>=2.0.0
+torchaudio>=2.0.0
+transformers>=4.30.0
+accelerate>=0.20.0
+
+# Music Generation
+audiocraft  # Meta MusicGen
+
+# Voice Generation (TTS)
+TTS>=0.22.0  # Coqui XTTS v2
+
+# Audio Processing
+librosa>=0.10.0
+soundfile>=0.12.0
+pydub>=0.25.0
+
+# Lyrics Analysis (Ücretsiz alternatif)
+# OpenAI yerine Hugging Face kullanacağız
+huggingface-hub>=0.16.0
+sentencepiece>=0.1.99
+
+# API Server
+fastapi>=0.100.0
+uvicorn[standard]>=0.23.0
+python-multipart>=0.0.6
+
+# Utilities
+numpy>=1.24.0
+scipy>=1.10.0
+requests>=2.31.0
+python-dotenv>=1.0.0
+
+# Optional (GPU acceleration)
+# nvidia-cuda-runtime-cu11  # CUDA 11
+# nvidia-cudnn-cu11  # cuDNN
+
+# Development
+pytest>=7.4.0
+black>=23.7.0

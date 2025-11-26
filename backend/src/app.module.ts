@@ -15,6 +15,7 @@ import { AnalyticsModule } from "./modules/analytics/analytics.module";
 import { CommonModule } from "./common/common.module";
 import { StudioModule } from "./modules/studio/studio.module";
 import { FavoritesModule } from "./modules/favorites/favorites.module";
+import { AIModule } from "./modules/ai/ai.module";
 import { User } from "./modules/users/user.entity.postgres";
 import { RefreshToken } from "./modules/auth/entities/refresh-token.entity";
 import { Transaction } from "./modules/payment/entities/transaction.entity";
@@ -53,7 +54,8 @@ import { Transaction } from "./modules/payment/entities/transaction.entity";
     AnalyticsModule,
     CommonModule.forRoot(),
     StudioModule,
-    FavoritesModule
+    FavoritesModule,
+    AIModule
   ],
   controllers: [AppController],
   providers: [

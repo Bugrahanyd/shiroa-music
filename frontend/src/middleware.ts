@@ -11,7 +11,6 @@ export function middleware(request: NextRequest) {
     '/discover',
     '/about', 
     '/contact',
-    '/auth',
     '/login',
     '/register',
     '/partnership',
@@ -28,11 +27,10 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // If no token and trying to access protected route, redirect to login
+  // If no token and trying to access protected route, redirect to home
   if (!token) {
-    const loginUrl = new URL('/login', request.url);
-    loginUrl.searchParams.set('redirect', pathname);
-    return NextResponse.redirect(loginUrl);
+    const homeUrl = new URL('/', request.url);
+    return NextResponse.redirect(homeUrl);
   }
 
   // Token exists, allow access
