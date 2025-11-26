@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  ai-api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - HUGGINGFACE_API_KEY=${HUGGINGFACE_API_KEY}
+    volumes:
+      - ./models:/app/models
+      - ./cache:/app/cache
+    restart: unless-stopped
