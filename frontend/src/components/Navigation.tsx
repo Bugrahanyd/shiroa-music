@@ -3,12 +3,32 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useAuth } from "@/lib/auth-context";
+import { useTheme } from "@/lib/theme-context";
 import { useState } from "react";
 import NotificationCenter from "./NotificationCenter";
 
 export default function Navigation() {
   const { user, logout } = useAuth();
+  const { theme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Theme-based logo mapping
+  const getLogoSrc = () => {
+    switch (theme) {
+      case 'sakura':
+        return '/pembe.png';   // sakura theme - pink
+      case 'cool':
+        return '/gri.png';     // cool theme - gray
+      case 'neon':
+        return '/cyber.png';   // neon theme - cyber
+      case 'warm':
+        return '/turuncu.png'; // warm theme - orange
+      case 'classic':
+      case 'dark':
+      default:
+        return '/logo.png';    // dark/classic theme default
+    }
+  };
 
   return (
     <nav className="bg-[#0a0e27]/95 backdrop-blur-md border-b border-[#00CED1]/20 sticky top-0 z-50">
@@ -16,11 +36,11 @@ export default function Navigation() {
         <div className="flex justify-between items-center h-16">
           <Link href="/" className="flex items-center gap-3 group">
             <Image 
-              src="/logo.jpg" 
+              src={getLogoSrc()} 
               alt="SHIROA" 
               width={40} 
               height={40} 
-              className="rounded-lg transition-transform duration-300 group-hover:scale-110" 
+              className="rounded-lg transition-all duration-500 group-hover:scale-110" 
               style={{ imageRendering: 'crisp-edges' }}
               priority 
             />
