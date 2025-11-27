@@ -39,32 +39,17 @@ export default function TopNavigation() {
   const getLogoSrc = () => {
     switch (theme) {
       case 'light':
-        return '/gri.jpg';
+        return '/gri.png';
       case 'dark':
         return '/logo.png';
       case 'neon':
-        return '/cyber.jpg';
+        return '/cyber.png';
       case 'sunset':
-        return '/turuncu.jpg';
+        return '/turuncu.png';
       case 'japanese':
-        return '/pembe.jpg';
+        return '/pembe.png';
       default:
         return '/logo.png';
-    }
-  };
-
-  const getLogoClass = () => {
-    switch (theme) {
-      case 'light':
-        return 'mix-blend-multiply opacity-90 hover:opacity-100';
-      case 'sunset':
-        return 'mix-blend-soft-light opacity-95 hover:opacity-100';
-      case 'neon':
-        return 'mix-blend-screen opacity-90 hover:opacity-100 brightness-110';
-      case 'japanese':
-        return 'mix-blend-overlay opacity-95 hover:opacity-100';
-      default:
-        return 'mix-blend-normal opacity-90 hover:opacity-100';
     }
   };
 
@@ -80,13 +65,11 @@ export default function TopNavigation() {
         
         {/* LEFT SIDE - Logo & Brand */}
         <Link href="/discover" className="flex items-center gap-4 hover:opacity-80 transition-opacity">
-          <div className="w-10 h-10 rounded-xl overflow-hidden shadow-lg">
-            <img 
-              src={getLogoSrc()} 
-              alt="SHIROA" 
-              className={`w-full h-full object-cover transition-all duration-500 ${getLogoClass()}`}
-            />
-          </div>
+          <img 
+            src={getLogoSrc()} 
+            alt="SHIROA" 
+            className="w-10 h-10 object-contain"
+          />
           <h1 className={`text-2xl font-bold font-orbitron bg-gradient-to-r bg-clip-text text-transparent transition-all duration-500 ${
             theme === 'light' ? 'from-gray-800 to-blue-600' :
             theme === 'dark' ? 'from-purple-400 to-cyan-400' :
