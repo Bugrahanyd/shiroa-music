@@ -39,15 +39,15 @@ export default function TopNavigation() {
   const getLogoSrc = () => {
     switch (theme) {
       case 'light':
-        return '/gri.jpg';
+        return '/gri.png';
       case 'dark':
         return '/logo.png';
       case 'neon':
-        return '/cyber.jpg';
+        return '/cyber.png';
       case 'sunset':
-        return '/turuncu.jpg';
+        return '/turuncu.png';
       case 'japanese':
-        return '/pembe.jpg';
+        return '/pembe.png';
       default:
         return '/logo.png';
     }
