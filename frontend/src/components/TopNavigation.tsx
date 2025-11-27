@@ -68,7 +68,7 @@ export default function TopNavigation() {
           <img 
             src={getLogoSrc()} 
             alt="SHIROA" 
-            className="w-10 h-10 object-contain transition-all duration-500"
+            className="w-10 h-10 object-contain"
           />
           <h1 className={`text-2xl font-bold font-orbitron bg-gradient-to-r bg-clip-text text-transparent transition-all duration-500 ${
             theme === 'light' ? 'from-gray-800 to-blue-600' :
