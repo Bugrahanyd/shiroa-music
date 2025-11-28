@@ -6,7 +6,6 @@ import { AuthProvider } from "@/lib/auth-context";
 import { ThemeProvider } from "@/lib/theme-context";
 import { LanguageProvider } from "@/lib/language-context";
 import { ErrorBoundary } from "@/lib/error-boundary";
-import KeepAliveWrapper from "@/components/KeepAliveWrapper";
 import LayoutClient from "./layout-client";
 
 import "./globals.css";
@@ -53,7 +52,6 @@ export default function RootLayout({
           <LanguageProvider>
             <ThemeProvider>
               <AuthProvider>
-                <KeepAliveWrapper />
                 <div className="flex-grow flex flex-col">
                   <LayoutClient>{children}</LayoutClient>
                 </div>
