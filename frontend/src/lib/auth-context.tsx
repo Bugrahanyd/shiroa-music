@@ -25,19 +25,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const init = async () => {
       if (!mounted) return;
       
-      const token = localStorage.getItem("access_token");
-      
-      if (!token) {
-        setLoading(false);
-        return;
-      }
+      try {
+        const token = localStorage.getItem("access_token");
+        
+        if (!token) {
+          setLoading(false);
+          return;
+        }
 
-      // Check for demo user first
-      const demoUser = localStorage.getItem("shiroa_demo_user");
-      if (demoUser && mounted) {
-        setUser(JSON.parse(demoUser));
-        setLoading(false);
-        return;
+        // Check for demo user first
+        const demoUser = localStorage.getItem("shiroa_demo_user");
+        if (demoUser && mounted) {
+          setUser(JSON.parse(demoUser));
+          setLoading(false);
+          return;
+        }
+      } catch (error) {
+        console.error('Storage access error:', error);
       }
 
       // Skip API call in production/demo mode
@@ -62,9 +66,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const response = await api.login({ email, password });
       
       // Store tokens
-      localStorage.setItem("access_token", response.access_token);
-      localStorage.setItem("refresh_token", response.refresh_token);
-      localStorage.setItem("shiroa_demo_user", JSON.stringify(response.user));
+      try {
+        localStorage.setItem("access_token", response.access_token);
+        localStorage.setItem("refresh_token", response.refresh_token);
+        localStorage.setItem("shiroa_demo_user", JSON.stringify(response.user));
+      } catch (e) {
+        console.warn('Storage not available');
+      }
       
       // Set user state
       setUser(response.user);
@@ -85,8 +93,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       };
       
       // Store demo session
-      localStorage.setItem("access_token", "demo_token_" + Date.now());
-      localStorage.setItem("shiroa_demo_user", JSON.stringify(demoUser));
+      try {
+        localStorage.setItem("access_token", "demo_token_" + Date.now());
+        localStorage.setItem("shiroa_demo_user", JSON.stringify(demoUser));
+      } catch (e) {
+        console.warn('Storage not available');
+      }
       
       setUser(demoUser);
       showSuccessToast("Login successful (Offline Mode)");
@@ -103,9 +115,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const response = await api.register({ email, password, name });
       
       // Store tokens
-      localStorage.setItem("access_token", response.access_token);
-      localStorage.setItem("refresh_token", response.refresh_token);
-      localStorage.setItem("shiroa_demo_user", JSON.stringify(response.user));
+      try {
+        localStorage.setItem("access_token", response.access_token);
+        localStorage.setItem("refresh_token", response.refresh_token);
+        localStorage.setItem("shiroa_demo_user", JSON.stringify(response.user));
+      } catch (e) {
+        console.warn('Storage not available');
+      }
       
       // Set user state
       setUser(response.user);
@@ -125,8 +141,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       };
       
       // Store demo session
-      localStorage.setItem("access_token", "demo_token_" + Date.now());
-      localStorage.setItem("shiroa_demo_user", JSON.stringify(demoUser));
+      try {
+        localStorage.setItem("access_token", "demo_token_" + Date.now());
+        localStorage.setItem("shiroa_demo_user", JSON.stringify(demoUser));
+      } catch (e) {
+        console.warn('Storage not available');
+      }
       
       setUser(demoUser);
       showSuccessToast("Account created successfully (Offline Mode)");
@@ -152,17 +172,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(updatedUser);
     
     // Update localStorage
-    localStorage.setItem("shiroa_demo_user", JSON.stringify(updatedUser));
+    try {
+      localStorage.setItem("shiroa_demo_user", JSON.stringify(updatedUser));
+    } catch (e) {
+      console.warn('Storage not available');
+    }
     
     showSuccessToast("Profile updated successfully");
   };
 
   const clearAuthData = () => {
-    localStorage.removeItem("access_token");
-    localStorage.removeItem("refresh_token");
-    localStorage.removeItem("shiroa_demo_user");
-    localStorage.removeItem("shiroa_favorites");
-    localStorage.removeItem("shiroa_purchases");
+    try {
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("refresh_token");
+      localStorage.removeItem("shiroa_demo_user");
+      localStorage.removeItem("shiroa_favorites");
+      localStorage.removeItem("shiroa_purchases");
+    } catch (e) {
+      console.warn('Storage not available');
+    }
   };
 
   const showSuccessToast = (message: string) => {
