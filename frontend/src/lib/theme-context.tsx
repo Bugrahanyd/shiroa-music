@@ -20,16 +20,24 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       setTheme("dark");
       document.documentElement.setAttribute("data-theme", "dark");
     } else {
-      const saved = localStorage.getItem("shiroa-theme") as Theme;
-      if (saved) {
-        setTheme(saved);
+      try {
+        const saved = localStorage.getItem("shiroa-theme") as Theme;
+        if (saved) {
+          setTheme(saved);
+        }
+      } catch (e) {
+        console.warn('Storage not available');
       }
     }
   }, []);
 
   const handleSetTheme = (newTheme: Theme) => {
     setTheme(newTheme);
-    localStorage.setItem("shiroa-theme", newTheme);
+    try {
+      localStorage.setItem("shiroa-theme", newTheme);
+    } catch (e) {
+      console.warn('Storage not available');
+    }
     document.documentElement.setAttribute("data-theme", newTheme);
   };
 
