@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { api, User } from "./api";
+import { safeStorage } from "./storage-helper";
 
 interface AuthContextType {
   user: User | null;
@@ -26,7 +27,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (!mounted) return;
       
       try {
-        const token = localStorage.getItem("access_token");
+        const token = safeStorage.getItem("access_token");
         
         if (!token) {
           setLoading(false);
@@ -34,7 +35,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
 
         // Check for demo user first
-        const demoUser = localStorage.getItem("shiroa_demo_user");
+        const demoUser = safeStorage.getItem("shiroa_demo_user");
         if (demoUser && mounted) {
           setUser(JSON.parse(demoUser));
           setLoading(false);
@@ -67,9 +68,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       
       // Store tokens
       try {
-        localStorage.setItem("access_token", response.access_token);
-        localStorage.setItem("refresh_token", response.refresh_token);
-        localStorage.setItem("shiroa_demo_user", JSON.stringify(response.user));
+        safeStorage.setItem("access_token", response.access_token);
+        safeStorage.setItem("refresh_token", response.refresh_token);
+        safeStorage.setItem("shiroa_demo_user", JSON.stringify(response.user));
       } catch (e) {
         console.warn('Storage not available');
       }
@@ -94,8 +95,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       
       // Store demo session
       try {
-        localStorage.setItem("access_token", "demo_token_" + Date.now());
-        localStorage.setItem("shiroa_demo_user", JSON.stringify(demoUser));
+        safeStorage.setItem("access_token", "demo_token_" + Date.now());
+        safeStorage.setItem("shiroa_demo_user", JSON.stringify(demoUser));
       } catch (e) {
         console.warn('Storage not available');
       }
@@ -116,9 +117,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       
       // Store tokens
       try {
-        localStorage.setItem("access_token", response.access_token);
-        localStorage.setItem("refresh_token", response.refresh_token);
-        localStorage.setItem("shiroa_demo_user", JSON.stringify(response.user));
+        safeStorage.setItem("access_token", response.access_token);
+        safeStorage.setItem("refresh_token", response.refresh_token);
+        safeStorage.setItem("shiroa_demo_user", JSON.stringify(response.user));
       } catch (e) {
         console.warn('Storage not available');
       }
@@ -142,8 +143,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       
       // Store demo session
       try {
-        localStorage.setItem("access_token", "demo_token_" + Date.now());
-        localStorage.setItem("shiroa_demo_user", JSON.stringify(demoUser));
+        safeStorage.setItem("access_token", "demo_token_" + Date.now());
+        safeStorage.setItem("shiroa_demo_user", JSON.stringify(demoUser));
       } catch (e) {
         console.warn('Storage not available');
       }
@@ -173,7 +174,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     
     // Update localStorage
     try {
-      localStorage.setItem("shiroa_demo_user", JSON.stringify(updatedUser));
+      safeStorage.setItem("shiroa_demo_user", JSON.stringify(updatedUser));
     } catch (e) {
       console.warn('Storage not available');
     }
@@ -183,11 +184,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const clearAuthData = () => {
     try {
-      localStorage.removeItem("access_token");
-      localStorage.removeItem("refresh_token");
-      localStorage.removeItem("shiroa_demo_user");
-      localStorage.removeItem("shiroa_favorites");
-      localStorage.removeItem("shiroa_purchases");
+      safeStorage.removeItem("access_token");
+      safeStorage.removeItem("refresh_token");
+      safeStorage.removeItem("shiroa_demo_user");
+      safeStorage.removeItem("shiroa_favorites");
+      safeStorage.removeItem("shiroa_purchases");
     } catch (e) {
       console.warn('Storage not available');
     }

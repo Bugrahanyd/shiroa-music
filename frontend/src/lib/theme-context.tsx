@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { safeStorage } from "./storage-helper";
 
 export type Theme = "dark" | "warm" | "cool" | "neon" | "classic" | "sakura";
 
@@ -21,7 +22,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       document.documentElement.setAttribute("data-theme", "dark");
     } else {
       try {
-        const saved = localStorage.getItem("shiroa-theme") as Theme;
+        const saved = safeStorage.getItem("shiroa-theme") as Theme;
         if (saved) {
           setTheme(saved);
         }
@@ -34,7 +35,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const handleSetTheme = (newTheme: Theme) => {
     setTheme(newTheme);
     try {
-      localStorage.setItem("shiroa-theme", newTheme);
+      safeStorage.setItem("shiroa-theme", newTheme);
     } catch (e) {
       console.warn('Storage not available');
     }

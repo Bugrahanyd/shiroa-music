@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { safeStorage } from './storage-helper';
 
 type Language = 'en' | 'tr';
 
@@ -256,7 +257,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     try {
-      const saved = localStorage.getItem('language') as Language;
+      const saved = safeStorage.getItem('language') as Language;
       if (saved && (saved === 'en' || saved === 'tr')) {
         setLanguageState(saved);
       }
@@ -268,7 +269,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
     try {
-      localStorage.setItem('language', lang);
+      safeStorage.setItem('language', lang);
     } catch (e) {
       console.warn('Storage not available');
     }
