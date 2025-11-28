@@ -89,7 +89,7 @@ export default function AboutPage() {
         }
       ],
       cta: {
-        title: "Yaratmaya Hazır mısınız?",
+        title: "Oluşturmaya Hazır mısınız?",
         subtitle: "Profesyonel müzik üretmek için SHIROA kullanan binlerce yaratıcıya katılın",
         button: "Müzik Kataloğunu Keşfedin"
       }
