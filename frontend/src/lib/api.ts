@@ -1,7 +1,7 @@
 // SHIROA API Service Layer - Production Ready
 // Centralized data management with automatic fallbacks
 
-import { safeStorage } from './storage-helper';
+import { safeStorage } from './storage';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
 const IS_DEMO_MODE = process.env.NODE_ENV === 'production' || !API_BASE_URL.includes('localhost');

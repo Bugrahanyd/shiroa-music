@@ -92,7 +92,7 @@ export default function RegisterPage() {
       // SIMULATE SUCCESSFUL REGISTRATION AND REDIRECT
       setTimeout(() => {
         // FAKE LOGIN STATE (for demo purposes)
-        localStorage.setItem('shiroa-demo-user', JSON.stringify({
+        safeStorage.setItem('shiroa-demo-user', JSON.stringify({
           name: formData.name,
           email: formData.email,
           role: formData.role,
@@ -280,3 +280,4 @@ export default function RegisterPage() {
     </div>
   );
 }
+

@@ -1,4 +1,5 @@
 'use client';
+import { safeStorage } from '@/lib/storage';
 
 import { useState, useEffect } from 'react';
 import { Heart, Music, Trash2, Play } from 'lucide-react';
@@ -37,7 +38,7 @@ export default function FavoritesPage() {
 
   const loadFavorites = () => {
     try {
-      const favoriteIds = JSON.parse(localStorage.getItem('shiroa_favorites') || '[]');
+      const favoriteIds = JSON.parse(safeStorage.getItem('shiroa_favorites') || '[]');
       const favoriteTracks = DEMO_TRACKS.filter(track => favoriteIds.includes(track._id));
       setFavorites(favoriteTracks);
     } catch (error) {
@@ -49,9 +50,9 @@ export default function FavoritesPage() {
 
   const removeFavorite = (trackId: string) => {
     try {
-      const favoriteIds = JSON.parse(localStorage.getItem('shiroa_favorites') || '[]');
+      const favoriteIds = JSON.parse(safeStorage.getItem('shiroa_favorites') || '[]');
       const newFavorites = favoriteIds.filter((id: string) => id !== trackId);
-      localStorage.setItem('shiroa_favorites', JSON.stringify(newFavorites));
+      safeStorage.setItem('shiroa_favorites', JSON.stringify(newFavorites));
       setFavorites(favorites.filter(track => track._id !== trackId));
     } catch (error) {
       console.error('Failed to remove favorite');
@@ -150,3 +151,4 @@ export default function FavoritesPage() {
     </div>
   );
 }
+

@@ -43,13 +43,13 @@ export default function TrackCard({ track }: TrackCardProps) {
   }, [user, track._id]);
 
   const checkPurchaseStatus = () => {
-    const purchases = JSON.parse(localStorage.getItem('shiroa-purchases') || '[]');
+    const purchases = JSON.parse(safeStorage.getItem('shiroa-purchases') || '[]');
     setIsPurchased(purchases.includes(track._id));
   };
 
   const checkFavoriteStatus = async () => {
     // Demo mode - use localStorage
-    const favorites = JSON.parse(localStorage.getItem('shiroa_favorites') || '[]');
+    const favorites = JSON.parse(safeStorage.getItem('shiroa_favorites') || '[]');
     setIsFavorite(favorites.includes(track._id));
   };
 
@@ -66,16 +66,16 @@ export default function TrackCard({ track }: TrackCardProps) {
     }
 
     // Demo mode - use localStorage
-    const favorites = JSON.parse(localStorage.getItem('shiroa_favorites') || '[]');
+    const favorites = JSON.parse(safeStorage.getItem('shiroa_favorites') || '[]');
     
     if (isFavorite) {
       const newFavorites = favorites.filter((id: string) => id !== track._id);
-      localStorage.setItem('shiroa_favorites', JSON.stringify(newFavorites));
+      safeStorage.setItem('shiroa_favorites', JSON.stringify(newFavorites));
       setIsFavorite(false);
       setFavoriteCount(prev => Math.max(0, prev - 1));
     } else {
       favorites.push(track._id);
-      localStorage.setItem('shiroa_favorites', JSON.stringify(favorites));
+      safeStorage.setItem('shiroa_favorites', JSON.stringify(favorites));
       setIsFavorite(true);
       setFavoriteCount(prev => prev + 1);
     }
@@ -250,3 +250,4 @@ export default function TrackCard({ track }: TrackCardProps) {
     </Link>
   );
 }
+

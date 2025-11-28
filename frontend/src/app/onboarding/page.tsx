@@ -1,4 +1,5 @@
 'use client';
+import { safeStorage } from '@/lib/storage';
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -107,7 +108,7 @@ export default function OnboardingPage() {
 
   const handleFinish = () => {
     // Save onboarding data
-    localStorage.setItem('shiroa-onboarding', JSON.stringify({
+    safeStorage.setItem('shiroa-onboarding', JSON.stringify({
       ...formData,
       completedAt: new Date().toISOString()
     }));
@@ -368,3 +369,4 @@ export default function OnboardingPage() {
     </div>
   );
 }
+

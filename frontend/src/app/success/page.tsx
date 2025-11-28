@@ -12,10 +12,10 @@ function SuccessContent() {
   useEffect(() => {
     if (trackId) {
       // Add to purchases
-      const purchases = JSON.parse(localStorage.getItem('shiroa-purchases') || '[]');
+      const purchases = JSON.parse(safeStorage.getItem('shiroa-purchases') || '[]');
       if (!purchases.includes(trackId)) {
         purchases.push(trackId);
-        localStorage.setItem('shiroa-purchases', JSON.stringify(purchases));
+        safeStorage.setItem('shiroa-purchases', JSON.stringify(purchases));
       }
     }
   }, [trackId]);
@@ -63,3 +63,4 @@ export default function SuccessPage() {
     </Suspense>
   );
 }
+

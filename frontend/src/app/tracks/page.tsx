@@ -1,4 +1,5 @@
 'use client';
+import { safeStorage } from '@/lib/storage';
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/lib/auth-context';
@@ -65,7 +66,7 @@ export default function TracksPage() {
         // Try to fetch from API
         const response = await fetch('/api/tracks', {
           headers: {
-            'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+            'Authorization': `Bearer ${safeStorage.getItem('access_token')}`
           }
         });
 
@@ -288,3 +289,4 @@ export default function TracksPage() {
     </div>
   );
 }
+

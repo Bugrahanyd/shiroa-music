@@ -32,7 +32,7 @@ export default function AdminTracksPage() {
       await fetch(`${process.env.NEXT_PUBLIC_API_URL}/tracks/${id}`, {
         method: "DELETE",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("access_token")}`
+          Authorization: `Bearer ${safeStorage.getItem("access_token")}`
         }
       });
       alert("Track deleted!");

@@ -61,7 +61,7 @@ export default function AdminUpload() {
       const audioResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/upload/audio`, {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("access_token")}`
+          Authorization: `Bearer ${safeStorage.getItem("access_token")}`
         },
         body: audioFormData
       });
@@ -80,7 +80,7 @@ export default function AdminUpload() {
         const coverResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/upload/cover`, {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("access_token")}`
+            Authorization: `Bearer ${safeStorage.getItem("access_token")}`
           },
           body: coverFormData
         });
