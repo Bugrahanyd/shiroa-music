@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import { safeStorage } from "./storage-helper";
+import { safeStorage } from "./storage";
 
 export type Theme = "dark" | "warm" | "cool" | "neon" | "classic" | "sakura";
 

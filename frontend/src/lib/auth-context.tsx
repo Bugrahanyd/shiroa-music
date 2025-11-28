@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { api, User } from "./api";
-import { safeStorage } from "./storage-helper";
+import { safeStorage } from "./storage";
 
 interface AuthContextType {
   user: User | null;
