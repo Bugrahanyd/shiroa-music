@@ -80,9 +80,7 @@ export default function TopNavigation() {
           <img 
             src={getLogoSrc()} 
             alt="SHIROA" 
-            className={`w-10 h-10 object-contain ${
-              theme === 'light' || theme === 'japanese' ? 'mix-blend-difference' : ''
-            }`}
+            className="w-10 h-10 object-contain"
           />
           <span className={`text-2xl font-black font-orbitron bg-gradient-to-r ${
             themeGradients[theme] || themeGradients.dark

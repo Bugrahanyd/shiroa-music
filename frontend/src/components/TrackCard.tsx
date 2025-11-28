@@ -31,6 +31,7 @@ export default function TrackCard({ track }: TrackCardProps) {
   const [isFavorite, setIsFavorite] = useState(false);
   const [favoriteCount, setFavoriteCount] = useState(track.favoriteCount || 0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [isPurchased, setIsPurchased] = useState(false);
@@ -41,17 +42,31 @@ export default function TrackCard({ track }: TrackCardProps) {
     }
     loadFavoriteCount();
     checkPurchaseStatus();
+    
+    return () => {
+      if (audio) {
+        audio.pause();
+        audio.src = '';
+      }
+    };
   }, [user, track._id]);
 
   const checkPurchaseStatus = () => {
-    const purchases = JSON.parse(safeStorage.getItem('shiroa-purchases') || '[]');
-    setIsPurchased(purchases.includes(track._id));
+    try {
+      const purchases = JSON.parse(safeStorage.getItem('shiroa-purchases') || '[]');
+      setIsPurchased(purchases.includes(track._id));
+    } catch (e) {
+      setIsPurchased(false);
+    }
   };
 
   const checkFavoriteStatus = async () => {
-    // Demo mode - use localStorage
-    const favorites = JSON.parse(safeStorage.getItem('shiroa_favorites') || '[]');
-    setIsFavorite(favorites.includes(track._id));
+    try {
+      const favorites = JSON.parse(safeStorage.getItem('shiroa_favorites') || '[]');
+      setIsFavorite(favorites.includes(track._id));
+    } catch (e) {
+      setIsFavorite(false);
+    }
   };
 
   const loadFavoriteCount = async () => {
@@ -66,19 +81,22 @@ export default function TrackCard({ track }: TrackCardProps) {
       return;
     }
 
-    // Demo mode - use localStorage
-    const favorites = JSON.parse(safeStorage.getItem('shiroa_favorites') || '[]');
-    
-    if (isFavorite) {
-      const newFavorites = favorites.filter((id: string) => id !== track._id);
-      safeStorage.setItem('shiroa_favorites', JSON.stringify(newFavorites));
-      setIsFavorite(false);
-      setFavoriteCount(prev => Math.max(0, prev - 1));
-    } else {
-      favorites.push(track._id);
-      safeStorage.setItem('shiroa_favorites', JSON.stringify(favorites));
-      setIsFavorite(true);
-      setFavoriteCount(prev => prev + 1);
+    try {
+      const favorites = JSON.parse(safeStorage.getItem('shiroa_favorites') || '[]');
+      
+      if (isFavorite) {
+        const newFavorites = favorites.filter((id: string) => id !== track._id);
+        safeStorage.setItem('shiroa_favorites', JSON.stringify(newFavorites));
+        setIsFavorite(false);
+        setFavoriteCount(prev => Math.max(0, prev - 1));
+      } else {
+        favorites.push(track._id);
+        safeStorage.setItem('shiroa_favorites', JSON.stringify(favorites));
+        setIsFavorite(true);
+        setFavoriteCount(prev => prev + 1);
+      }
+    } catch (e) {
+      console.error('Favorite error:', e);
     }
   };
 
@@ -88,14 +106,21 @@ export default function TrackCard({ track }: TrackCardProps) {
       alert('Audio not available');
       return;
     }
-    const audio = new Audio(track.audioUrl);
-    if (!isPlaying) {
-      audio.play();
+    
+    if (!audio) {
+      const newAudio = new Audio(track.audioUrl);
+      newAudio.onended = () => setIsPlaying(false);
+      setAudio(newAudio);
+      newAudio.play();
       setIsPlaying(true);
-      audio.onended = () => setIsPlaying(false);
     } else {
-      audio.pause();
-      setIsPlaying(false);
+      if (isPlaying) {
+        audio.pause();
+        setIsPlaying(false);
+      } else {
+        audio.play();
+        setIsPlaying(true);
+      }
     }
   };
 
@@ -114,18 +139,19 @@ export default function TrackCard({ track }: TrackCardProps) {
 
     setIsProcessing(true);
     
-    // Demo mode: Simulate purchase
     setTimeout(() => {
       setIsProcessing(false);
       setShowSuccess(true);
       
-      // Save to localStorage
-      const purchases = JSON.parse(safeStorage.getItem('shiroa-purchases') || '[]');
-      purchases.push(track._id);
-      safeStorage.setItem('shiroa-purchases', JSON.stringify(purchases));
-      setIsPurchased(true);
+      try {
+        const purchases = JSON.parse(safeStorage.getItem('shiroa-purchases') || '[]');
+        purchases.push(track._id);
+        safeStorage.setItem('shiroa-purchases', JSON.stringify(purchases));
+        setIsPurchased(true);
+      } catch (e) {
+        console.error('Purchase save error:', e);
+      }
       
-      // Redirect after 1.5 seconds
       setTimeout(() => {
         setShowSuccess(false);
         router.push('/purchases');

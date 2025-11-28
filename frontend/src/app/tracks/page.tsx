@@ -1,5 +1,4 @@
 'use client';
-import { safeStorage } from '@/lib/storage';
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/lib/auth-context';
