@@ -68,16 +68,11 @@ export default function TopNavigation() {
           <img 
             src={getLogoSrc()} 
             alt="SHIROA" 
-            className="w-10 h-10 object-contain"
+            className={`w-10 h-10 object-contain ${
+              theme === 'light' || theme === 'japanese' ? 'mix-blend-difference' : ''
+            }`}
           />
-          <h1 className={`text-2xl font-bold font-orbitron bg-gradient-to-r bg-clip-text text-transparent transition-all duration-500 ${
-            theme === 'light' ? 'from-gray-800 to-blue-600' :
-            theme === 'dark' ? 'from-purple-400 to-cyan-400' :
-            theme === 'neon' ? 'from-cyan-300 to-purple-400' :
-            theme === 'sunset' ? 'from-orange-400 to-pink-400' :
-            theme === 'japanese' ? 'from-pink-300 to-purple-300' :
-            'from-purple-400 to-cyan-400'
-          }`}>
+          <h1 className="text-2xl font-bold font-orbitron text-white">
             SHIROA
           </h1>
         </Link>
@@ -172,7 +167,7 @@ export default function TopNavigation() {
           )}
 
           {/* User Menu */}
-          {user ? (
+          {user && (
             <div className="relative" ref={userMenuRef}>
               <button
                 onClick={() => setShowUserMenu(!showUserMenu)}
@@ -215,21 +210,6 @@ export default function TopNavigation() {
                   </button>
                 </div>
               )}
-            </div>
-          ) : (
-            <div className="flex items-center gap-3">
-              <Link 
-                href="/" 
-                className="px-4 py-2 theme-text-secondary hover:theme-text transition-colors font-medium"
-              >
-                {t('nav.login')}
-              </Link>
-              <Link 
-                href="/" 
-                className="px-4 py-2 bg-gradient-to-r from-purple-500 to-cyan-500 text-white rounded-lg font-medium hover:scale-105 transition-transform"
-              >
-                {t('nav.signup')}
-              </Link>
             </div>
           )}
         </div>

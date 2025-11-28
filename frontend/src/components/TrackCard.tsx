@@ -6,6 +6,7 @@ import { Heart, ShoppingCart, Check } from "lucide-react";
 import { api } from "@/lib/api";
 import { useAuth } from "@/lib/auth-context";
 import { useRouter } from "next/navigation";
+import { safeStorage } from "@/lib/storage";
 import WaveformVisualizer from "./WaveformVisualizer";
 
 interface TrackCardProps {
@@ -101,6 +102,11 @@ export default function TrackCard({ track }: TrackCardProps) {
   const handlePurchase = async (e: React.MouseEvent) => {
     e.preventDefault();
     
+    if (!user) {
+      router.push('/');
+      return;
+    }
+    
     if (isPurchased) {
       router.push('/purchases');
       return;
@@ -108,24 +114,23 @@ export default function TrackCard({ track }: TrackCardProps) {
 
     setIsProcessing(true);
     
-    try {
-      const response = await fetch('/api/payment/create-checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          trackId: track._id,
-          trackTitle: track.title,
-          trackArtist: track.artist,
-          price: track.price
-        })
-      });
-
-      const { url } = await response.json();
-      window.location.href = url;
-    } catch (error) {
+    // Demo mode: Simulate purchase
+    setTimeout(() => {
       setIsProcessing(false);
-      alert('Payment failed. Please try again.');
-    }
+      setShowSuccess(true);
+      
+      // Save to localStorage
+      const purchases = JSON.parse(safeStorage.getItem('shiroa-purchases') || '[]');
+      purchases.push(track._id);
+      safeStorage.setItem('shiroa-purchases', JSON.stringify(purchases));
+      setIsPurchased(true);
+      
+      // Redirect after 1.5 seconds
+      setTimeout(() => {
+        setShowSuccess(false);
+        router.push('/purchases');
+      }, 1500);
+    }, 1500);
   };
 
   const isSold = track.status === "sold" || track.isSold;
@@ -222,7 +227,12 @@ export default function TrackCard({ track }: TrackCardProps) {
             {isProcessing ? (
               <>
                 <div className="w-4 h-4 border-2 border-blue-400 border-t-transparent rounded-full animate-spin"></div>
-                PROCESSING
+                Processing...
+              </>
+            ) : showSuccess ? (
+              <>
+                <Check size={16} />
+                Success! (Demo)
               </>
             ) : (
               <>

@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useAuth } from '@/lib/auth-context';
 import { useLanguage } from '@/lib/language-context';
-import { Shield, Sparkles, Zap, Play, ArrowRight, Music, Users, TrendingUp, Star } from 'lucide-react';
+import { Shield, Sparkles, Zap, Play, ArrowRight } from 'lucide-react';
 
 export default function DiscoverPage() {
   const { user } = useAuth();
@@ -11,15 +11,13 @@ export default function DiscoverPage() {
 
   const heroContent = {
     en: {
-      title: "Everything for your",
-      sound: "sound",
+      title: "Everything for your sound",
       subtitle: "Discover and license high-quality music tracks with full commercial rights. One track, one owner, unlimited possibilities.",
       browse: "Browse Catalog",
       howItWorks: "How It Works"
     },
     tr: {
-      title: "Sesiniz için",
-      sound: "her şey", 
+      title: "Sesiniz için her şey",
       subtitle: "Tam ticari haklarla yüksek kaliteli müzik parçalarını keşfedin ve lisanslayın. Bir parça, bir sahip, sınırsız olasılıklar.",
       browse: "Kataloğa Göz At",
       howItWorks: "Nasıl Çalışır"
@@ -52,8 +50,8 @@ export default function DiscoverPage() {
       },
       {
         icon: Sparkles,
-        title: "AI Destekli Yaratım",
-        desc: "Kompozisyon, düzenleme ve profesyonel müzik prodüksiyonu için gelişmiş yapay zeka araçları."
+        title: "AI Destekli Üretim",
+        desc: "Kompozisyon, düzenleme ve profesyonel müzik üretimi için gelişmiş yapay zeka araçları."
       },
       {
         icon: Zap,
@@ -62,13 +60,6 @@ export default function DiscoverPage() {
       }
     ]
   };
-
-  const stats = [
-    { icon: Music, label: language === 'tr' ? 'Parça' : 'Tracks', value: '10K+', color: 'text-blue-400' },
-    { icon: Users, label: language === 'tr' ? 'Sanatçı' : 'Artists', value: '5K+', color: 'text-purple-400' },
-    { icon: TrendingUp, label: language === 'tr' ? 'İndirme' : 'Downloads', value: '50K+', color: 'text-pink-400' },
-    { icon: Star, label: language === 'tr' ? 'Puan' : 'Rating', value: '4.9', color: 'text-cyan-400' }
-  ];
 
   const content = heroContent[language];
   const currentFeatures = features[language];
@@ -79,12 +70,11 @@ export default function DiscoverPage() {
       <div className="relative min-h-[80vh] flex items-center justify-center px-4">
         <div className="max-w-6xl w-full text-center">
           
-          {/* Main Title - Single Line Responsive */}
+          {/* Main Title */}
           <div className="mb-16">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold font-orbitron theme-text mb-8 leading-tight">
-              <span className="block">{content.title}</span>
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400 animate-pulse">
-                {content.sound}
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold font-orbitron theme-text mb-8 leading-tight whitespace-nowrap overflow-hidden">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400 animate-pulse inline-block">
+                {content.title}
               </span>
             </h1>
             
@@ -94,17 +84,6 @@ export default function DiscoverPage() {
                 {content.subtitle}
               </p>
             </div>
-          </div>
-
-          {/* Stats Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16 max-w-4xl mx-auto">
-            {stats.map((stat, i) => (
-              <div key={i} className="glass-card p-6 rounded-2xl hover:scale-105 transition-all">
-                <stat.icon className={`w-8 h-8 mx-auto mb-3 ${stat.color}`} />
-                <div className="text-2xl md:text-3xl font-bold theme-text">{stat.value}</div>
-                <div className="text-sm theme-text-secondary">{stat.label}</div>
-              </div>
-            ))}
           </div>
 
           {/* Action Buttons */}
@@ -131,10 +110,6 @@ export default function DiscoverPage() {
       {/* Feature Cards Section */}
       <div className="py-20 px-4">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-center theme-text mb-16 font-orbitron">
-            {language === 'tr' ? 'Neden SHIROA?' : 'Why Choose SHIROA?'}
-          </h2>
-          
           <div className="grid md:grid-cols-3 gap-8">
             {currentFeatures.map((feature, index) => (
               <div key={index} className="glass-card p-8 md:p-10 rounded-3xl hover:scale-105 transition-all duration-300 group text-center">

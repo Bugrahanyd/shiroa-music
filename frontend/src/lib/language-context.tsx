@@ -172,7 +172,7 @@ const translations = {
     
     // Studio
     'studio.title': 'SHIROA STÜDYO',
-    'studio.generate': 'AI Oluştur',
+    'studio.generate': 'AI Üret',
     'studio.save': 'Projeyi Kaydet',
     'studio.export': 'Dışa Aktar',
     
@@ -187,8 +187,8 @@ const translations = {
     'home.hero.howItWorks': 'Nasıl Çalışır',
     'home.feature1.title': 'Gerçek Münhasırlık',
     'home.feature1.desc': 'Ömür boyu sahiplik ile tam ticari haklar. Telif ücreti yok, tekrarlayan ücret yok, rekabet yok.',
-    'home.feature2.title': 'AI Destekli Oluşturma',
-    'home.feature2.desc': 'Kompozisyon, vokal işleme ve mixing için gelişmiş AI araçları. Profesyonel müziği daha hızlı oluşturun.',
+    'home.feature2.title': 'AI Destekli Üretim',
+    'home.feature2.desc': 'Kompozisyon, vokal işleme ve mixing için gelişmiş AI araçları. Profesyonel müziği daha hızlı oluşturun.'
     'home.feature3.title': 'Anında Teslimat',
     'home.feature3.desc': 'Stripe ile güvenli ödeme. Yüksek kaliteli dosyalara ve lisans sertifikalarına anında erişim.',
     'home.cta.title': 'Bugün Mükemmel Parçanızı Bulun',

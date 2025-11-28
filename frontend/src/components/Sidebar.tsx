@@ -85,6 +85,23 @@ export default function Sidebar() {
     { icon: Mic, label: t('nav.studio'), href: '/studio', comingSoon: true }
   ];
 
+  const getLogoSrc = () => {
+    switch (theme) {
+      case 'light':
+        return '/gri.png';
+      case 'dark':
+        return '/logo.png';
+      case 'neon':
+        return '/cyber.png';
+      case 'sunset':
+        return '/turuncu.png';
+      case 'japanese':
+        return '/pembe.png';
+      default:
+        return '/logo.png';
+    }
+  };
+
   return (
     <>
       {/* Desktop Sidebar */}
@@ -161,19 +178,22 @@ export default function Sidebar() {
             </div>
             
             {/* Theme Grid - Smaller Cards */}
-            <div className={`grid gap-1 ${!isOpen ? 'grid-cols-1' : 'grid-cols-3'}`}>
+            <div className={`grid gap-1 ${!isOpen ? 'grid-cols-1' : 'grid-cols-3'} overflow-hidden`}>
               {themeStories.map((themeItem) => (
-                <button
-                  key={themeItem.id}
-                  type="button"
-                  onClick={() => setTheme(themeItem.id)}
-                  className={`w-full h-8 rounded-lg border transition-colors duration-200 cursor-pointer ${
-                    theme === themeItem.id 
-                      ? 'border-white/60 ring-1 ring-white/30' 
-                      : 'border-white/20 hover:border-white/40'
-                  } ${themeItem.color}`}
-                  title={themeItem.name}
-                />
+                <div key={themeItem.id} className="overflow-hidden rounded-lg">
+                  <button
+                    type="button"
+                    onClick={() => setTheme(themeItem.id)}
+                    className={`w-full h-8 rounded-lg border transition-all duration-200 cursor-pointer overflow-hidden ${
+                      theme === themeItem.id 
+                        ? 'border-white/60 ring-1 ring-white/30' 
+                        : 'border-white/20 hover:border-white/40'
+                    }`}
+                    title={themeItem.name}
+                  >
+                    <div className={`w-full h-full transition-transform duration-200 hover:scale-110 ${themeItem.color}`}></div>
+                  </button>
+                </div>
               ))}
             </div>
           </div>

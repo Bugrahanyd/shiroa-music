@@ -8,22 +8,29 @@ export function middleware(request: NextRequest) {
   // Public routes that don't require authentication
   const publicRoutes = [
     '/',
-    '/discover',
     '/about', 
     '/contact',
-    '/login',
-    '/register',
     '/partnership',
     '/community'
   ];
+  
+  // Semi-public routes (accessible but better with auth)
+  const semiPublicRoutes = [
+    '/discover',
+    '/tracks'
+  ];
 
-  // Check if current path is public
+  // Check if current path is public or semi-public
   const isPublicRoute = publicRoutes.some(route => 
     pathname === route || pathname.startsWith(route + '/')
   );
+  
+  const isSemiPublicRoute = semiPublicRoutes.some(route => 
+    pathname === route || pathname.startsWith(route + '/')
+  );
 
-  // If it's a public route, allow access
-  if (isPublicRoute) {
+  // If it's a public or semi-public route, allow access
+  if (isPublicRoute || isSemiPublicRoute) {
     return NextResponse.next();
   }
 

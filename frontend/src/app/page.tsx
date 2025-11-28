@@ -72,7 +72,7 @@ export default function GatePage() {
   // Redirect authenticated users to discover
   useEffect(() => {
     if (!loading && user) {
-      router.replace('/discover');
+      router.push('/discover');
     }
   }, [user, loading, router]);
 
