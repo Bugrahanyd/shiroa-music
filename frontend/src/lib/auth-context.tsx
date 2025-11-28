@@ -30,24 +30,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const token = safeStorage.getItem("access_token");
         
         if (!token) {
-          setLoading(false);
+          if (mounted) setLoading(false);
           return;
         }
 
         // Check for demo user first
-        const demoUser = safeStorage.getItem("shiroa_demo_user");
-        if (demoUser && mounted) {
-          setUser(JSON.parse(demoUser));
-          setLoading(false);
-          return;
+        try {
+          const demoUser = safeStorage.getItem("shiroa_demo_user");
+          if (demoUser && mounted) {
+            setUser(JSON.parse(demoUser));
+            setLoading(false);
+            return;
+          }
+        } catch (parseError) {
+          console.warn('Failed to parse user data');
         }
       } catch (error) {
-        console.error('Storage access error:', error);
-      }
-
-      // Skip API call in production/demo mode
-      if (mounted) {
-        setLoading(false);
+        console.warn('Auth init error:', error);
+      } finally {
+        // Always stop loading, never leave user stuck
+        if (mounted) setLoading(false);
       }
     };
     

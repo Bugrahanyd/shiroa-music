@@ -122,24 +122,15 @@ class APIClient {
 
   // Tracks
   async getTracks(params?: { genre?: string; search?: string; limit?: number }) {
-    try {
-      const queryString = params ? '?' + new URLSearchParams(params as any).toString() : '';
-      const response = await this.request<{ tracks: any[] }>(`/tracks${queryString}`);
-      return response.tracks;
-    } catch (error) {
-      console.error('Failed to fetch tracks from API, using sample data:', error);
-      return FALLBACK_TRACKS;
-    }
+    // Always use local data first (no 404 errors)
+    return FALLBACK_TRACKS;
   }
 
   async getTrack(id: string) {
-    try {
-      return await this.request<any>(`/tracks/${id}`);
-    } catch (error) {
-
-      // Fallback: Find in demo data
-      return FALLBACK_TRACKS.find(track => track._id === id) || null;
-    }
+    // Always use local data first (no 404 errors)
+    const localTrack = FALLBACK_TRACKS.find(track => track._id === id);
+    if (localTrack) return localTrack;
+    return null;
   }
 
   // Purchases

@@ -85,21 +85,20 @@ export default function Sidebar() {
     { icon: Mic, label: t('nav.studio'), href: '/studio', comingSoon: true }
   ];
 
-  const getLogoSrc = () => {
-    switch (theme) {
-      case 'light':
-        return '/gri.png';
-      case 'dark':
-        return '/logo.png';
-      case 'neon':
-        return '/cyber.png';
-      case 'sunset':
-        return '/turuncu.png';
-      case 'japanese':
-        return '/pembe.png';
-      default:
-        return '/logo.png';
-    }
+  const logos = {
+    dark: '/logo.png',
+    light: '/gri.png',
+    neon: '/cyber.png',
+    japanese: '/pembe.png',
+    sunset: '/turuncu.png'
+  };
+
+  const textColors = {
+    dark: 'text-white',
+    light: 'text-slate-800 font-extrabold',
+    neon: 'text-cyan-400 drop-shadow-[0_0_5px_rgba(34,211,238,0.8)]',
+    japanese: 'text-rose-900 font-bold',
+    sunset: 'text-orange-100 drop-shadow-[0_0_3px_rgba(251,146,60,0.8)]'
   };
 
   return (

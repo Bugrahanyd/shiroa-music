@@ -1,5 +1,7 @@
-// Safe Storage - Prevents crashes when localStorage is blocked
 const isBrowser = typeof window !== 'undefined';
+
+// Memory storage fallback
+const memoryStorage: Record<string, string> = {};
 
 export const storage = {
   getItem(key: string): string | null {
@@ -7,8 +9,7 @@ export const storage = {
     try {
       return window.localStorage.getItem(key);
     } catch (e) {
-      console.warn(`Storage access denied for key: ${key}`);
-      return null;
+      return memoryStorage[key] || null;
     }
   },
   
@@ -17,7 +18,7 @@ export const storage = {
     try {
       window.localStorage.setItem(key, value);
     } catch (e) {
-      console.warn(`Storage write denied for key: ${key}`);
+      memoryStorage[key] = value;
     }
   },
   
@@ -26,7 +27,7 @@ export const storage = {
     try {
       window.localStorage.removeItem(key);
     } catch (e) {
-      console.warn(`Storage remove denied for key: ${key}`);
+      delete memoryStorage[key];
     }
   }
 };
