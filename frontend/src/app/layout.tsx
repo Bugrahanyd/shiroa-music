@@ -5,6 +5,7 @@ import { Orbitron } from "next/font/google";
 import { AuthProvider } from "@/lib/auth-context";
 import { ThemeProvider } from "@/lib/theme-context";
 import { LanguageProvider } from "@/lib/language-context";
+import { ErrorBoundary } from "@/lib/error-boundary";
 import KeepAliveWrapper from "@/components/KeepAliveWrapper";
 import LayoutClient from "./layout-client";
 
@@ -48,16 +49,18 @@ export default function RootLayout({
         <div className="glow-orb glow-orb-2"></div>
         <div className="glow-orb glow-orb-3"></div>
 
-        <LanguageProvider>
-          <ThemeProvider>
-            <AuthProvider>
-              <KeepAliveWrapper />
-              <div className="flex-grow flex flex-col">
-                <LayoutClient>{children}</LayoutClient>
-              </div>
-            </AuthProvider>
-          </ThemeProvider>
-        </LanguageProvider>
+        <ErrorBoundary>
+          <LanguageProvider>
+            <ThemeProvider>
+              <AuthProvider>
+                <KeepAliveWrapper />
+                <div className="flex-grow flex flex-col">
+                  <LayoutClient>{children}</LayoutClient>
+                </div>
+              </AuthProvider>
+            </ThemeProvider>
+          </LanguageProvider>
+        </ErrorBoundary>
       </body>
     </html>
   );

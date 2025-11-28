@@ -31,7 +31,7 @@ export default function ProfilePage() {
 
   const handleSave = async () => {
     alert("Profile update coming soon!");
-    setEditing(false);
+    setShowEditModal(false);
   };
 
   return (

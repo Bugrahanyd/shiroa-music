@@ -17,11 +17,12 @@ export default function TrackDetailPage() {
 
   useEffect(() => {
     const fetchTrack = async () => {
+      setLoading(true);
       try {
-        const response = await fetch(`/api/tracks/${params.id}`);
-        if (response.ok) {
-          const data = await response.json();
-          setTrack(data);
+        // Use local API first
+        const trackData = await api.getTrack(params.id as string);
+        if (trackData) {
+          setTrack(trackData);
         } else {
           throw new Error('Track not found');
         }
@@ -45,7 +46,10 @@ export default function TrackDetailPage() {
         setLoading(false);
       }
     };
-    fetchTrack();
+    
+    if (params.id) {
+      fetchTrack();
+    }
   }, [params.id]);
 
   if (loading) {

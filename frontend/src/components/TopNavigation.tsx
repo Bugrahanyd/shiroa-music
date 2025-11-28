@@ -53,6 +53,18 @@ export default function TopNavigation() {
     }
   };
 
+  const themeGradients: Record<string, string> = {
+    dark: 'from-cyan-400 via-purple-500 to-cyan-400',
+    night: 'from-cyan-400 via-purple-500 to-cyan-400',
+    light: 'from-blue-600 via-purple-600 to-blue-600',
+    day: 'from-blue-600 via-purple-600 to-blue-600',
+    sakura: 'from-rose-500 via-pink-600 to-rose-500',
+    japanese: 'from-rose-500 via-pink-600 to-rose-500',
+    sunset: 'from-orange-500 via-red-500 to-orange-500',
+    neon: 'from-green-400 via-fuchsia-500 to-green-400',
+    cyber: 'from-green-400 via-fuchsia-500 to-green-400'
+  };
+
   const markAllAsRead = () => {
     setNotifications(notifications.map(n => ({ ...n, read: true })));
   };
@@ -72,9 +84,11 @@ export default function TopNavigation() {
               theme === 'light' || theme === 'japanese' ? 'mix-blend-difference' : ''
             }`}
           />
-          <h1 className="text-2xl font-bold font-orbitron text-white">
+          <span className={`text-2xl font-black font-orbitron bg-gradient-to-r ${
+            themeGradients[theme] || themeGradients.dark
+          } bg-[length:200%_auto] bg-clip-text text-transparent animate-text-shimmer`}>
             SHIROA
-          </h1>
+          </span>
         </Link>
 
         {/* RIGHT SIDE - Controls */}

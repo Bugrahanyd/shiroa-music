@@ -138,7 +138,7 @@ export default function TrackCard({ track }: TrackCardProps) {
   return (
     <Link
       href={`/tracks/${track._id}`}
-      className="group relative theme-card rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02] overflow-hidden"
+      className="group relative bg-white/5 backdrop-blur-sm rounded-2xl p-5 transition-all duration-300 hover:scale-[1.02] overflow-hidden border border-white/10 hover:border-white/20"
     >
       {/* Shine Effect */}
       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[var(--theme-accent)]/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>

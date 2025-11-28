@@ -16,8 +16,6 @@ export default function PartnershipPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: API call to send partnership inquiry
-    console.log('Partnership form:', formData);
     setSubmitted(true);
     setTimeout(() => setSubmitted(false), 3000);
   };

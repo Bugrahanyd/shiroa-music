@@ -2,11 +2,13 @@
 
 import Link from 'next/link';
 import { useAuth } from '@/lib/auth-context';
+import { useTheme } from '@/lib/theme-context';
 import { useLanguage } from '@/lib/language-context';
 import { Shield, Sparkles, Zap, Play, ArrowRight } from 'lucide-react';
 
 export default function DiscoverPage() {
   const { user } = useAuth();
+  const { theme } = useTheme();
   const { t, language } = useLanguage();
 
   const heroContent = {
@@ -72,10 +74,10 @@ export default function DiscoverPage() {
           
           {/* Main Title */}
           <div className="mb-16">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold font-orbitron theme-text mb-8 leading-tight whitespace-nowrap overflow-hidden">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400 animate-pulse inline-block">
-                {content.title}
-              </span>
+            <h1 className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold font-orbitron mb-8 leading-tight whitespace-nowrap overflow-hidden ${
+              ['light', 'day', 'japanese', 'sakura'].includes(theme) ? 'text-slate-800' : 'text-white'
+            }`}>
+              {content.title}
             </h1>
             
             <div className="relative max-w-4xl mx-auto">

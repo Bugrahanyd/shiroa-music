@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
+import { safeStorage } from "@/lib/storage";
 import { ChevronRight, ChevronLeft, User, MapPin, FileText, Image } from "lucide-react";
 
 const avatars = [
@@ -49,8 +50,7 @@ export default function RegisterPage() {
       router.push("/discover");
       
     } catch (err: any) {
-      // MVP FALLBACK: SIMULATE SUCCESS EVEN IF BACKEND FAILS
-      console.log("Backend registration failed, using fallback success:", err.message);
+      console.error("Registration error:", err);
       
       // SHOW SUCCESS MESSAGE
       setError(""); // Clear any error

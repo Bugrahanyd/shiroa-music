@@ -16,8 +16,6 @@ export default function ContactPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: API call to send message
-    console.log('Contact form:', formData);
     setSubmitted(true);
     setTimeout(() => setSubmitted(false), 3000);
   };

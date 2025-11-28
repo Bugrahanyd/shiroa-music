@@ -19,7 +19,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Initialize auth state on mount
   useEffect(() => {
     let mounted = true;
     
@@ -34,21 +33,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           return;
         }
 
-        // Check for demo user first
-        try {
-          const demoUser = safeStorage.getItem("shiroa_demo_user");
-          if (demoUser && mounted) {
+        const demoUser = safeStorage.getItem("shiroa_demo_user");
+        if (demoUser && mounted) {
+          try {
             setUser(JSON.parse(demoUser));
-            setLoading(false);
-            return;
+          } catch (e) {
+            // Silent fail
           }
-        } catch (parseError) {
-          console.warn('Failed to parse user data');
         }
       } catch (error) {
-        console.warn('Auth init error:', error);
+        // Silent fail
       } finally {
-        // Always stop loading, never leave user stuck
         if (mounted) setLoading(false);
       }
     };
@@ -60,33 +55,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
-
-
   const login = async (email: string, password: string): Promise<void> => {
     try {
       setLoading(true);
       
       const response = await api.login({ email, password });
       
-      // Store tokens
-      try {
-        safeStorage.setItem("access_token", response.access_token);
-        safeStorage.setItem("refresh_token", response.refresh_token);
-        safeStorage.setItem("shiroa_demo_user", JSON.stringify(response.user));
-      } catch (e) {
-        console.warn('Storage not available');
-      }
+      safeStorage.setItem("access_token", response.access_token);
+      safeStorage.setItem("refresh_token", response.refresh_token);
+      safeStorage.setItem("shiroa_demo_user", JSON.stringify(response.user));
       
-      // Set user state
       setUser(response.user);
-      
-      // Show success feedback
       showSuccessToast("Login successful!");
       
     } catch (error) {
       console.error("Login failed:", error);
       
-      // Never leave user stranded - Force success in offline mode
       const demoUser: User = {
         id: 'demo_user_' + Date.now(),
         email: email,
@@ -95,13 +79,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         avatarUrl: `https://api.dicebear.com/7.x/avataaars/svg?seed=${email}`
       };
       
-      // Store demo session
-      try {
-        safeStorage.setItem("access_token", "demo_token_" + Date.now());
-        safeStorage.setItem("shiroa_demo_user", JSON.stringify(demoUser));
-      } catch (e) {
-        console.warn('Storage not available');
-      }
+      safeStorage.setItem("access_token", "demo_token_" + Date.now());
+      safeStorage.setItem("shiroa_demo_user", JSON.stringify(demoUser));
       
       setUser(demoUser);
       showSuccessToast("Login successful (Offline Mode)");
@@ -117,24 +96,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       
       const response = await api.register({ email, password, name });
       
-      // Store tokens
-      try {
-        safeStorage.setItem("access_token", response.access_token);
-        safeStorage.setItem("refresh_token", response.refresh_token);
-        safeStorage.setItem("shiroa_demo_user", JSON.stringify(response.user));
-      } catch (e) {
-        console.warn('Storage not available');
-      }
+      safeStorage.setItem("access_token", response.access_token);
+      safeStorage.setItem("refresh_token", response.refresh_token);
+      safeStorage.setItem("shiroa_demo_user", JSON.stringify(response.user));
       
-      // Set user state
       setUser(response.user);
-      
       showSuccessToast("Account created successfully!");
       
     } catch (error) {
       console.error("Registration failed:", error);
       
-      // Never leave user stranded - Force success in offline mode
       const demoUser: User = {
         id: 'demo_user_' + Date.now(),
         email: email,
@@ -143,13 +114,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         avatarUrl: `https://api.dicebear.com/7.x/avataaars/svg?seed=${name}`
       };
       
-      // Store demo session
-      try {
-        safeStorage.setItem("access_token", "demo_token_" + Date.now());
-        safeStorage.setItem("shiroa_demo_user", JSON.stringify(demoUser));
-      } catch (e) {
-        console.warn('Storage not available');
-      }
+      safeStorage.setItem("access_token", "demo_token_" + Date.now());
+      safeStorage.setItem("shiroa_demo_user", JSON.stringify(demoUser));
       
       setUser(demoUser);
       showSuccessToast("Account created successfully (Offline Mode)");
@@ -163,8 +129,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     clearAuthData();
     setUser(null);
     showSuccessToast("Logged out successfully");
-    
-    // Redirect to home page
     window.location.href = '/';
   };
 
@@ -173,31 +137,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     
     const updatedUser = { ...user, ...userData };
     setUser(updatedUser);
-    
-    // Update localStorage
-    try {
-      safeStorage.setItem("shiroa_demo_user", JSON.stringify(updatedUser));
-    } catch (e) {
-      console.warn('Storage not available');
-    }
-    
+    safeStorage.setItem("shiroa_demo_user", JSON.stringify(updatedUser));
     showSuccessToast("Profile updated successfully");
   };
 
   const clearAuthData = () => {
-    try {
-      safeStorage.removeItem("access_token");
-      safeStorage.removeItem("refresh_token");
-      safeStorage.removeItem("shiroa_demo_user");
-      safeStorage.removeItem("shiroa_favorites");
-      safeStorage.removeItem("shiroa_purchases");
-    } catch (e) {
-      console.warn('Storage not available');
-    }
+    safeStorage.removeItem("access_token");
+    safeStorage.removeItem("refresh_token");
+    safeStorage.removeItem("shiroa_demo_user");
+    safeStorage.removeItem("shiroa_favorites");
+    safeStorage.removeItem("shiroa_purchases");
   };
 
   const showSuccessToast = (message: string) => {
-    // Create and show success toast
     const toast = document.createElement('div');
     toast.innerHTML = `
       <div style="

@@ -22,6 +22,15 @@ const config: Config = {
       fontFamily: {
         sans: ["var(--font-poppins)", "sans-serif"],
         display: ["var(--font-orbitron)", "sans-serif"]
+      },
+      animation: {
+        'text-shimmer': 'text-shimmer 3s ease-in-out infinite'
+      },
+      keyframes: {
+        'text-shimmer': {
+          '0%, 100%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' }
+        }
       }
     }
   },
